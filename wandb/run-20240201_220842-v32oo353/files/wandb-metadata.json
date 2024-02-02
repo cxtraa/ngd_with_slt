@@ -1,0 +1,99 @@
+{
+    "os": "Linux-6.6.9-060609-generic-x86_64-with-glibc2.35",
+    "python": "3.11.5",
+    "heartbeatAt": "2024-02-01T22:08:42.955472",
+    "startedAt": "2024-02-01T22:08:42.078503",
+    "docker": null,
+    "cuda": null,
+    "args": [],
+    "state": "running",
+    "program": "<python with no main file>",
+    "codePathLocal": null,
+    "git": {
+        "remote": null,
+        "commit": null
+    },
+    "email": "moosasaghir10@gmail.com",
+    "root": "/home/moosa",
+    "host": "moosa-IdeaPad-5-Pro-16ARH7",
+    "username": "moosa",
+    "executable": "/home/moosa/anaconda3/bin/python",
+    "cpu_count": 6,
+    "cpu_count_logical": 12,
+    "cpu_freq": {
+        "current": 3.19225,
+        "min": 400.0,
+        "max": 4564.0
+    },
+    "cpu_freq_per_core": [
+        {
+            "current": 4.491,
+            "min": 400.0,
+            "max": 4564.0
+        },
+        {
+            "current": 3.22,
+            "min": 400.0,
+            "max": 4564.0
+        },
+        {
+            "current": 3.472,
+            "min": 400.0,
+            "max": 4564.0
+        },
+        {
+            "current": 0.4,
+            "min": 400.0,
+            "max": 4564.0
+        },
+        {
+            "current": 4.239,
+            "min": 400.0,
+            "max": 4564.0
+        },
+        {
+            "current": 3.169,
+            "min": 400.0,
+            "max": 4564.0
+        },
+        {
+            "current": 4.524,
+            "min": 400.0,
+            "max": 4564.0
+        },
+        {
+            "current": 4.513,
+            "min": 400.0,
+            "max": 4564.0
+        },
+        {
+            "current": 4.493,
+            "min": 400.0,
+            "max": 4564.0
+        },
+        {
+            "current": 2.098,
+            "min": 400.0,
+            "max": 4564.0
+        },
+        {
+            "current": 3.09,
+            "min": 400.0,
+            "max": 4564.0
+        },
+        {
+            "current": 4.526,
+            "min": 400.0,
+            "max": 4564.0
+        }
+    ],
+    "disk": {
+        "/": {
+            "total": 147.08634185791016,
+            "used": 75.9302978515625
+        }
+    },
+    "memory": {
+        "total": 13.33962631225586
+    }
+}

@@ -1,0 +1,160 @@
+2024-02-02 00:15:29,138 INFO    MainThread:45366 [wandb_setup.py:_flush():76] Current SDK version is 0.16.2
+2024-02-02 00:15:29,138 INFO    MainThread:45366 [wandb_setup.py:_flush():76] Configure stats pid to 45366
+2024-02-02 00:15:29,138 INFO    MainThread:45366 [wandb_setup.py:_flush():76] Loading settings from /home/moosa/.config/wandb/settings
+2024-02-02 00:15:29,138 INFO    MainThread:45366 [wandb_setup.py:_flush():76] Loading settings from /home/moosa/Documents/projects/MARS_SLT/wandb/settings
+2024-02-02 00:15:29,138 INFO    MainThread:45366 [wandb_setup.py:_flush():76] Loading settings from environment variables: {}
+2024-02-02 00:15:29,138 INFO    MainThread:45366 [wandb_setup.py:_flush():76] Inferring run settings from compute environment: {'program': '<python with no main file>'}
+2024-02-02 00:15:29,138 INFO    MainThread:45366 [wandb_init.py:_log_setup():526] Logging user logs to /home/moosa/Documents/projects/MARS_SLT/wandb/run-20240202_001529-wbjrh0dh/logs/debug.log
+2024-02-02 00:15:29,138 INFO    MainThread:45366 [wandb_init.py:_log_setup():527] Logging internal logs to /home/moosa/Documents/projects/MARS_SLT/wandb/run-20240202_001529-wbjrh0dh/logs/debug-internal.log
+2024-02-02 00:15:29,138 INFO    MainThread:45366 [wandb_init.py:init():566] calling init triggers
+2024-02-02 00:15:29,138 INFO    MainThread:45366 [wandb_init.py:init():573] wandb.init called with sweep_config: {}
+config: {}
+2024-02-02 00:15:29,139 INFO    MainThread:45366 [wandb_init.py:init():616] starting backend
+2024-02-02 00:15:29,139 INFO    MainThread:45366 [wandb_init.py:init():620] setting up manager
+2024-02-02 00:15:29,141 INFO    MainThread:45366 [backend.py:_multiprocessing_setup():105] multiprocessing start_methods=fork,spawn,forkserver, using: spawn
+2024-02-02 00:15:29,142 INFO    MainThread:45366 [wandb_init.py:init():628] backend started and connected
+2024-02-02 00:15:29,150 INFO    MainThread:45366 [wandb_run.py:_label_probe_notebook():1294] probe notebook
+2024-02-02 00:15:29,150 INFO    MainThread:45366 [wandb_run.py:_label_probe_notebook():1304] Unable to probe notebook: 'NoneType' object has no attribute 'get'
+2024-02-02 00:15:29,150 INFO    MainThread:45366 [wandb_init.py:init():720] updated telemetry
+2024-02-02 00:15:29,151 INFO    MainThread:45366 [wandb_init.py:init():753] communicating run to backend with 90.0 second timeout
+2024-02-02 00:16:25,034 WARNING MainThread:45366 [wandb_init.py:init():1198] interrupted
+Traceback (most recent call last):
+  File "/home/moosa/anaconda3/lib/python3.11/site-packages/wandb/sdk/wandb_init.py", line 1176, in init
+    run = wi.init()
+          ^^^^^^^^^
+  File "/home/moosa/anaconda3/lib/python3.11/site-packages/wandb/sdk/wandb_init.py", line 756, in init
+    result = run_init_handle.wait(
+             ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/moosa/anaconda3/lib/python3.11/site-packages/wandb/sdk/lib/mailbox.py", line 283, in wait
+    found, abandoned = self._slot._get_and_clear(timeout=wait_timeout)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/moosa/anaconda3/lib/python3.11/site-packages/wandb/sdk/lib/mailbox.py", line 130, in _get_and_clear
+    if self._wait(timeout=timeout):
+       ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/moosa/anaconda3/lib/python3.11/site-packages/wandb/sdk/lib/mailbox.py", line 126, in _wait
+    return self._event.wait(timeout=timeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/moosa/anaconda3/lib/python3.11/threading.py", line 622, in wait
+    signaled = self._cond.wait(timeout)
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/moosa/anaconda3/lib/python3.11/threading.py", line 324, in wait
+    gotit = waiter.acquire(True, timeout)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+KeyboardInterrupt
+2024-02-02 00:16:36,179 INFO    MainThread:45366 [wandb_setup.py:_flush():76] Current SDK version is 0.16.2
+2024-02-02 00:16:36,179 INFO    MainThread:45366 [wandb_setup.py:_flush():76] Configure stats pid to 45366
+2024-02-02 00:16:36,180 INFO    MainThread:45366 [wandb_setup.py:_flush():76] Loading settings from /home/moosa/.config/wandb/settings
+2024-02-02 00:16:36,180 INFO    MainThread:45366 [wandb_setup.py:_flush():76] Loading settings from /home/moosa/Documents/projects/MARS_SLT/wandb/settings
+2024-02-02 00:16:36,180 INFO    MainThread:45366 [wandb_setup.py:_flush():76] Loading settings from environment variables: {}
+2024-02-02 00:16:36,180 INFO    MainThread:45366 [wandb_setup.py:_flush():76] Inferring run settings from compute environment: {'program': '<python with no main file>'}
+2024-02-02 00:16:36,180 INFO    MainThread:45366 [wandb_init.py:_log_setup():526] Logging user logs to /home/moosa/Documents/projects/MARS_SLT/wandb/run-20240202_001636-t21694sc/logs/debug.log
+2024-02-02 00:16:36,180 INFO    MainThread:45366 [wandb_init.py:_log_setup():527] Logging internal logs to /home/moosa/Documents/projects/MARS_SLT/wandb/run-20240202_001636-t21694sc/logs/debug-internal.log
+2024-02-02 00:16:36,180 INFO    MainThread:45366 [wandb_init.py:init():566] calling init triggers
+2024-02-02 00:16:36,180 INFO    MainThread:45366 [wandb_init.py:init():573] wandb.init called with sweep_config: {}
+config: {}
+2024-02-02 00:16:36,180 INFO    MainThread:45366 [wandb_init.py:init():616] starting backend
+2024-02-02 00:16:36,181 INFO    MainThread:45366 [wandb_init.py:init():620] setting up manager
+2024-02-02 00:16:36,184 INFO    MainThread:45366 [backend.py:_multiprocessing_setup():105] multiprocessing start_methods=fork,spawn,forkserver, using: spawn
+2024-02-02 00:16:36,184 INFO    MainThread:45366 [wandb_init.py:init():628] backend started and connected
+2024-02-02 00:16:36,193 INFO    MainThread:45366 [wandb_run.py:_label_probe_notebook():1294] probe notebook
+2024-02-02 00:16:36,193 INFO    MainThread:45366 [wandb_run.py:_label_probe_notebook():1304] Unable to probe notebook: 'NoneType' object has no attribute 'get'
+2024-02-02 00:16:36,193 INFO    MainThread:45366 [wandb_init.py:init():720] updated telemetry
+2024-02-02 00:16:36,194 INFO    MainThread:45366 [wandb_init.py:init():753] communicating run to backend with 90.0 second timeout
+2024-02-02 00:18:06,263 ERROR   MainThread:45366 [wandb_init.py:init():779] encountered error: Run initialization has timed out after 90.0 sec. 
+Please refer to the documentation for additional information: https://docs.wandb.ai/guides/track/tracking-faq#initstarterror-error-communicating-with-wandb-process-
+2024-02-02 00:18:08,265 ERROR   MainThread:45366 [wandb_init.py:init():1194] Run initialization has timed out after 90.0 sec. 
+Please refer to the documentation for additional information: https://docs.wandb.ai/guides/track/tracking-faq#initstarterror-error-communicating-with-wandb-process-
+Traceback (most recent call last):
+  File "/home/moosa/anaconda3/lib/python3.11/site-packages/wandb/sdk/wandb_init.py", line 1176, in init
+    run = wi.init()
+          ^^^^^^^^^
+  File "/home/moosa/anaconda3/lib/python3.11/site-packages/wandb/sdk/wandb_init.py", line 785, in init
+    raise error
+wandb.errors.CommError: Run initialization has timed out after 90.0 sec. 
+Please refer to the documentation for additional information: https://docs.wandb.ai/guides/track/tracking-faq#initstarterror-error-communicating-with-wandb-process-
+2024-02-02 00:23:42,001 INFO    MainThread:45366 [wandb_setup.py:_flush():76] Current SDK version is 0.16.2
+2024-02-02 00:23:42,002 INFO    MainThread:45366 [wandb_setup.py:_flush():76] Configure stats pid to 45366
+2024-02-02 00:23:42,002 INFO    MainThread:45366 [wandb_setup.py:_flush():76] Loading settings from /home/moosa/.config/wandb/settings
+2024-02-02 00:23:42,002 INFO    MainThread:45366 [wandb_setup.py:_flush():76] Loading settings from /home/moosa/Documents/projects/MARS_SLT/wandb/settings
+2024-02-02 00:23:42,002 INFO    MainThread:45366 [wandb_setup.py:_flush():76] Loading settings from environment variables: {}
+2024-02-02 00:23:42,002 INFO    MainThread:45366 [wandb_setup.py:_flush():76] Inferring run settings from compute environment: {'program': '<python with no main file>'}
+2024-02-02 00:23:42,002 INFO    MainThread:45366 [wandb_init.py:_log_setup():526] Logging user logs to /home/moosa/Documents/projects/MARS_SLT/wandb/run-20240202_002342-32ng0d81/logs/debug.log
+2024-02-02 00:23:42,002 INFO    MainThread:45366 [wandb_init.py:_log_setup():527] Logging internal logs to /home/moosa/Documents/projects/MARS_SLT/wandb/run-20240202_002342-32ng0d81/logs/debug-internal.log
+2024-02-02 00:23:42,002 INFO    MainThread:45366 [wandb_init.py:init():566] calling init triggers
+2024-02-02 00:23:42,002 INFO    MainThread:45366 [wandb_init.py:init():573] wandb.init called with sweep_config: {}
+config: {}
+2024-02-02 00:23:42,002 INFO    MainThread:45366 [wandb_init.py:init():616] starting backend
+2024-02-02 00:23:42,003 INFO    MainThread:45366 [wandb_init.py:init():620] setting up manager
+2024-02-02 00:23:42,005 INFO    MainThread:45366 [backend.py:_multiprocessing_setup():105] multiprocessing start_methods=fork,spawn,forkserver, using: fork
+2024-02-02 00:23:42,005 INFO    MainThread:45366 [wandb_init.py:init():628] backend started and connected
+2024-02-02 00:23:42,014 INFO    MainThread:45366 [wandb_run.py:_label_probe_notebook():1294] probe notebook
+2024-02-02 00:23:42,014 INFO    MainThread:45366 [wandb_run.py:_label_probe_notebook():1304] Unable to probe notebook: 'NoneType' object has no attribute 'get'
+2024-02-02 00:23:42,014 INFO    MainThread:45366 [wandb_init.py:init():720] updated telemetry
+2024-02-02 00:23:42,015 INFO    MainThread:45366 [wandb_init.py:init():753] communicating run to backend with 90.0 second timeout
+2024-02-02 00:23:48,474 WARNING MainThread:45366 [wandb_init.py:init():1198] interrupted
+Traceback (most recent call last):
+  File "/home/moosa/anaconda3/lib/python3.11/site-packages/wandb/sdk/wandb_init.py", line 1176, in init
+    run = wi.init()
+          ^^^^^^^^^
+  File "/home/moosa/anaconda3/lib/python3.11/site-packages/wandb/sdk/wandb_init.py", line 756, in init
+    result = run_init_handle.wait(
+             ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/moosa/anaconda3/lib/python3.11/site-packages/wandb/sdk/lib/mailbox.py", line 283, in wait
+    found, abandoned = self._slot._get_and_clear(timeout=wait_timeout)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/moosa/anaconda3/lib/python3.11/site-packages/wandb/sdk/lib/mailbox.py", line 130, in _get_and_clear
+    if self._wait(timeout=timeout):
+       ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/moosa/anaconda3/lib/python3.11/site-packages/wandb/sdk/lib/mailbox.py", line 126, in _wait
+    return self._event.wait(timeout=timeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/moosa/anaconda3/lib/python3.11/threading.py", line 622, in wait
+    signaled = self._cond.wait(timeout)
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/moosa/anaconda3/lib/python3.11/threading.py", line 324, in wait
+    gotit = waiter.acquire(True, timeout)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+KeyboardInterrupt
+2024-02-02 00:25:21,220 INFO    MainThread:45366 [wandb_setup.py:_flush():76] Current SDK version is 0.16.2
+2024-02-02 00:25:21,220 INFO    MainThread:45366 [wandb_setup.py:_flush():76] Configure stats pid to 45366
+2024-02-02 00:25:21,220 INFO    MainThread:45366 [wandb_setup.py:_flush():76] Loading settings from /home/moosa/.config/wandb/settings
+2024-02-02 00:25:21,221 INFO    MainThread:45366 [wandb_setup.py:_flush():76] Loading settings from /home/moosa/Documents/projects/MARS_SLT/wandb/settings
+2024-02-02 00:25:21,221 INFO    MainThread:45366 [wandb_setup.py:_flush():76] Loading settings from environment variables: {}
+2024-02-02 00:25:21,221 INFO    MainThread:45366 [wandb_setup.py:_flush():76] Inferring run settings from compute environment: {'program': '<python with no main file>'}
+2024-02-02 00:25:21,221 INFO    MainThread:45366 [wandb_init.py:_log_setup():526] Logging user logs to /home/moosa/Documents/projects/MARS_SLT/wandb/run-20240202_002521-sx9mhi8a/logs/debug.log
+2024-02-02 00:25:21,221 INFO    MainThread:45366 [wandb_init.py:_log_setup():527] Logging internal logs to /home/moosa/Documents/projects/MARS_SLT/wandb/run-20240202_002521-sx9mhi8a/logs/debug-internal.log
+2024-02-02 00:25:21,221 INFO    MainThread:45366 [wandb_init.py:init():566] calling init triggers
+2024-02-02 00:25:21,221 INFO    MainThread:45366 [wandb_init.py:init():573] wandb.init called with sweep_config: {}
+config: {}
+2024-02-02 00:25:21,221 INFO    MainThread:45366 [wandb_init.py:init():616] starting backend
+2024-02-02 00:25:21,221 INFO    MainThread:45366 [wandb_init.py:init():620] setting up manager
+2024-02-02 00:25:21,224 INFO    MainThread:45366 [backend.py:_multiprocessing_setup():105] multiprocessing start_methods=fork,spawn,forkserver, using: fork
+2024-02-02 00:25:21,224 INFO    MainThread:45366 [wandb_init.py:init():628] backend started and connected
+2024-02-02 00:25:21,233 INFO    MainThread:45366 [wandb_run.py:_label_probe_notebook():1294] probe notebook
+2024-02-02 00:25:21,233 INFO    MainThread:45366 [wandb_run.py:_label_probe_notebook():1304] Unable to probe notebook: 'NoneType' object has no attribute 'get'
+2024-02-02 00:25:21,233 INFO    MainThread:45366 [wandb_init.py:init():720] updated telemetry
+2024-02-02 00:25:21,234 INFO    MainThread:45366 [wandb_init.py:init():753] communicating run to backend with 90.0 second timeout
+2024-02-02 00:25:40,917 WARNING MainThread:45366 [wandb_init.py:init():1198] interrupted
+Traceback (most recent call last):
+  File "/home/moosa/anaconda3/lib/python3.11/site-packages/wandb/sdk/wandb_init.py", line 1176, in init
+    run = wi.init()
+          ^^^^^^^^^
+  File "/home/moosa/anaconda3/lib/python3.11/site-packages/wandb/sdk/wandb_init.py", line 756, in init
+    result = run_init_handle.wait(
+             ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/moosa/anaconda3/lib/python3.11/site-packages/wandb/sdk/lib/mailbox.py", line 283, in wait
+    found, abandoned = self._slot._get_and_clear(timeout=wait_timeout)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/moosa/anaconda3/lib/python3.11/site-packages/wandb/sdk/lib/mailbox.py", line 130, in _get_and_clear
+    if self._wait(timeout=timeout):
+       ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/moosa/anaconda3/lib/python3.11/site-packages/wandb/sdk/lib/mailbox.py", line 126, in _wait
+    return self._event.wait(timeout=timeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/moosa/anaconda3/lib/python3.11/threading.py", line 622, in wait
+    signaled = self._cond.wait(timeout)
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/moosa/anaconda3/lib/python3.11/threading.py", line 324, in wait
+    gotit = waiter.acquire(True, timeout)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+KeyboardInterrupt

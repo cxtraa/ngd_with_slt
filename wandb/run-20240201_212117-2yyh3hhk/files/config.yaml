@@ -1,0 +1,68 @@
+wandb_version: 1
+
+_wandb:
+  desc: null
+  value:
+    python_version: 3.11.5
+    cli_version: 0.16.2
+    framework: huggingface
+    huggingface_version: 4.32.1
+    is_jupyter_run: true
+    is_kaggle_kernel: false
+    start_time: 1706822477.484187
+    t:
+      1:
+      - 1
+      - 11
+      - 41
+      - 49
+      - 54
+      - 55
+      2:
+      - 1
+      - 11
+      - 41
+      - 49
+      - 54
+      - 55
+      3:
+      - 2
+      - 13
+      - 23
+      4: 3.11.5
+      5: 0.16.2
+      6: 4.32.1
+      8:
+      - 1
+      - 5
+      13: linux-x86_64
+    visualize:
+      rlct for optimizers:
+        panel_type: Vega2
+        panel_config:
+          panelDefId: wandb/bar/v0
+          fieldSettings:
+            label: optimizer
+            value: rlct
+          stringSettings:
+            title: Final RLCT values for different optimizers
+          transform:
+            name: tableWithLeafColNames
+          userQuery:
+            queryFields:
+            - name: runSets
+              args:
+              - name: runSets
+                value: ${runSets}
+              fields:
+              - name: id
+                fields: []
+              - name: name
+                fields: []
+              - name: _defaultColorIndex
+                fields: []
+              - name: summaryTable
+                args:
+                - name: tableKey
+                  value: rlct for optimizers_table
+                fields: []
