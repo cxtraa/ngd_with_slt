@@ -1,0 +1,4 @@
+Traceback (most recent call last):
+  File "<ipython-input-13-4ef9d1c61939>", line 11, in wandb_rlct_estimation
+    for optimizer in models[0:1]:
+TypeError: unhashable type: 'slice'

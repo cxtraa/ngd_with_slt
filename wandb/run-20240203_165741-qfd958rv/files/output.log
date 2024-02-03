@@ -1,0 +1,21 @@
+
+Chain 0:  35%|███▌      | 195/555 [00:01<00:03, 110.95it/s]
+
+Chain 0: 100%|██████████| 555/555 [00:05<00:00, 108.84it/s]
+
+
+Chain 1: 100%|██████████| 555/555 [00:05<00:00, 108.39it/s]
+
+Chain 2: 100%|██████████| 555/555 [00:04<00:00, 111.69it/s]
+
+
+Chain 3: 100%|██████████| 555/555 [00:04<00:00, 112.52it/s]
+
+Chain 4: 100%|██████████| 555/555 [00:05<00:00, 110.71it/s]
+
+
+Chain 5: 100%|██████████| 555/555 [00:04<00:00, 112.20it/s]
+Traceback (most recent call last):
+  File "<ipython-input-29-ed94f4360edc>", line 36, in wandb_rlct_estimation
+    average_rlct_estimate = np.sum(rlct_estimate[-5:])/5
+TypeError: 'float' object is not subscriptable

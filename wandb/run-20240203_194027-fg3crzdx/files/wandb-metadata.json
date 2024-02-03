@@ -1,0 +1,99 @@
+{
+    "os": "Linux-6.6.9-060609-generic-x86_64-with-glibc2.35",
+    "python": "3.10.13",
+    "heartbeatAt": "2024-02-03T19:40:28.196692",
+    "startedAt": "2024-02-03T19:40:27.524111",
+    "docker": null,
+    "cuda": null,
+    "args": [],
+    "state": "running",
+    "program": "<python with no main file>",
+    "codePathLocal": null,
+    "git": {
+        "remote": "https://github.com/cxtraa/ngd_with_slt.git",
+        "commit": "d6b99ea4ce7ebce382ca106bb6da48b35c415a4b"
+    },
+    "email": "moosasaghir10@gmail.com",
+    "root": "/home/moosa/Documents/projects/MARS_SLT",
+    "host": "moosa-IdeaPad-5-Pro-16ARH7",
+    "username": "moosa",
+    "executable": "/home/moosa/anaconda3/envs/mars0/bin/python",
+    "cpu_count": 6,
+    "cpu_count_logical": 12,
+    "cpu_freq": {
+        "current": 2789.4505000000004,
+        "min": 400.0,
+        "max": 4564.0
+    },
+    "cpu_freq_per_core": [
+        {
+            "current": 4540.976,
+            "min": 400.0,
+            "max": 4564.0
+        },
+        {
+            "current": 4540.82,
+            "min": 400.0,
+            "max": 4564.0
+        },
+        {
+            "current": 4540.184,
+            "min": 400.0,
+            "max": 4564.0
+        },
+        {
+            "current": 4540.139,
+            "min": 400.0,
+            "max": 4564.0
+        },
+        {
+            "current": 4532.111,
+            "min": 400.0,
+            "max": 4564.0
+        },
+        {
+            "current": 3263.026,
+            "min": 400.0,
+            "max": 4564.0
+        },
+        {
+            "current": 4524.58,
+            "min": 400.0,
+            "max": 4564.0
+        },
+        {
+            "current": 4483.175,
+            "min": 400.0,
+            "max": 4564.0
+        },
+        {
+            "current": 4028.632,
+            "min": 400.0,
+            "max": 4564.0
+        },
+        {
+            "current": 4510.004,
+            "min": 400.0,
+            "max": 4564.0
+        },
+        {
+            "current": 4540.798,
+            "min": 400.0,
+            "max": 4564.0
+        },
+        {
+            "current": 3465.431,
+            "min": 400.0,
+            "max": 4564.0
+        }
+    ],
+    "disk": {
+        "/": {
+            "total": 147.08634185791016,
+            "used": 81.44717025756836
+        }
+    },
+    "memory": {
+        "total": 13.33962631225586
+    }
+}

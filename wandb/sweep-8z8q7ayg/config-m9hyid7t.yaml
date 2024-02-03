@@ -1,0 +1,10 @@
+wandb_version: 1
+
+elasticity:
+  value: 7.306297110730703
+noise_level:
+  value: 7.814993732231883
+num_chains:
+  value: 7
+num_draws:
+  value: 267
