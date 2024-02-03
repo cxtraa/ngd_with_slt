@@ -1,0 +1,248 @@
+2024-02-03 20:10:34,928 INFO    StreamThr :236363 [internal.py:wandb_internal():86] W&B internal server running at pid: 236363, started at: 2024-02-03 20:10:34.928107
+2024-02-03 20:10:34,929 DEBUG   HandlerThread:236363 [handler.py:handle_request():146] handle_request: status
+2024-02-03 20:10:34,933 INFO    WriterThread:236363 [datastore.py:open_for_write():87] open: /home/moosa/Documents/projects/MARS_SLT/wandb/run-20240203_201034-2fmurptc/run-2fmurptc.wandb
+2024-02-03 20:10:34,933 DEBUG   SenderThread:236363 [sender.py:send():382] send: header
+2024-02-03 20:10:34,937 DEBUG   SenderThread:236363 [sender.py:send():382] send: run
+2024-02-03 20:10:36,668 INFO    SenderThread:236363 [dir_watcher.py:__init__():211] watching files in: /home/moosa/Documents/projects/MARS_SLT/wandb/run-20240203_201034-2fmurptc/files
+2024-02-03 20:10:36,668 INFO    SenderThread:236363 [sender.py:_start_run_threads():1136] run started: 2fmurptc with start time 1706991034.927409
+2024-02-03 20:10:36,674 DEBUG   HandlerThread:236363 [handler.py:handle_request():146] handle_request: check_version
+2024-02-03 20:10:36,674 DEBUG   SenderThread:236363 [sender.py:send_request():409] send_request: check_version
+2024-02-03 20:10:36,760 DEBUG   HandlerThread:236363 [handler.py:handle_request():146] handle_request: run_start
+2024-02-03 20:10:36,838 ERROR   HandlerThread:236363 [gpu.py:is_available():381] Error initializing NVML: Driver Not Loaded
+2024-02-03 20:10:36,839 DEBUG   HandlerThread:236363 [system_info.py:__init__():27] System info init
+2024-02-03 20:10:36,839 DEBUG   HandlerThread:236363 [system_info.py:__init__():42] System info init done
+2024-02-03 20:10:36,839 INFO    HandlerThread:236363 [system_monitor.py:start():194] Starting system monitor
+2024-02-03 20:10:36,840 INFO    SystemMonitor:236363 [system_monitor.py:_start():158] Starting system asset monitoring threads
+2024-02-03 20:10:36,840 INFO    HandlerThread:236363 [system_monitor.py:probe():214] Collecting system info
+2024-02-03 20:10:36,840 INFO    SystemMonitor:236363 [interfaces.py:start():190] Started cpu monitoring
+2024-02-03 20:10:36,841 INFO    SystemMonitor:236363 [interfaces.py:start():190] Started disk monitoring
+2024-02-03 20:10:36,842 INFO    SystemMonitor:236363 [interfaces.py:start():190] Started memory monitoring
+2024-02-03 20:10:36,842 INFO    SystemMonitor:236363 [interfaces.py:start():190] Started network monitoring
+2024-02-03 20:10:36,847 DEBUG   HandlerThread:236363 [system_info.py:probe():151] Probing system
+2024-02-03 20:10:36,849 DEBUG   HandlerThread:236363 [system_info.py:_probe_git():136] Probing git
+2024-02-03 20:10:36,853 DEBUG   HandlerThread:236363 [system_info.py:_probe_git():144] Probing git done
+2024-02-03 20:10:36,853 DEBUG   HandlerThread:236363 [system_info.py:probe():199] Probing system done
+2024-02-03 20:10:36,854 DEBUG   HandlerThread:236363 [system_monitor.py:probe():223] {'os': 'Linux-6.6.9-060609-generic-x86_64-with-glibc2.35', 'python': '3.10.13', 'heartbeatAt': '2024-02-03T20:10:36.847555', 'startedAt': '2024-02-03T20:10:34.923005', 'docker': None, 'cuda': None, 'args': (), 'state': 'running', 'program': '<python with no main file>', 'codePathLocal': None, 'git': {'remote': 'https://github.com/cxtraa/ngd_with_slt.git', 'commit': 'd6b99ea4ce7ebce382ca106bb6da48b35c415a4b'}, 'email': 'moosasaghir10@gmail.com', 'root': '/home/moosa/Documents/projects/MARS_SLT', 'host': 'moosa-IdeaPad-5-Pro-16ARH7', 'username': 'moosa', 'executable': '/home/moosa/anaconda3/envs/mars0/bin/python', 'cpu_count': 6, 'cpu_count_logical': 12, 'cpu_freq': {'current': 2234.7228333333333, 'min': 400.0, 'max': 4564.0}, 'cpu_freq_per_core': [{'current': 1917.687, 'min': 400.0, 'max': 4564.0}, {'current': 1717.193, 'min': 400.0, 'max': 4564.0}, {'current': 3837.189, 'min': 400.0, 'max': 4564.0}, {'current': 2821.502, 'min': 400.0, 'max': 4564.0}, {'current': 2263.849, 'min': 400.0, 'max': 4564.0}, {'current': 400.0, 'min': 400.0, 'max': 4564.0}, {'current': 4024.857, 'min': 400.0, 'max': 4564.0}, {'current': 400.0, 'min': 400.0, 'max': 4564.0}, {'current': 3164.699, 'min': 400.0, 'max': 4564.0}, {'current': 400.0, 'min': 400.0, 'max': 4564.0}, {'current': 2225.706, 'min': 400.0, 'max': 4564.0}, {'current': 3643.992, 'min': 400.0, 'max': 4564.0}], 'disk': {'/': {'total': 147.08634185791016, 'used': 81.45539474487305}}, 'memory': {'total': 13.33962631225586}}
+2024-02-03 20:10:36,854 INFO    HandlerThread:236363 [system_monitor.py:probe():224] Finished collecting system info
+2024-02-03 20:10:36,854 INFO    HandlerThread:236363 [system_monitor.py:probe():227] Publishing system info
+2024-02-03 20:10:36,854 DEBUG   HandlerThread:236363 [system_info.py:_save_conda():208] Saving list of conda packages installed into the current environment
+2024-02-03 20:10:37,669 INFO    Thread-13 :236363 [dir_watcher.py:_on_file_created():271] file/dir created: /home/moosa/Documents/projects/MARS_SLT/wandb/run-20240203_201034-2fmurptc/files/conda-environment.yaml
+2024-02-03 20:10:39,053 DEBUG   HandlerThread:236363 [system_info.py:_save_conda():220] Saving conda packages done
+2024-02-03 20:10:39,054 INFO    HandlerThread:236363 [system_monitor.py:probe():229] Finished publishing system info
+2024-02-03 20:10:39,056 DEBUG   SenderThread:236363 [sender.py:send():382] send: files
+2024-02-03 20:10:39,056 INFO    SenderThread:236363 [sender.py:_save_file():1403] saving file wandb-metadata.json with policy now
+2024-02-03 20:10:39,066 DEBUG   HandlerThread:236363 [handler.py:handle_request():146] handle_request: python_packages
+2024-02-03 20:10:39,066 DEBUG   SenderThread:236363 [sender.py:send_request():409] send_request: python_packages
+2024-02-03 20:10:39,067 DEBUG   SenderThread:236363 [sender.py:send():382] send: telemetry
+2024-02-03 20:10:39,115 DEBUG   HandlerThread:236363 [handler.py:handle_request():146] handle_request: internal_messages
+2024-02-03 20:10:39,115 DEBUG   HandlerThread:236363 [handler.py:handle_request():146] handle_request: stop_status
+2024-02-03 20:10:39,116 DEBUG   SenderThread:236363 [sender.py:send_request():409] send_request: stop_status
+2024-02-03 20:10:39,668 INFO    Thread-13 :236363 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/moosa/Documents/projects/MARS_SLT/wandb/run-20240203_201034-2fmurptc/files/conda-environment.yaml
+2024-02-03 20:10:39,669 INFO    Thread-13 :236363 [dir_watcher.py:_on_file_created():271] file/dir created: /home/moosa/Documents/projects/MARS_SLT/wandb/run-20240203_201034-2fmurptc/files/wandb-metadata.json
+2024-02-03 20:10:39,669 INFO    Thread-13 :236363 [dir_watcher.py:_on_file_created():271] file/dir created: /home/moosa/Documents/projects/MARS_SLT/wandb/run-20240203_201034-2fmurptc/files/requirements.txt
+2024-02-03 20:10:39,669 INFO    Thread-13 :236363 [dir_watcher.py:_on_file_created():271] file/dir created: /home/moosa/Documents/projects/MARS_SLT/wandb/run-20240203_201034-2fmurptc/files/output.log
+2024-02-03 20:10:39,821 INFO    wandb-upload_0:236363 [upload_job.py:push():131] Uploaded file /tmp/tmp7ro9asrswandb/f2yla2ns-wandb-metadata.json
+2024-02-03 20:10:40,008 DEBUG   HandlerThread:236363 [handler.py:handle_request():146] handle_request: status_report
+2024-02-03 20:10:41,669 INFO    Thread-13 :236363 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/moosa/Documents/projects/MARS_SLT/wandb/run-20240203_201034-2fmurptc/files/output.log
+2024-02-03 20:10:43,670 INFO    Thread-13 :236363 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/moosa/Documents/projects/MARS_SLT/wandb/run-20240203_201034-2fmurptc/files/output.log
+2024-02-03 20:10:45,058 DEBUG   HandlerThread:236363 [handler.py:handle_request():146] handle_request: status_report
+2024-02-03 20:10:45,670 INFO    Thread-13 :236363 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/moosa/Documents/projects/MARS_SLT/wandb/run-20240203_201034-2fmurptc/files/output.log
+2024-02-03 20:10:47,671 INFO    Thread-13 :236363 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/moosa/Documents/projects/MARS_SLT/wandb/run-20240203_201034-2fmurptc/files/output.log
+2024-02-03 20:10:49,672 INFO    Thread-13 :236363 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/moosa/Documents/projects/MARS_SLT/wandb/run-20240203_201034-2fmurptc/files/output.log
+2024-02-03 20:10:50,147 DEBUG   HandlerThread:236363 [handler.py:handle_request():146] handle_request: status_report
+2024-02-03 20:10:51,672 INFO    Thread-13 :236363 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/moosa/Documents/projects/MARS_SLT/wandb/run-20240203_201034-2fmurptc/files/output.log
+2024-02-03 20:10:53,673 INFO    Thread-13 :236363 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/moosa/Documents/projects/MARS_SLT/wandb/run-20240203_201034-2fmurptc/files/output.log
+2024-02-03 20:10:54,067 DEBUG   HandlerThread:236363 [handler.py:handle_request():146] handle_request: internal_messages
+2024-02-03 20:10:54,067 DEBUG   HandlerThread:236363 [handler.py:handle_request():146] handle_request: stop_status
+2024-02-03 20:10:54,068 DEBUG   SenderThread:236363 [sender.py:send_request():409] send_request: stop_status
+2024-02-03 20:10:55,220 DEBUG   HandlerThread:236363 [handler.py:handle_request():146] handle_request: status_report
+2024-02-03 20:10:55,674 INFO    Thread-13 :236363 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/moosa/Documents/projects/MARS_SLT/wandb/run-20240203_201034-2fmurptc/files/output.log
+2024-02-03 20:10:57,675 INFO    Thread-13 :236363 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/moosa/Documents/projects/MARS_SLT/wandb/run-20240203_201034-2fmurptc/files/output.log
+2024-02-03 20:10:59,676 INFO    Thread-13 :236363 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/moosa/Documents/projects/MARS_SLT/wandb/run-20240203_201034-2fmurptc/files/output.log
+2024-02-03 20:11:00,291 DEBUG   HandlerThread:236363 [handler.py:handle_request():146] handle_request: status_report
+2024-02-03 20:11:01,676 INFO    Thread-13 :236363 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/moosa/Documents/projects/MARS_SLT/wandb/run-20240203_201034-2fmurptc/files/output.log
+2024-02-03 20:11:03,677 INFO    Thread-13 :236363 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/moosa/Documents/projects/MARS_SLT/wandb/run-20240203_201034-2fmurptc/files/output.log
+2024-02-03 20:11:05,382 DEBUG   HandlerThread:236363 [handler.py:handle_request():146] handle_request: status_report
+2024-02-03 20:11:05,678 INFO    Thread-13 :236363 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/moosa/Documents/projects/MARS_SLT/wandb/run-20240203_201034-2fmurptc/files/output.log
+2024-02-03 20:11:05,678 INFO    Thread-13 :236363 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/moosa/Documents/projects/MARS_SLT/wandb/run-20240203_201034-2fmurptc/files/config.yaml
+2024-02-03 20:11:07,678 INFO    Thread-13 :236363 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/moosa/Documents/projects/MARS_SLT/wandb/run-20240203_201034-2fmurptc/files/output.log
+2024-02-03 20:11:09,067 DEBUG   HandlerThread:236363 [handler.py:handle_request():146] handle_request: stop_status
+2024-02-03 20:11:09,067 DEBUG   HandlerThread:236363 [handler.py:handle_request():146] handle_request: internal_messages
+2024-02-03 20:11:09,068 DEBUG   SenderThread:236363 [sender.py:send_request():409] send_request: stop_status
+2024-02-03 20:11:09,679 INFO    Thread-13 :236363 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/moosa/Documents/projects/MARS_SLT/wandb/run-20240203_201034-2fmurptc/files/output.log
+2024-02-03 20:11:10,740 DEBUG   HandlerThread:236363 [handler.py:handle_request():146] handle_request: status_report
+2024-02-03 20:11:11,679 INFO    Thread-13 :236363 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/moosa/Documents/projects/MARS_SLT/wandb/run-20240203_201034-2fmurptc/files/output.log
+2024-02-03 20:11:13,680 INFO    Thread-13 :236363 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/moosa/Documents/projects/MARS_SLT/wandb/run-20240203_201034-2fmurptc/files/output.log
+2024-02-03 20:11:15,681 INFO    Thread-13 :236363 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/moosa/Documents/projects/MARS_SLT/wandb/run-20240203_201034-2fmurptc/files/output.log
+2024-02-03 20:11:15,779 DEBUG   HandlerThread:236363 [handler.py:handle_request():146] handle_request: status_report
+2024-02-03 20:11:17,681 INFO    Thread-13 :236363 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/moosa/Documents/projects/MARS_SLT/wandb/run-20240203_201034-2fmurptc/files/output.log
+2024-02-03 20:11:19,682 INFO    Thread-13 :236363 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/moosa/Documents/projects/MARS_SLT/wandb/run-20240203_201034-2fmurptc/files/output.log
+2024-02-03 20:11:20,886 DEBUG   HandlerThread:236363 [handler.py:handle_request():146] handle_request: status_report
+2024-02-03 20:11:21,683 INFO    Thread-13 :236363 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/moosa/Documents/projects/MARS_SLT/wandb/run-20240203_201034-2fmurptc/files/output.log
+2024-02-03 20:11:23,683 INFO    Thread-13 :236363 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/moosa/Documents/projects/MARS_SLT/wandb/run-20240203_201034-2fmurptc/files/output.log
+2024-02-03 20:11:24,067 DEBUG   HandlerThread:236363 [handler.py:handle_request():146] handle_request: stop_status
+2024-02-03 20:11:24,067 DEBUG   HandlerThread:236363 [handler.py:handle_request():146] handle_request: internal_messages
+2024-02-03 20:11:24,067 DEBUG   SenderThread:236363 [sender.py:send_request():409] send_request: stop_status
+2024-02-03 20:11:25,684 INFO    Thread-13 :236363 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/moosa/Documents/projects/MARS_SLT/wandb/run-20240203_201034-2fmurptc/files/output.log
+2024-02-03 20:11:25,990 DEBUG   HandlerThread:236363 [handler.py:handle_request():146] handle_request: status_report
+2024-02-03 20:11:27,684 INFO    Thread-13 :236363 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/moosa/Documents/projects/MARS_SLT/wandb/run-20240203_201034-2fmurptc/files/output.log
+2024-02-03 20:11:29,685 INFO    Thread-13 :236363 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/moosa/Documents/projects/MARS_SLT/wandb/run-20240203_201034-2fmurptc/files/output.log
+2024-02-03 20:11:31,034 DEBUG   HandlerThread:236363 [handler.py:handle_request():146] handle_request: status_report
+2024-02-03 20:11:31,686 INFO    Thread-13 :236363 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/moosa/Documents/projects/MARS_SLT/wandb/run-20240203_201034-2fmurptc/files/output.log
+2024-02-03 20:11:33,686 INFO    Thread-13 :236363 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/moosa/Documents/projects/MARS_SLT/wandb/run-20240203_201034-2fmurptc/files/output.log
+2024-02-03 20:11:35,687 INFO    Thread-13 :236363 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/moosa/Documents/projects/MARS_SLT/wandb/run-20240203_201034-2fmurptc/files/output.log
+2024-02-03 20:11:36,072 DEBUG   HandlerThread:236363 [handler.py:handle_request():146] handle_request: status_report
+2024-02-03 20:11:36,842 DEBUG   SystemMonitor:236363 [system_monitor.py:_start():172] Starting system metrics aggregation loop
+2024-02-03 20:11:36,843 DEBUG   SenderThread:236363 [sender.py:send():382] send: stats
+2024-02-03 20:11:37,687 INFO    Thread-13 :236363 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/moosa/Documents/projects/MARS_SLT/wandb/run-20240203_201034-2fmurptc/files/output.log
+2024-02-03 20:11:39,067 DEBUG   HandlerThread:236363 [handler.py:handle_request():146] handle_request: internal_messages
+2024-02-03 20:11:39,068 DEBUG   HandlerThread:236363 [handler.py:handle_request():146] handle_request: stop_status
+2024-02-03 20:11:39,068 DEBUG   SenderThread:236363 [sender.py:send_request():409] send_request: stop_status
+2024-02-03 20:11:39,688 INFO    Thread-13 :236363 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/moosa/Documents/projects/MARS_SLT/wandb/run-20240203_201034-2fmurptc/files/output.log
+2024-02-03 20:11:41,107 DEBUG   HandlerThread:236363 [handler.py:handle_request():146] handle_request: status_report
+2024-02-03 20:11:41,689 INFO    Thread-13 :236363 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/moosa/Documents/projects/MARS_SLT/wandb/run-20240203_201034-2fmurptc/files/output.log
+2024-02-03 20:11:43,689 INFO    Thread-13 :236363 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/moosa/Documents/projects/MARS_SLT/wandb/run-20240203_201034-2fmurptc/files/output.log
+2024-02-03 20:11:45,690 INFO    Thread-13 :236363 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/moosa/Documents/projects/MARS_SLT/wandb/run-20240203_201034-2fmurptc/files/output.log
+2024-02-03 20:11:46,107 DEBUG   HandlerThread:236363 [handler.py:handle_request():146] handle_request: status_report
+2024-02-03 20:11:46,500 DEBUG   HandlerThread:236363 [handler.py:handle_request():146] handle_request: partial_history
+2024-02-03 20:11:46,501 DEBUG   SenderThread:236363 [sender.py:send():382] send: history
+2024-02-03 20:11:46,501 DEBUG   SenderThread:236363 [sender.py:send_request():409] send_request: summary_record
+2024-02-03 20:11:46,501 INFO    SenderThread:236363 [sender.py:_save_file():1403] saving file wandb-summary.json with policy end
+2024-02-03 20:11:46,502 DEBUG   SenderThread:236363 [sender.py:send():382] send: telemetry
+2024-02-03 20:11:46,502 DEBUG   SenderThread:236363 [sender.py:send():382] send: exit
+2024-02-03 20:11:46,502 INFO    SenderThread:236363 [sender.py:send_exit():589] handling exit code: 0
+2024-02-03 20:11:46,502 INFO    SenderThread:236363 [sender.py:send_exit():591] handling runtime: 69
+2024-02-03 20:11:46,502 INFO    SenderThread:236363 [sender.py:_save_file():1403] saving file wandb-summary.json with policy end
+2024-02-03 20:11:46,502 INFO    SenderThread:236363 [sender.py:send_exit():597] send defer
+2024-02-03 20:11:46,502 DEBUG   HandlerThread:236363 [handler.py:handle_request():146] handle_request: defer
+2024-02-03 20:11:46,502 INFO    HandlerThread:236363 [handler.py:handle_request_defer():172] handle defer: 0
+2024-02-03 20:11:46,502 DEBUG   SenderThread:236363 [sender.py:send_request():409] send_request: defer
+2024-02-03 20:11:46,502 INFO    SenderThread:236363 [sender.py:send_request_defer():613] handle sender defer: 0
+2024-02-03 20:11:46,502 INFO    SenderThread:236363 [sender.py:transition_state():617] send defer: 1
+2024-02-03 20:11:46,502 DEBUG   HandlerThread:236363 [handler.py:handle_request():146] handle_request: defer
+2024-02-03 20:11:46,502 INFO    HandlerThread:236363 [handler.py:handle_request_defer():172] handle defer: 1
+2024-02-03 20:11:46,502 DEBUG   SenderThread:236363 [sender.py:send_request():409] send_request: defer
+2024-02-03 20:11:46,502 INFO    SenderThread:236363 [sender.py:send_request_defer():613] handle sender defer: 1
+2024-02-03 20:11:46,502 INFO    SenderThread:236363 [sender.py:transition_state():617] send defer: 2
+2024-02-03 20:11:46,502 DEBUG   HandlerThread:236363 [handler.py:handle_request():146] handle_request: defer
+2024-02-03 20:11:46,502 INFO    HandlerThread:236363 [handler.py:handle_request_defer():172] handle defer: 2
+2024-02-03 20:11:46,503 INFO    HandlerThread:236363 [system_monitor.py:finish():203] Stopping system monitor
+2024-02-03 20:11:46,503 DEBUG   SystemMonitor:236363 [system_monitor.py:_start():179] Finished system metrics aggregation loop
+2024-02-03 20:11:46,503 DEBUG   SystemMonitor:236363 [system_monitor.py:_start():183] Publishing last batch of metrics
+2024-02-03 20:11:46,503 INFO    HandlerThread:236363 [interfaces.py:finish():202] Joined cpu monitor
+2024-02-03 20:11:46,503 INFO    HandlerThread:236363 [interfaces.py:finish():202] Joined disk monitor
+2024-02-03 20:11:46,503 INFO    HandlerThread:236363 [interfaces.py:finish():202] Joined memory monitor
+2024-02-03 20:11:46,503 INFO    HandlerThread:236363 [interfaces.py:finish():202] Joined network monitor
+2024-02-03 20:11:46,504 DEBUG   SenderThread:236363 [sender.py:send_request():409] send_request: defer
+2024-02-03 20:11:46,504 INFO    SenderThread:236363 [sender.py:send_request_defer():613] handle sender defer: 2
+2024-02-03 20:11:46,504 INFO    SenderThread:236363 [sender.py:transition_state():617] send defer: 3
+2024-02-03 20:11:46,504 DEBUG   SenderThread:236363 [sender.py:send():382] send: stats
+2024-02-03 20:11:46,504 DEBUG   HandlerThread:236363 [handler.py:handle_request():146] handle_request: defer
+2024-02-03 20:11:46,504 INFO    HandlerThread:236363 [handler.py:handle_request_defer():172] handle defer: 3
+2024-02-03 20:11:46,504 DEBUG   SenderThread:236363 [sender.py:send_request():409] send_request: defer
+2024-02-03 20:11:46,504 INFO    SenderThread:236363 [sender.py:send_request_defer():613] handle sender defer: 3
+2024-02-03 20:11:46,504 INFO    SenderThread:236363 [sender.py:transition_state():617] send defer: 4
+2024-02-03 20:11:46,504 DEBUG   HandlerThread:236363 [handler.py:handle_request():146] handle_request: defer
+2024-02-03 20:11:46,504 INFO    HandlerThread:236363 [handler.py:handle_request_defer():172] handle defer: 4
+2024-02-03 20:11:46,504 DEBUG   SenderThread:236363 [sender.py:send_request():409] send_request: defer
+2024-02-03 20:11:46,504 INFO    SenderThread:236363 [sender.py:send_request_defer():613] handle sender defer: 4
+2024-02-03 20:11:46,504 INFO    SenderThread:236363 [sender.py:transition_state():617] send defer: 5
+2024-02-03 20:11:46,504 DEBUG   HandlerThread:236363 [handler.py:handle_request():146] handle_request: defer
+2024-02-03 20:11:46,504 INFO    HandlerThread:236363 [handler.py:handle_request_defer():172] handle defer: 5
+2024-02-03 20:11:46,504 DEBUG   SenderThread:236363 [sender.py:send():382] send: summary
+2024-02-03 20:11:46,505 INFO    SenderThread:236363 [sender.py:_save_file():1403] saving file wandb-summary.json with policy end
+2024-02-03 20:11:46,505 DEBUG   SenderThread:236363 [sender.py:send_request():409] send_request: defer
+2024-02-03 20:11:46,505 INFO    SenderThread:236363 [sender.py:send_request_defer():613] handle sender defer: 5
+2024-02-03 20:11:46,505 INFO    SenderThread:236363 [sender.py:transition_state():617] send defer: 6
+2024-02-03 20:11:46,505 DEBUG   HandlerThread:236363 [handler.py:handle_request():146] handle_request: defer
+2024-02-03 20:11:46,505 INFO    HandlerThread:236363 [handler.py:handle_request_defer():172] handle defer: 6
+2024-02-03 20:11:46,505 DEBUG   SenderThread:236363 [sender.py:send_request():409] send_request: defer
+2024-02-03 20:11:46,505 INFO    SenderThread:236363 [sender.py:send_request_defer():613] handle sender defer: 6
+2024-02-03 20:11:46,507 DEBUG   HandlerThread:236363 [handler.py:handle_request():146] handle_request: status_report
+2024-02-03 20:11:46,691 INFO    Thread-13 :236363 [dir_watcher.py:_on_file_created():271] file/dir created: /home/moosa/Documents/projects/MARS_SLT/wandb/run-20240203_201034-2fmurptc/files/wandb-summary.json
+2024-02-03 20:11:47,502 DEBUG   HandlerThread:236363 [handler.py:handle_request():146] handle_request: poll_exit
+2024-02-03 20:11:47,692 INFO    Thread-13 :236363 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/moosa/Documents/projects/MARS_SLT/wandb/run-20240203_201034-2fmurptc/files/output.log
+2024-02-03 20:11:50,904 INFO    SenderThread:236363 [sender.py:transition_state():617] send defer: 7
+2024-02-03 20:11:50,905 DEBUG   SenderThread:236363 [sender.py:send_request():409] send_request: poll_exit
+2024-02-03 20:11:50,905 DEBUG   HandlerThread:236363 [handler.py:handle_request():146] handle_request: defer
+2024-02-03 20:11:50,905 INFO    HandlerThread:236363 [handler.py:handle_request_defer():172] handle defer: 7
+2024-02-03 20:11:50,905 DEBUG   SenderThread:236363 [sender.py:send_request():409] send_request: defer
+2024-02-03 20:11:50,905 INFO    SenderThread:236363 [sender.py:send_request_defer():613] handle sender defer: 7
+2024-02-03 20:11:51,504 DEBUG   HandlerThread:236363 [handler.py:handle_request():146] handle_request: poll_exit
+2024-02-03 20:11:51,605 INFO    SenderThread:236363 [sender.py:transition_state():617] send defer: 8
+2024-02-03 20:11:51,606 DEBUG   SenderThread:236363 [sender.py:send_request():409] send_request: poll_exit
+2024-02-03 20:11:51,606 DEBUG   HandlerThread:236363 [handler.py:handle_request():146] handle_request: defer
+2024-02-03 20:11:51,606 INFO    HandlerThread:236363 [handler.py:handle_request_defer():172] handle defer: 8
+2024-02-03 20:11:51,607 DEBUG   HandlerThread:236363 [handler.py:handle_request():146] handle_request: status_report
+2024-02-03 20:11:51,607 DEBUG   SenderThread:236363 [sender.py:send_request():409] send_request: defer
+2024-02-03 20:11:51,607 INFO    SenderThread:236363 [sender.py:send_request_defer():613] handle sender defer: 8
+2024-02-03 20:11:51,607 INFO    SenderThread:236363 [sender.py:transition_state():617] send defer: 9
+2024-02-03 20:11:51,607 DEBUG   HandlerThread:236363 [handler.py:handle_request():146] handle_request: defer
+2024-02-03 20:11:51,607 INFO    HandlerThread:236363 [handler.py:handle_request_defer():172] handle defer: 9
+2024-02-03 20:11:51,607 DEBUG   SenderThread:236363 [sender.py:send_request():409] send_request: defer
+2024-02-03 20:11:51,607 INFO    SenderThread:236363 [sender.py:send_request_defer():613] handle sender defer: 9
+2024-02-03 20:11:51,607 INFO    SenderThread:236363 [dir_watcher.py:finish():358] shutting down directory watcher
+2024-02-03 20:11:51,693 INFO    SenderThread:236363 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/moosa/Documents/projects/MARS_SLT/wandb/run-20240203_201034-2fmurptc/files/output.log
+2024-02-03 20:11:51,694 INFO    SenderThread:236363 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/moosa/Documents/projects/MARS_SLT/wandb/run-20240203_201034-2fmurptc/files/config.yaml
+2024-02-03 20:11:51,694 INFO    SenderThread:236363 [dir_watcher.py:finish():388] scan: /home/moosa/Documents/projects/MARS_SLT/wandb/run-20240203_201034-2fmurptc/files
+2024-02-03 20:11:51,694 INFO    SenderThread:236363 [dir_watcher.py:finish():402] scan save: /home/moosa/Documents/projects/MARS_SLT/wandb/run-20240203_201034-2fmurptc/files/wandb-metadata.json wandb-metadata.json
+2024-02-03 20:11:51,694 INFO    SenderThread:236363 [dir_watcher.py:finish():402] scan save: /home/moosa/Documents/projects/MARS_SLT/wandb/run-20240203_201034-2fmurptc/files/requirements.txt requirements.txt
+2024-02-03 20:11:51,694 INFO    SenderThread:236363 [dir_watcher.py:finish():402] scan save: /home/moosa/Documents/projects/MARS_SLT/wandb/run-20240203_201034-2fmurptc/files/output.log output.log
+2024-02-03 20:11:51,694 INFO    SenderThread:236363 [dir_watcher.py:finish():402] scan save: /home/moosa/Documents/projects/MARS_SLT/wandb/run-20240203_201034-2fmurptc/files/conda-environment.yaml conda-environment.yaml
+2024-02-03 20:11:51,694 INFO    SenderThread:236363 [dir_watcher.py:finish():402] scan save: /home/moosa/Documents/projects/MARS_SLT/wandb/run-20240203_201034-2fmurptc/files/wandb-summary.json wandb-summary.json
+2024-02-03 20:11:51,694 INFO    SenderThread:236363 [dir_watcher.py:finish():402] scan save: /home/moosa/Documents/projects/MARS_SLT/wandb/run-20240203_201034-2fmurptc/files/config.yaml config.yaml
+2024-02-03 20:11:51,694 INFO    SenderThread:236363 [sender.py:transition_state():617] send defer: 10
+2024-02-03 20:11:51,694 DEBUG   HandlerThread:236363 [handler.py:handle_request():146] handle_request: defer
+2024-02-03 20:11:51,698 INFO    HandlerThread:236363 [handler.py:handle_request_defer():172] handle defer: 10
+2024-02-03 20:11:51,702 DEBUG   SenderThread:236363 [sender.py:send_request():409] send_request: defer
+2024-02-03 20:11:51,703 INFO    SenderThread:236363 [sender.py:send_request_defer():613] handle sender defer: 10
+2024-02-03 20:11:51,703 INFO    SenderThread:236363 [file_pusher.py:finish():175] shutting down file pusher
+2024-02-03 20:11:52,131 INFO    wandb-upload_0:236363 [upload_job.py:push():131] Uploaded file /home/moosa/Documents/projects/MARS_SLT/wandb/run-20240203_201034-2fmurptc/files/output.log
+2024-02-03 20:11:52,507 DEBUG   HandlerThread:236363 [handler.py:handle_request():146] handle_request: poll_exit
+2024-02-03 20:11:52,507 DEBUG   SenderThread:236363 [sender.py:send_request():409] send_request: poll_exit
+2024-02-03 20:11:52,848 INFO    wandb-upload_4:236363 [upload_job.py:push():131] Uploaded file /home/moosa/Documents/projects/MARS_SLT/wandb/run-20240203_201034-2fmurptc/files/config.yaml
+2024-02-03 20:11:52,849 INFO    wandb-upload_2:236363 [upload_job.py:push():131] Uploaded file /home/moosa/Documents/projects/MARS_SLT/wandb/run-20240203_201034-2fmurptc/files/conda-environment.yaml
+2024-02-03 20:11:52,850 INFO    wandb-upload_3:236363 [upload_job.py:push():131] Uploaded file /home/moosa/Documents/projects/MARS_SLT/wandb/run-20240203_201034-2fmurptc/files/wandb-summary.json
+2024-02-03 20:11:52,850 INFO    wandb-upload_1:236363 [upload_job.py:push():131] Uploaded file /home/moosa/Documents/projects/MARS_SLT/wandb/run-20240203_201034-2fmurptc/files/requirements.txt
+2024-02-03 20:11:53,051 INFO    Thread-12 (_thread_body):236363 [sender.py:transition_state():617] send defer: 11
+2024-02-03 20:11:53,051 DEBUG   HandlerThread:236363 [handler.py:handle_request():146] handle_request: defer
+2024-02-03 20:11:53,051 INFO    HandlerThread:236363 [handler.py:handle_request_defer():172] handle defer: 11
+2024-02-03 20:11:53,052 DEBUG   SenderThread:236363 [sender.py:send_request():409] send_request: defer
+2024-02-03 20:11:53,052 INFO    SenderThread:236363 [sender.py:send_request_defer():613] handle sender defer: 11
+2024-02-03 20:11:53,052 INFO    SenderThread:236363 [file_pusher.py:join():181] waiting for file pusher
+2024-02-03 20:11:53,052 INFO    SenderThread:236363 [sender.py:transition_state():617] send defer: 12
+2024-02-03 20:11:53,052 DEBUG   HandlerThread:236363 [handler.py:handle_request():146] handle_request: defer
+2024-02-03 20:11:53,052 INFO    HandlerThread:236363 [handler.py:handle_request_defer():172] handle defer: 12
+2024-02-03 20:11:53,052 DEBUG   SenderThread:236363 [sender.py:send_request():409] send_request: defer
+2024-02-03 20:11:53,052 INFO    SenderThread:236363 [sender.py:send_request_defer():613] handle sender defer: 12
+2024-02-03 20:11:53,052 INFO    SenderThread:236363 [file_stream.py:finish():595] file stream finish called
+2024-02-03 20:11:53,508 DEBUG   HandlerThread:236363 [handler.py:handle_request():146] handle_request: poll_exit
+2024-02-03 20:11:53,770 INFO    SenderThread:236363 [file_stream.py:finish():599] file stream finish is done
+2024-02-03 20:11:53,770 INFO    SenderThread:236363 [sender.py:transition_state():617] send defer: 13
+2024-02-03 20:11:53,770 DEBUG   SenderThread:236363 [sender.py:send_request():409] send_request: poll_exit
+2024-02-03 20:11:53,771 DEBUG   HandlerThread:236363 [handler.py:handle_request():146] handle_request: defer
+2024-02-03 20:11:53,771 INFO    HandlerThread:236363 [handler.py:handle_request_defer():172] handle defer: 13
+2024-02-03 20:11:53,771 DEBUG   SenderThread:236363 [sender.py:send_request():409] send_request: defer
+2024-02-03 20:11:53,771 INFO    SenderThread:236363 [sender.py:send_request_defer():613] handle sender defer: 13
+2024-02-03 20:11:53,771 INFO    SenderThread:236363 [sender.py:transition_state():617] send defer: 14
+2024-02-03 20:11:53,771 DEBUG   HandlerThread:236363 [handler.py:handle_request():146] handle_request: defer
+2024-02-03 20:11:53,771 INFO    HandlerThread:236363 [handler.py:handle_request_defer():172] handle defer: 14
+2024-02-03 20:11:53,771 DEBUG   SenderThread:236363 [sender.py:send():382] send: final
+2024-02-03 20:11:53,771 DEBUG   SenderThread:236363 [sender.py:send():382] send: footer
+2024-02-03 20:11:53,772 DEBUG   SenderThread:236363 [sender.py:send_request():409] send_request: defer
+2024-02-03 20:11:53,772 INFO    SenderThread:236363 [sender.py:send_request_defer():613] handle sender defer: 14
+2024-02-03 20:11:53,772 DEBUG   HandlerThread:236363 [handler.py:handle_request():146] handle_request: poll_exit
+2024-02-03 20:11:53,772 DEBUG   SenderThread:236363 [sender.py:send_request():409] send_request: poll_exit
+2024-02-03 20:11:53,773 DEBUG   HandlerThread:236363 [handler.py:handle_request():146] handle_request: internal_messages
+2024-02-03 20:11:53,774 DEBUG   HandlerThread:236363 [handler.py:handle_request():146] handle_request: server_info
+2024-02-03 20:11:53,774 DEBUG   SenderThread:236363 [sender.py:send_request():409] send_request: server_info
+2024-02-03 20:11:53,816 DEBUG   HandlerThread:236363 [handler.py:handle_request():146] handle_request: get_summary
+2024-02-03 20:11:53,816 DEBUG   HandlerThread:236363 [handler.py:handle_request():146] handle_request: sampled_history
+2024-02-03 20:11:53,817 DEBUG   HandlerThread:236363 [handler.py:handle_request():146] handle_request: job_info
+2024-02-03 20:11:53,976 DEBUG   SenderThread:236363 [sender.py:send_request():409] send_request: job_info
+2024-02-03 20:11:53,976 DEBUG   HandlerThread:236363 [handler.py:handle_request():146] handle_request: shutdown
+2024-02-03 20:11:53,977 INFO    HandlerThread:236363 [handler.py:finish():869] shutting down handler
+2024-02-03 20:11:54,818 INFO    WriterThread:236363 [datastore.py:close():296] close: /home/moosa/Documents/projects/MARS_SLT/wandb/run-20240203_201034-2fmurptc/run-2fmurptc.wandb
+2024-02-03 20:11:54,976 INFO    SenderThread:236363 [sender.py:finish():1572] shutting down sender
+2024-02-03 20:11:54,976 INFO    SenderThread:236363 [file_pusher.py:finish():175] shutting down file pusher
+2024-02-03 20:11:54,976 INFO    SenderThread:236363 [file_pusher.py:join():181] waiting for file pusher

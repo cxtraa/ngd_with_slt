@@ -1,0 +1,42 @@
+wandb_version: 1
+
+elasticity:
+  desc: null
+  value: 53.41804757035789
+noise_level:
+  desc: null
+  value: 41.48857441444703
+num_chains:
+  desc: null
+  value: 6
+num_draws:
+  desc: null
+  value: 163
+_wandb:
+  desc: null
+  value:
+    python_version: 3.10.13
+    cli_version: 0.16.2
+    framework: torch
+    is_jupyter_run: true
+    is_kaggle_kernel: false
+    start_time: 1706991127.06036
+    t:
+      1:
+      - 1
+      - 41
+      - 55
+      2:
+      - 1
+      - 41
+      - 55
+      3:
+      - 2
+      - 23
+      - 37
+      4: 3.10.13
+      5: 0.16.2
+      8:
+      - 1
+      - 5
+      13: linux-x86_64

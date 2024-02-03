@@ -1,0 +1,161 @@
+
+======================== RLCT estimates for Adam ==========================
+Chain 0:  48%|████▊     | 287/599 [00:02<00:02, 116.16it/s]Exception in thread ChkStopThr:
+Traceback (most recent call last):
+  File "/home/moosa/anaconda3/envs/mars0/lib/python3.10/threading.py", line 1016, in _bootstrap_inner
+Exception in thread Exception in thread NetStatThrIntMsgThr:
+    :
+self.run()Traceback (most recent call last):
+Traceback (most recent call last):
+  File "/home/moosa/anaconda3/envs/mars0/lib/python3.10/threading.py", line 1016, in _bootstrap_inner
+  File "/home/moosa/anaconda3/envs/mars0/lib/python3.10/threading.py", line 1016, in _bootstrap_inner
+  File "/home/moosa/anaconda3/envs/mars0/lib/python3.10/threading.py", line 953, in run
+    self.run()
+self.run()self._target(*self._args, **self._kwargs)  File "/home/moosa/anaconda3/envs/mars0/lib/python3.10/threading.py", line 953, in run
+      File "/home/moosa/anaconda3/envs/mars0/lib/python3.10/threading.py", line 953, in run
+  File "/home/moosa/anaconda3/envs/mars0/lib/python3.10/site-packages/wandb/sdk/wandb_run.py", line 286, in check_stop_status
+self._target(*self._args, **self._kwargs)
+self._target(*self._args, **self._kwargs)self._loop_check_status(  File "/home/moosa/anaconda3/envs/mars0/lib/python3.10/site-packages/wandb/sdk/wandb_run.py", line 300, in check_internal_messages
+      File "/home/moosa/anaconda3/envs/mars0/lib/python3.10/site-packages/wandb/sdk/wandb_run.py", line 268, in check_network_status
+  File "/home/moosa/anaconda3/envs/mars0/lib/python3.10/site-packages/wandb/sdk/wandb_run.py", line 224, in _loop_check_status
+self._loop_check_status(
+self._loop_check_status(local_handle = request()  File "/home/moosa/anaconda3/envs/mars0/lib/python3.10/site-packages/wandb/sdk/wandb_run.py", line 224, in _loop_check_status
+  File "/home/moosa/anaconda3/envs/mars0/lib/python3.10/site-packages/wandb/sdk/wandb_run.py", line 224, in _loop_check_status
+  File "/home/moosa/anaconda3/envs/mars0/lib/python3.10/site-packages/wandb/sdk/interface/interface.py", line 784, in deliver_stop_status
+            local_handle = request()local_handle = request()return self._deliver_stop_status(status)
+  File "/home/moosa/anaconda3/envs/mars0/lib/python3.10/site-packages/wandb/sdk/interface/interface_shared.py", line 484, in _deliver_stop_status
+  File "/home/moosa/anaconda3/envs/mars0/lib/python3.10/site-packages/wandb/sdk/interface/interface.py", line 800, in deliver_internal_messages
+  File "/home/moosa/anaconda3/envs/mars0/lib/python3.10/site-packages/wandb/sdk/interface/interface.py", line 792, in deliver_network_status
+        return self._deliver_internal_messages(internal_message)    return self._deliver_record(record)
+return self._deliver_network_status(status)
+  File "/home/moosa/anaconda3/envs/mars0/lib/python3.10/site-packages/wandb/sdk/interface/interface_shared.py", line 506, in _deliver_internal_messages
+  File "/home/moosa/anaconda3/envs/mars0/lib/python3.10/site-packages/wandb/sdk/interface/interface_shared.py", line 449, in _deliver_record
+      File "/home/moosa/anaconda3/envs/mars0/lib/python3.10/site-packages/wandb/sdk/interface/interface_shared.py", line 500, in _deliver_network_status
+    return self._deliver_record(record)handle = mailbox._deliver_record(record, interface=self)
+      File "/home/moosa/anaconda3/envs/mars0/lib/python3.10/site-packages/wandb/sdk/interface/interface_shared.py", line 449, in _deliver_record
+  File "/home/moosa/anaconda3/envs/mars0/lib/python3.10/site-packages/wandb/sdk/lib/mailbox.py", line 455, in _deliver_record
+return self._deliver_record(record)
+interface._publish(record)handle = mailbox._deliver_record(record, interface=self)  File "/home/moosa/anaconda3/envs/mars0/lib/python3.10/site-packages/wandb/sdk/interface/interface_shared.py", line 449, in _deliver_record
+      File "/home/moosa/anaconda3/envs/mars0/lib/python3.10/site-packages/wandb/sdk/interface/interface_sock.py", line 51, in _publish
+  File "/home/moosa/anaconda3/envs/mars0/lib/python3.10/site-packages/wandb/sdk/lib/mailbox.py", line 455, in _deliver_record
+handle = mailbox._deliver_record(record, interface=self)
+self._sock_client.send_record_publish(record)interface._publish(record)  File "/home/moosa/anaconda3/envs/mars0/lib/python3.10/site-packages/wandb/sdk/lib/mailbox.py", line 455, in _deliver_record
+  File "/home/moosa/anaconda3/envs/mars0/lib/python3.10/site-packages/wandb/sdk/lib/sock_client.py", line 221, in send_record_publish
+      File "/home/moosa/anaconda3/envs/mars0/lib/python3.10/site-packages/wandb/sdk/interface/interface_sock.py", line 51, in _publish
+    interface._publish(record)    self.send_server_request(server_req)
+self._sock_client.send_record_publish(record)
+  File "/home/moosa/anaconda3/envs/mars0/lib/python3.10/site-packages/wandb/sdk/interface/interface_sock.py", line 51, in _publish
+  File "/home/moosa/anaconda3/envs/mars0/lib/python3.10/site-packages/wandb/sdk/lib/sock_client.py", line 155, in send_server_request
+  File "/home/moosa/anaconda3/envs/mars0/lib/python3.10/site-packages/wandb/sdk/lib/sock_client.py", line 221, in send_record_publish
+        self._sock_client.send_record_publish(record)self._send_message(msg)
+  File "/home/moosa/anaconda3/envs/mars0/lib/python3.10/site-packages/wandb/sdk/lib/sock_client.py", line 221, in send_record_publish
+self.send_server_request(server_req)  File "/home/moosa/anaconda3/envs/mars0/lib/python3.10/site-packages/wandb/sdk/lib/sock_client.py", line 152, in _send_message
+      File "/home/moosa/anaconda3/envs/mars0/lib/python3.10/site-packages/wandb/sdk/lib/sock_client.py", line 155, in send_server_request
+    self.send_server_request(server_req)self._sendall_with_error_handle(header + data)
+self._send_message(msg)  File "/home/moosa/anaconda3/envs/mars0/lib/python3.10/site-packages/wandb/sdk/lib/sock_client.py", line 155, in send_server_request
+  File "/home/moosa/anaconda3/envs/mars0/lib/python3.10/site-packages/wandb/sdk/lib/sock_client.py", line 130, in _sendall_with_error_handle
+          File "/home/moosa/anaconda3/envs/mars0/lib/python3.10/site-packages/wandb/sdk/lib/sock_client.py", line 152, in _send_message
+self._send_message(msg)sent = self._sock.send(data)
+self._sendall_with_error_handle(header + data)  File "/home/moosa/anaconda3/envs/mars0/lib/python3.10/site-packages/wandb/sdk/lib/sock_client.py", line 152, in _send_message
+BrokenPipeError
+    :   File "/home/moosa/anaconda3/envs/mars0/lib/python3.10/site-packages/wandb/sdk/lib/sock_client.py", line 130, in _sendall_with_error_handle
+self._sendall_with_error_handle(header + data)[Errno 32] Broken pipe
+sent = self._sock.send(data)  File "/home/moosa/anaconda3/envs/mars0/lib/python3.10/site-packages/wandb/sdk/lib/sock_client.py", line 130, in _sendall_with_error_handle
+BrokenPipeError    : sent = self._sock.send(data)[Errno 32] Broken pipe
+BrokenPipeError: [Errno 32] Broken pipe
+Chain 0: 100%|██████████| 599/599 [00:05<00:00, 117.86it/s]
+
+
+Chain 1: 100%|██████████| 599/599 [00:05<00:00, 119.73it/s]
+
+Chain 2: 100%|██████████| 599/599 [00:04<00:00, 124.08it/s]
+
+
+Chain 3: 100%|██████████| 599/599 [00:05<00:00, 114.30it/s]
+
+Chain 0: 100%|██████████| 599/599 [00:04<00:00, 130.28it/s]
+
+Chain 1: 100%|██████████| 599/599 [00:04<00:00, 128.94it/s]
+
+
+Chain 2: 100%|██████████| 599/599 [00:04<00:00, 131.65it/s]
+
+Chain 3: 100%|██████████| 599/599 [00:04<00:00, 132.17it/s]
+
+Chain 0: 100%|██████████| 599/599 [00:04<00:00, 129.56it/s]
+
+Chain 1: 100%|██████████| 599/599 [00:04<00:00, 130.38it/s]
+
+
+Chain 2: 100%|██████████| 599/599 [00:04<00:00, 126.45it/s]
+
+Chain 3: 100%|██████████| 599/599 [00:04<00:00, 120.90it/s]
+
+
+Chain 0: 100%|██████████| 599/599 [00:04<00:00, 127.24it/s]
+Chain 1:  79%|███████▉  | 476/599 [00:03<00:00, 130.88it/s]
+Chain 2:  23%|██▎       | 136/599 [00:01<00:03, 130.63it/s]
+Chain 2:  67%|██████▋   | 401/599 [00:03<00:01, 133.59it/s]
+Chain 3:   9%|▉         | 53/599 [00:00<00:04, 126.93it/s]]
+Chain 3:  53%|█████▎    | 316/599 [00:02<00:02, 136.05it/s]
+Chain 3:  97%|█████████▋| 579/599 [00:04<00:00, 133.69it/s]
+Chain 0:  39%|███▉      | 235/599 [00:01<00:02, 123.72it/s]
+Chain 0:  79%|███████▊  | 471/599 [00:03<00:01, 127.86it/s]
+Chain 1:  23%|██▎       | 136/599 [00:01<00:03, 125.10it/s]
+Chain 1:  66%|██████▌   | 394/599 [00:03<00:01, 129.96it/s]
+Chain 2:   9%|▉         | 56/599 [00:00<00:04, 135.03it/s]]
+Chain 2:  49%|████▉     | 295/599 [00:02<00:02, 110.93it/s]
+Chain 2:  92%|█████████▏| 553/599 [00:04<00:00, 133.86it/s]
+Chain 3:  34%|███▍      | 205/599 [00:01<00:03, 131.28it/s]
+Chain 3:  78%|███████▊  | 467/599 [00:03<00:00, 133.87it/s]
+Chain 3:  78%|███████▊  | 467/599 [00:03<00:00, 133.87it/s]
+###### FINAL RLCT ESTIMATE FOR Adam : 2572.416064453125 ######
+Chain 0:  23%|██▎       | 137/599 [00:01<00:03, 132.38it/s]
+Chain 0:  65%|██████▍   | 387/599 [00:03<00:01, 127.21it/s]
+Chain 1:   7%|▋         | 39/599 [00:00<00:04, 124.65it/s]]
+Chain 1:  48%|████▊     | 288/599 [00:02<00:02, 131.98it/s]
+Chain 1:  92%|█████████▏| 552/599 [00:04<00:00, 126.26it/s]
+Chain 2:  38%|███▊      | 225/599 [00:01<00:02, 134.66it/s]
+Chain 2:  80%|███████▉  | 477/599 [00:03<00:00, 128.84it/s]
+Chain 3:  24%|██▎       | 142/599 [00:01<00:03, 129.52it/s]
+Chain 3:  69%|██████▊   | 411/599 [00:03<00:01, 136.70it/s]
+Chain 0:  11%|█         | 67/599 [00:00<00:04, 130.19it/s]]
+Chain 0:  56%|█████▌    | 333/599 [00:02<00:01, 135.83it/s]
+Chain 1:   0%|          | 0/599 [00:00<?, ?it/s]132.20it/s]
+Chain 1:  44%|████▍     | 266/599 [00:01<00:02, 135.45it/s]
+Chain 1:  89%|████████▉ | 532/599 [00:03<00:00, 134.39it/s]
+Chain 2:  32%|███▏      | 194/599 [00:01<00:03, 133.06it/s]
+Chain 2:  77%|███████▋  | 460/599 [00:03<00:01, 131.66it/s]
+Chain 3:  21%|██        | 127/599 [00:00<00:03, 128.91it/s]
+Chain 3:  65%|██████▌   | 391/599 [00:03<00:01, 120.69it/s]
+Chain 0:   9%|▉         | 55/599 [00:00<00:04, 134.86it/s]]
+Chain 0:  50%|█████     | 302/599 [00:02<00:02, 116.77it/s]
+Chain 0:  93%|█████████▎| 557/599 [00:04<00:00, 124.90it/s]
+Chain 1:  37%|███▋      | 222/599 [00:01<00:02, 131.48it/s]
+Chain 1:  81%|████████▏ | 487/599 [00:03<00:00, 133.28it/s]
+Chain 2:  26%|██▌       | 154/599 [00:01<00:03, 133.39it/s]
+Chain 2:  70%|███████   | 420/599 [00:03<00:01, 133.03it/s]
+Chain 3:  14%|█▍        | 85/599 [00:00<00:03, 138.83it/s]]
+Chain 3:  55%|█████▍    | 329/599 [00:02<00:02, 123.68it/s]
+Chain 3:  96%|█████████▋| 577/599 [00:04<00:00, 125.83it/s]
+Chain 0:  42%|████▏     | 251/599 [00:01<00:02, 130.10it/s]
+Chain 0:  86%|████████▌ | 513/599 [00:03<00:00, 133.00it/s]
+Chain 1:  29%|██▉       | 173/599 [00:01<00:03, 121.08it/s]
+Chain 1:  73%|███████▎  | 437/599 [00:03<00:01, 134.13it/s]
+Chain 2:  13%|█▎        | 75/599 [00:00<00:04, 122.87it/s]]
+Chain 2:  56%|█████▌    | 336/599 [00:02<00:01, 134.22it/s]
+Chain 2:  99%|█████████▉| 594/599 [00:04<00:00, 129.26it/s]
+Chain 3:  39%|███▉      | 235/599 [00:01<00:02, 134.68it/s]
+Chain 3:  81%|████████  | 485/599 [00:03<00:00, 121.19it/s]
+Chain 0:  25%|██▍       | 147/599 [00:01<00:03, 130.52it/s]
+Chain 0:  67%|██████▋   | 399/599 [00:03<00:01, 131.48it/s]
+Chain 1:  10%|█         | 61/599 [00:00<00:04, 117.35it/s]]
+Chain 1:  57%|█████▋    | 340/599 [00:02<00:01, 136.35it/s]
+Chain 2:   0%|          | 0/599 [00:00<?, ?it/s]130.78it/s]
+Chain 2:  44%|████▎     | 262/599 [00:02<00:02, 124.34it/s]
+Chain 2:  85%|████████▍ | 509/599 [00:03<00:00, 127.10it/s]
+Chain 3:  27%|██▋       | 164/599 [00:01<00:03, 132.82it/s]
+Chain 3:  72%|███████▏  | 429/599 [00:03<00:01, 133.26it/s]
+Chain 3:  72%|███████▏  | 429/599 [00:03<00:01, 133.26it/s]
+Chain 3: 100%|██████████| 599/599 [00:04<00:00, 130.98it/s]
+Chain 3: 100%|██████████| 599/599 [00:04<00:00, 130.98it/s]
