@@ -162,3 +162,487 @@ Epoch 20/20: train_loss=0.1305, test_loss=0.1318
 
 100%|██████████| 1875/1875 [00:11<00:00, 170.14it/s]
   0%|          | 0/1875 [00:00<?, ?it/s]
+
+
+
+
+
+
+100%|██████████| 1875/1875 [00:10<00:00, 174.73it/s]
+100%|██████████| 1875/1875 [00:10<00:00, 175.09it/s]
+100%|██████████| 1875/1875 [00:10<00:00, 179.44it/s]
+Epoch 3/20: train_loss=0.0937, test_loss=0.1119
+Epoch 4/20: train_loss=0.0817, test_loss=0.0877
+  9%|▉         | 166/1875 [00:00<00:08, 199.87it/s]
+
+
+
+
+100%|██████████| 1875/1875 [00:09<00:00, 199.80it/s]
+  6%|▌         | 106/1875 [00:00<00:08, 204.80it/s]
+
+
+
+
+100%|██████████| 1875/1875 [00:09<00:00, 202.00it/s]
+  2%|▏         | 39/1875 [00:00<00:09, 194.47it/s]
+
+
+
+
+
+
+100%|██████████| 1875/1875 [00:11<00:00, 167.25it/s]
+ 20%|█▉        | 368/1875 [00:01<00:08, 175.88it/s]
+
+
+
+
+100%|██████████| 1875/1875 [00:09<00:00, 188.21it/s]
+  8%|▊         | 159/1875 [00:00<00:09, 178.75it/s]
+
+
+
+
+
+100%|██████████| 1875/1875 [00:09<00:00, 190.35it/s]
+ 20%|██        | 379/1875 [00:01<00:07, 202.59it/s]
+
+
+
+
+100%|██████████| 1875/1875 [00:10<00:00, 185.44it/s]
+  6%|▋         | 120/1875 [00:00<00:08, 195.53it/s]
+
+
+
+
+
+100%|██████████| 1875/1875 [00:09<00:00, 189.85it/s]
+ 17%|█▋        | 323/1875 [00:01<00:07, 194.09it/s]
+
+
+
+
+100%|██████████| 1875/1875 [00:09<00:00, 201.65it/s]
+ 13%|█▎        | 247/1875 [00:01<00:08, 181.44it/s]
+
+
+
+
+
+100%|██████████| 1875/1875 [00:10<00:00, 185.26it/s]
+Epoch 14/20: train_loss=0.0258, test_loss=0.0619
+
+
+
+
+100%|██████████| 1875/1875 [00:10<00:00, 184.54it/s]
+  3%|▎         | 55/1875 [00:00<00:09, 183.98it/s]
+
+
+
+
+
+100%|██████████| 1875/1875 [00:10<00:00, 183.68it/s]
+ 10%|▉         | 181/1875 [00:01<00:09, 178.72it/s]
+
+
+
+
+
+100%|██████████| 1875/1875 [00:10<00:00, 178.66it/s]
+ 13%|█▎        | 243/1875 [00:01<00:09, 180.74it/s]
+
+
+
+
+
+100%|██████████| 1875/1875 [00:10<00:00, 180.84it/s]
+Epoch 18/20: train_loss=0.0169, test_loss=0.0626
+
+
+
+
+100%|██████████| 1875/1875 [00:10<00:00, 178.23it/s]
+  2%|▏         | 34/1875 [00:00<00:10, 170.11it/s]
+
+
+
+
+
+
+100%|██████████| 1875/1875 [00:10<00:00, 181.51it/s]
+Epoch 20/20: train_loss=0.0134, test_loss=0.0625
+Chain 0:  43%|████▎     | 130/300 [00:01<00:01, 127.06it/s]
+Chain 0: 100%|██████████| 300/300 [00:02<00:00, 121.72it/s]
+Chain 1: 100%|██████████| 300/300 [00:02<00:00, 121.62it/s]
+
+Chain 2: 100%|██████████| 300/300 [00:02<00:00, 122.45it/s]
+Chain 3: 100%|██████████| 300/300 [00:02<00:00, 125.64it/s]
+Chain 4: 100%|██████████| 300/300 [00:02<00:00, 108.15it/s]
+Chain 0:  22%|██▏       | 66/300 [00:00<00:01, 120.67it/s]
+Chain 0: 100%|██████████| 300/300 [00:02<00:00, 120.53it/s]
+
+Chain 1: 100%|██████████| 300/300 [00:02<00:00, 125.38it/s]
+Chain 2: 100%|██████████| 300/300 [00:02<00:00, 122.06it/s]
+Chain 3: 100%|██████████| 300/300 [00:02<00:00, 135.58it/s]
+Chain 4: 100%|██████████| 300/300 [00:02<00:00, 120.52it/s]
+Chain 0:  15%|█▌        | 45/300 [00:00<00:02, 107.70it/s]
+
+Chain 0: 100%|██████████| 300/300 [00:02<00:00, 109.02it/s]
+Chain 1: 100%|██████████| 300/300 [00:02<00:00, 111.78it/s]
+Chain 2: 100%|██████████| 300/300 [00:02<00:00, 122.95it/s]
+Chain 3: 100%|██████████| 300/300 [00:02<00:00, 117.39it/s]
+
+Chain 4: 100%|██████████| 300/300 [00:02<00:00, 110.51it/s]
+Chain 0:  63%|██████▎   | 188/300 [00:01<00:00, 137.18it/s]
+Chain 0: 100%|██████████| 300/300 [00:02<00:00, 132.22it/s]
+Chain 1: 100%|██████████| 300/300 [00:02<00:00, 121.58it/s]
+Chain 2: 100%|██████████| 300/300 [00:02<00:00, 113.99it/s]
+
+Chain 3: 100%|██████████| 300/300 [00:02<00:00, 114.79it/s]
+Chain 4: 100%|██████████| 300/300 [00:02<00:00, 114.06it/s]
+Chain 0:  29%|██▉       | 87/300 [00:00<00:01, 123.50it/s]
+Chain 0: 100%|██████████| 300/300 [00:02<00:00, 119.76it/s]
+
+Chain 1: 100%|██████████| 300/300 [00:02<00:00, 119.30it/s]
+Chain 2: 100%|██████████| 300/300 [00:02<00:00, 112.12it/s]
+Chain 3: 100%|██████████| 300/300 [00:02<00:00, 116.03it/s]
+
+Chain 4:  91%|█████████▏| 274/300 [00:02<00:00, 119.89it/s]
+Chain 4: 100%|██████████| 300/300 [00:02<00:00, 111.83it/s]
+Chain 0: 100%|██████████| 300/300 [00:02<00:00, 111.57it/s]
+Chain 1: 100%|██████████| 300/300 [00:02<00:00, 115.05it/s]
+Chain 2: 100%|██████████| 300/300 [00:02<00:00, 128.35it/s]
+
+Chain 3: 100%|██████████| 300/300 [00:02<00:00, 125.69it/s]
+Chain 4: 100%|██████████| 300/300 [00:02<00:00, 125.04it/s]
+Chain 0:  50%|█████     | 151/300 [00:01<00:01, 111.07it/s]
+Chain 0: 100%|██████████| 300/300 [00:02<00:00, 116.45it/s]
+Chain 1: 100%|██████████| 300/300 [00:02<00:00, 133.13it/s]
+Chain 2: 100%|██████████| 300/300 [00:02<00:00, 125.39it/s]
+
+Chain 3: 100%|██████████| 300/300 [00:02<00:00, 129.03it/s]
+Chain 4: 100%|██████████| 300/300 [00:02<00:00, 130.76it/s]
+Chain 0:  61%|██████    | 183/300 [00:01<00:01, 108.10it/s]
+Chain 0: 100%|██████████| 300/300 [00:02<00:00, 120.00it/s]
+Chain 1: 100%|██████████| 300/300 [00:02<00:00, 112.25it/s]
+Chain 2: 100%|██████████| 300/300 [00:02<00:00, 126.44it/s]
+
+Chain 3: 100%|██████████| 300/300 [00:02<00:00, 136.82it/s]
+Chain 4: 100%|██████████| 300/300 [00:02<00:00, 134.06it/s]
+Chain 0:  69%|██████▊   | 206/300 [00:01<00:00, 135.78it/s]
+Chain 0: 100%|██████████| 300/300 [00:02<00:00, 132.74it/s]
+Chain 1: 100%|██████████| 300/300 [00:02<00:00, 139.51it/s]
+Chain 2: 100%|██████████| 300/300 [00:02<00:00, 136.38it/s]
+Chain 3: 100%|██████████| 300/300 [00:02<00:00, 129.60it/s]
+Chain 4: 100%|██████████| 300/300 [00:02<00:00, 132.38it/s]
+Chain 0:  15%|█▌        | 46/300 [00:00<00:02, 113.70it/s]
+Chain 0: 100%|██████████| 300/300 [00:02<00:00, 129.93it/s]
+
+Chain 1: 100%|██████████| 300/300 [00:02<00:00, 128.55it/s]
+Chain 2: 100%|██████████| 300/300 [00:02<00:00, 117.94it/s]
+Chain 3: 100%|██████████| 300/300 [00:02<00:00, 106.69it/s]
+
+Chain 4:  92%|█████████▏| 277/300 [00:02<00:00, 114.88it/s]
+Chain 4: 100%|██████████| 300/300 [00:02<00:00, 115.45it/s]
+Chain 0: 100%|██████████| 300/300 [00:02<00:00, 116.58it/s]
+Chain 1: 100%|██████████| 300/300 [00:02<00:00, 122.75it/s]
+Chain 2: 100%|██████████| 300/300 [00:02<00:00, 134.54it/s]
+Chain 3: 100%|██████████| 300/300 [00:02<00:00, 136.01it/s]
+Chain 4: 100%|██████████| 300/300 [00:02<00:00, 128.31it/s]
+Chain 0:   0%|          | 0/300 [00:00<?, ?it/s]
+
+Chain 0: 100%|██████████| 300/300 [00:02<00:00, 128.42it/s]
+Chain 1: 100%|██████████| 300/300 [00:02<00:00, 124.59it/s]
+Chain 2: 100%|██████████| 300/300 [00:02<00:00, 126.50it/s]
+Chain 3: 100%|██████████| 300/300 [00:02<00:00, 131.61it/s]
+Chain 4: 100%|██████████| 300/300 [00:02<00:00, 132.96it/s]
+Chain 0:  18%|█▊        | 55/300 [00:00<00:01, 135.41it/s]
+Chain 1:   5%|▍         | 14/300 [00:00<00:02, 139.02it/s]]
+Chain 1:  87%|████████▋ | 262/300 [00:02<00:00, 125.70it/s]
+Chain 2:  74%|███████▍  | 223/300 [00:01<00:00, 130.24it/s]
+Chain 3:  58%|█████▊    | 173/300 [00:01<00:01, 121.51it/s]
+Chain 4:  43%|████▎     | 129/300 [00:00<00:01, 126.12it/s]
+Chain 0:  28%|██▊       | 84/300 [00:00<00:01, 133.56it/s]]
+Chain 0:  28%|██▊       | 84/300 [00:00<00:01, 133.56it/s]]
+Chain 1:  15%|█▍        | 44/300 [00:00<00:01, 137.73it/s]]
+Chain 2:   8%|▊         | 25/300 [00:00<00:02, 122.70it/s]]
+Chain 2:  89%|████████▉ | 268/300 [00:02<00:00, 127.77it/s]
+Chain 3:  82%|████████▏ | 247/300 [00:01<00:00, 139.50it/s]
+Chain 4:  72%|███████▏  | 215/300 [00:01<00:00, 133.59it/s]
+Chain 0:  46%|████▌     | 137/300 [00:01<00:01, 100.49it/s]
+Chain 0:  46%|████▌     | 137/300 [00:01<00:01, 100.49it/s]
+Chain 1:  18%|█▊        | 54/300 [00:00<00:02, 101.80it/s]]
+Chain 1:  91%|█████████ | 273/300 [00:02<00:00, 120.40it/s]
+Chain 2:  69%|██████▊   | 206/300 [00:01<00:00, 122.63it/s]
+Chain 3:  50%|████▉     | 149/300 [00:01<00:01, 124.66it/s]
+Chain 4:  22%|██▏       | 66/300 [00:00<00:02, 105.56it/s]]
+Chain 4:  88%|████████▊ | 263/300 [00:02<00:00, 93.55it/s]
+Chain 0:  64%|██████▎   | 191/300 [00:01<00:01, 106.86it/s]
+Chain 0:  64%|██████▎   | 191/300 [00:01<00:01, 106.86it/s]
+Chain 1:  40%|████      | 120/300 [00:01<00:01, 99.96it/s]]
+Chain 2:  13%|█▎        | 39/300 [00:00<00:02, 119.95it/s]]
+Chain 2:  95%|█████████▍| 284/300 [00:02<00:00, 117.80it/s]
+Chain 3:  74%|███████▍  | 222/300 [00:01<00:00, 119.59it/s]
+Chain 4:  56%|█████▌    | 167/300 [00:01<00:01, 130.24it/s]
+Chain 0:  35%|███▌      | 105/300 [00:00<00:01, 112.47it/s]
+Chain 0:  35%|███▌      | 105/300 [00:00<00:01, 112.47it/s]
+Chain 1:  16%|█▌        | 48/300 [00:00<00:02, 110.91it/s]]
+Chain 1:  82%|████████▏ | 247/300 [00:02<00:00, 78.36it/s]
+Chain 2:  18%|█▊        | 55/300 [00:00<00:03, 69.28it/s]]
+Chain 2:  68%|██████▊   | 204/300 [00:02<00:00, 96.93it/s]
+Chain 3:  40%|████      | 120/300 [00:01<00:01, 114.12it/s]
+Chain 4:  13%|█▎        | 39/300 [00:00<00:02, 124.81it/s]]
+Chain 4:  97%|█████████▋| 292/300 [00:02<00:00, 128.63it/s]
+Chain 4:  97%|█████████▋| 292/300 [00:02<00:00, 128.63it/s]
+Chain 0:  78%|███████▊  | 235/300 [00:01<00:00, 124.58it/s]
+Chain 1:  63%|██████▎   | 190/300 [00:01<00:00, 134.37it/s]
+Chain 2:  50%|████▉     | 149/300 [00:01<00:01, 138.36it/s]
+Chain 3:  41%|████      | 122/300 [00:00<00:01, 128.82it/s]
+Chain 4:  22%|██▏       | 66/300 [00:00<00:01, 122.76it/s]]
+Chain 0:   9%|▉         | 28/300 [00:00<00:01, 136.94it/s]]
+Chain 0:   9%|▉         | 28/300 [00:00<00:01, 136.94it/s]]
+Chain 1:   4%|▍         | 13/300 [00:00<00:02, 122.43it/s]]
+Chain 2:   0%|          | 0/300 [00:00<?, ?it/s]138.97it/s]
+Chain 2:  87%|████████▋ | 262/300 [00:01<00:00, 131.60it/s]
+Chain 3:  75%|███████▍  | 224/300 [00:01<00:00, 134.71it/s]
+Chain 4:  69%|██████▊   | 206/300 [00:01<00:00, 129.92it/s]
+Chain 0:  45%|████▍     | 134/300 [00:01<00:01, 107.44it/s]
+Chain 0:  45%|████▍     | 134/300 [00:01<00:01, 107.44it/s]
+Chain 1:  26%|██▌       | 78/300 [00:00<00:01, 129.80it/s]]
+Chain 2:   5%|▍         | 14/300 [00:00<00:02, 133.72it/s]]
+Chain 2:  82%|████████▏ | 246/300 [00:02<00:00, 123.76it/s]
+Chain 3:  63%|██████▎   | 188/300 [00:01<00:00, 118.60it/s]
+Chain 4:  46%|████▋     | 139/300 [00:01<00:01, 121.26it/s]
+Chain 0:  28%|██▊       | 85/300 [00:00<00:01, 111.50it/s]]
+Chain 0:  28%|██▊       | 85/300 [00:00<00:01, 111.50it/s]]
+RLCT estimate: 460.8136291503906
+======== FINAL RLCT ESTIMATE FOR Adam : 417.5310791015625 ========
+Chain 1:   9%|▉         | 27/300 [00:00<00:02, 131.58it/s]]
+Chain 1:  89%|████████▊ | 266/300 [00:02<00:00, 129.16it/s]
+Chain 2:  80%|███████▉  | 239/300 [00:01<00:00, 134.86it/s]
+Chain 3:  58%|█████▊    | 174/300 [00:01<00:01, 119.15it/s]
+Chain 4:  38%|███▊      | 114/300 [00:00<00:01, 121.29it/s]
+Chain 0:   3%|▎         | 10/300 [00:00<00:02, 98.67it/s]s]
+Chain 0:   3%|▎         | 10/300 [00:00<00:02, 98.67it/s]s]
+Chain 0:  83%|████████▎ | 248/300 [00:02<00:00, 131.52it/s]
+Chain 1:  73%|███████▎  | 220/300 [00:01<00:00, 131.62it/s]
+Chain 2:  60%|██████    | 181/300 [00:01<00:00, 133.08it/s]
+Chain 3:  52%|█████▏    | 157/300 [00:01<00:01, 138.13it/s]
+Chain 4:  43%|████▎     | 128/300 [00:00<00:01, 135.83it/s]
+Chain 0:  33%|███▎      | 99/300 [00:00<00:01, 129.97it/s]]
+Chain 0:  33%|███▎      | 99/300 [00:00<00:01, 129.97it/s]]
+Chain 1:  25%|██▍       | 74/300 [00:00<00:01, 142.26it/s]]
+Chain 2:  14%|█▍        | 42/300 [00:00<00:01, 133.98it/s]]
+Chain 2: 100%|██████████| 300/300 [00:02<00:00, 127.30it/s]
+Chain 3:  89%|████████▊ | 266/300 [00:01<00:00, 134.17it/s]
+Chain 4:  73%|███████▎  | 220/300 [00:01<00:00, 138.90it/s]
+Chain 4:  73%|███████▎  | 220/300 [00:01<00:00, 138.90it/s]
+Chain 0:  64%|██████▍   | 193/300 [00:01<00:00, 133.22it/s]
+Chain 1:  44%|████▍     | 133/300 [00:01<00:01, 122.66it/s]
+Chain 2:  31%|███       | 93/300 [00:00<00:01, 136.30it/s]]
+Chain 3:  14%|█▍        | 42/300 [00:00<00:01, 129.63it/s]]
+Chain 3:  94%|█████████▍| 282/300 [00:02<00:00, 123.71it/s]
+Chain 4:  78%|███████▊  | 234/300 [00:01<00:00, 131.34it/s]
+Chain 4:  78%|███████▊  | 234/300 [00:01<00:00, 131.34it/s]
+Chain 0:  61%|██████    | 182/300 [00:01<00:01, 115.15it/s]
+Chain 1:  40%|████      | 120/300 [00:01<00:01, 115.61it/s]
+Chain 2:  27%|██▋       | 81/300 [00:00<00:01, 134.78it/s]]
+Chain 3:   8%|▊         | 25/300 [00:00<00:02, 125.25it/s]]
+Chain 3:  97%|█████████▋| 291/300 [00:02<00:00, 134.67it/s]
+Chain 4:  82%|████████▏ | 245/300 [00:01<00:00, 108.69it/s]
+Chain 4:  82%|████████▏ | 245/300 [00:01<00:00, 108.69it/s]
+Chain 0:  61%|██████▏   | 184/300 [00:01<00:00, 134.02it/s]
+Chain 1:  39%|███▉      | 118/300 [00:00<00:01, 128.06it/s]
+Chain 2:  27%|██▋       | 81/300 [00:00<00:01, 133.76it/s]]
+Chain 3:  13%|█▎        | 38/300 [00:00<00:02, 125.40it/s]]
+Chain 4:  10%|▉         | 29/300 [00:00<00:01, 138.61it/s]]
+Chain 0:   0%|          | 0/300 [00:00<?, ?it/s]139.65it/s]
+Chain 0:   0%|          | 0/300 [00:00<?, ?it/s]139.65it/s]
+Chain 0:  92%|█████████▏| 277/300 [00:01<00:00, 140.97it/s]
+Chain 1:  84%|████████▍ | 253/300 [00:01<00:00, 139.49it/s]
+Chain 2:  78%|███████▊  | 234/300 [00:01<00:00, 136.13it/s]
+Chain 3:  72%|███████▏  | 217/300 [00:01<00:00, 139.79it/s]
+Chain 4:  64%|██████▍   | 193/300 [00:01<00:00, 141.06it/s]
+Chain 0:  34%|███▍      | 103/300 [00:00<00:01, 109.50it/s]
+Chain 0:  34%|███▍      | 103/300 [00:00<00:01, 109.50it/s]
+Chain 1:   7%|▋         | 22/300 [00:00<00:02, 106.42it/s]]
+Chain 1:  79%|███████▉  | 237/300 [00:02<00:00, 108.56it/s]
+Chain 2:  52%|█████▏    | 156/300 [00:01<00:01, 106.95it/s]
+Chain 3:  22%|██▏       | 67/300 [00:00<00:02, 109.19it/s]]
+Chain 4:   5%|▍         | 14/300 [00:00<00:02, 133.56it/s]]
+Chain 4:  95%|█████████▍| 284/300 [00:02<00:00, 130.91it/s]
+Chain 4:  95%|█████████▍| 284/300 [00:02<00:00, 130.91it/s]
+Chain 0:  68%|██████▊   | 205/300 [00:01<00:00, 111.52it/s]
+Chain 1:  56%|█████▌    | 168/300 [00:01<00:00, 134.60it/s]
+Chain 2:  33%|███▎      | 100/300 [00:00<00:01, 127.36it/s]
+Chain 3:  23%|██▎       | 70/300 [00:00<00:01, 125.67it/s]]
+Chain 3:  96%|█████████▌| 288/300 [00:02<00:00, 107.71it/s]
+Chain 4:  77%|███████▋  | 232/300 [00:01<00:00, 133.97it/s]
+Chain 4:  77%|███████▋  | 232/300 [00:01<00:00, 133.97it/s]
+Chain 0:  69%|██████▉   | 208/300 [00:01<00:00, 135.97it/s]
+Chain 1:  61%|██████▏   | 184/300 [00:01<00:00, 136.77it/s]
+Chain 2:  51%|█████     | 153/300 [00:01<00:01, 135.73it/s]
+Chain 3:  38%|███▊      | 114/300 [00:00<00:01, 139.40it/s]
+Chain 4:  35%|███▌      | 105/300 [00:00<00:01, 140.86it/s]
+Chain 0:  23%|██▎       | 70/300 [00:00<00:01, 136.20it/s]]
+Chain 0:  23%|██▎       | 70/300 [00:00<00:01, 136.20it/s]]
+Chain 1:  15%|█▌        | 45/300 [00:00<00:01, 144.99it/s]]
+Chain 2:   5%|▍         | 14/300 [00:00<00:02, 139.21it/s]]
+Chain 2:  98%|█████████▊| 295/300 [00:02<00:00, 132.86it/s]
+Chain 3:  90%|████████▉ | 269/300 [00:01<00:00, 140.90it/s]
+Chain 4:  84%|████████▍ | 252/300 [00:01<00:00, 143.24it/s]
+Chain 4:  84%|████████▍ | 252/300 [00:01<00:00, 143.24it/s]
+Chain 0:  74%|███████▍  | 222/300 [00:01<00:00, 136.92it/s]
+Chain 1:  60%|██████    | 180/300 [00:01<00:00, 135.07it/s]
+Chain 2:  52%|█████▏    | 156/300 [00:01<00:01, 134.66it/s]
+Chain 3:  45%|████▌     | 135/300 [00:00<00:01, 140.13it/s]
+Chain 4:  35%|███▌      | 105/300 [00:00<00:01, 142.16it/s]
+Chain 0:  28%|██▊       | 85/300 [00:00<00:01, 138.66it/s]]
+Chain 0:  28%|██▊       | 85/300 [00:00<00:01, 138.66it/s]]
+Chain 1:  19%|█▉        | 58/300 [00:00<00:01, 130.58it/s]]
+Chain 2:  15%|█▌        | 45/300 [00:00<00:01, 142.34it/s]]
+Chain 3:   9%|▉         | 27/300 [00:00<00:02, 133.22it/s]]
+Chain 4:   0%|          | 0/300 [00:00<?, ?it/s]136.36it/s]
+Chain 4:  85%|████████▌ | 256/300 [00:01<00:00, 125.88it/s]
+Chain 4:  85%|████████▌ | 256/300 [00:01<00:00, 125.88it/s]
+Chain 0:  61%|██████▏   | 184/300 [00:01<00:01, 105.82it/s]
+Chain 1:  38%|███▊      | 113/300 [00:01<00:01, 111.50it/s]
+Chain 2:   3%|▎         | 10/300 [00:00<00:02, 98.31it/s]s]
+Chain 2:  81%|████████▏ | 244/300 [00:02<00:00, 132.06it/s]
+Chain 3:  66%|██████▌   | 197/300 [00:01<00:00, 121.95it/s]
+Chain 4:  46%|████▌     | 138/300 [00:01<00:01, 124.77it/s]
+Chain 0:  17%|█▋        | 50/300 [00:00<00:01, 125.07it/s]]
+Chain 0:  17%|█▋        | 50/300 [00:00<00:01, 125.07it/s]]
+Chain 1:   5%|▍         | 14/300 [00:00<00:02, 134.28it/s]]
+Chain 1:  94%|█████████▍| 283/300 [00:02<00:00, 127.30it/s]
+Chain 2:  68%|██████▊   | 205/300 [00:01<00:00, 122.75it/s]
+Chain 3:  46%|████▌     | 138/300 [00:01<00:01, 114.21it/s]
+Chain 4:  17%|█▋        | 50/300 [00:00<00:02, 114.65it/s]]
+Chain 4:  87%|████████▋ | 262/300 [00:02<00:00, 105.73it/s]
+Chain 4:  87%|████████▋ | 262/300 [00:02<00:00, 105.73it/s]
+Chain 0:  54%|█████▍    | 162/300 [00:01<00:01, 100.84it/s]
+Chain 1:  27%|██▋       | 80/300 [00:00<00:02, 107.12it/s]]
+Chain 1:  95%|█████████▌| 286/300 [00:02<00:00, 107.33it/s]
+Chain 2:  77%|███████▋  | 231/300 [00:01<00:00, 133.68it/s]
+Chain 3:  53%|█████▎    | 160/300 [00:01<00:01, 113.37it/s]
+Chain 4:  25%|██▌       | 76/300 [00:00<00:01, 119.10it/s]]
+Chain 0:   9%|▉         | 28/300 [00:00<00:02, 133.33it/s]]
+Chain 0:   9%|▉         | 28/300 [00:00<00:02, 133.33it/s]]
+Chain 0:  90%|█████████ | 270/300 [00:02<00:00, 121.98it/s]
+Chain 1:  80%|███████▉  | 239/300 [00:01<00:00, 133.48it/s]
+Chain 2:  60%|██████    | 181/300 [00:01<00:01, 110.82it/s]
+Chain 3:  42%|████▏     | 126/300 [00:01<00:01, 127.45it/s]
+Chain 4:  26%|██▋       | 79/300 [00:00<00:01, 129.69it/s]]
+Chain 0:  14%|█▍        | 42/300 [00:00<00:01, 129.82it/s]]
+Chain 0:  14%|█▍        | 42/300 [00:00<00:01, 129.82it/s]]
+Chain 1:   4%|▍         | 12/300 [00:00<00:02, 117.94it/s]]
+Chain 1:  98%|█████████▊| 293/300 [00:02<00:00, 137.21it/s]
+Chain 2:  77%|███████▋  | 232/300 [00:01<00:00, 119.23it/s]
+Chain 3:  60%|█████▉    | 179/300 [00:01<00:00, 132.37it/s]
+Chain 4:  42%|████▏     | 127/300 [00:01<00:01, 114.78it/s]
+Chain 0:  30%|███       | 91/300 [00:00<00:01, 122.36it/s]]
+Chain 0:  30%|███       | 91/300 [00:00<00:01, 122.36it/s]]
+Chain 1:  16%|█▌        | 48/300 [00:00<00:02, 120.30it/s]]
+Chain 2:   0%|          | 0/300 [00:00<?, ?it/s]127.24it/s]
+Chain 2:  80%|████████  | 241/300 [00:02<00:00, 134.46it/s]
+Chain 3:  70%|██████▉   | 209/300 [00:01<00:00, 133.97it/s]
+Chain 4:  58%|█████▊    | 175/300 [00:01<00:00, 134.32it/s]
+Chain 0:  49%|████▉     | 147/300 [00:01<00:01, 127.89it/s]
+Chain 0:  49%|████▉     | 147/300 [00:01<00:01, 127.89it/s]
+Chain 1:  41%|████▏     | 124/300 [00:00<00:01, 132.57it/s]
+Chain 2:  27%|██▋       | 82/300 [00:00<00:01, 131.38it/s]]
+Chain 3:  16%|█▋        | 49/300 [00:00<00:02, 119.74it/s]]
+Chain 4:   0%|          | 0/300 [00:00<?, ?it/s]127.63it/s]
+Chain 4:  88%|████████▊ | 264/300 [00:02<00:00, 117.13it/s]
+Chain 4:  88%|████████▊ | 264/300 [00:02<00:00, 117.13it/s]
+RLCT estimate: 353.6642761230469
+Chain 4: 100%|██████████| 300/300 [00:02<00:00, 128.65it/s]
+Chain 4: 100%|██████████| 300/300 [00:02<00:00, 128.65it/s]
+Requirement already satisfied: devinterp in /home/moosa/anaconda3/envs/mars0/lib/python3.10/site-packages (0.0.3)
+Requirement already satisfied: torch in /home/moosa/anaconda3/envs/mars0/lib/python3.10/site-packages (2.0.1)
+Requirement already satisfied: torchvision in /home/moosa/anaconda3/envs/mars0/lib/python3.10/site-packages (0.15.2)
+Requirement already satisfied: tqdm in /home/moosa/anaconda3/envs/mars0/lib/python3.10/site-packages (4.65.0)
+Collecting approxngd
+  Using cached approxngd-0.1.1-py3-none-any.whl
+Requirement already satisfied: einops==0.6.1 in /home/moosa/anaconda3/envs/mars0/lib/python3.10/site-packages (from devinterp) (0.6.1)
+Requirement already satisfied: ipykernel==5.5.6 in /home/moosa/anaconda3/envs/mars0/lib/python3.10/site-packages (from devinterp) (5.5.6)
+Requirement already satisfied: ipywidgets==8.0.7 in /home/moosa/anaconda3/envs/mars0/lib/python3.10/site-packages (from devinterp) (8.0.7)
+Requirement already satisfied: jupyter-core==5.3.1 in /home/moosa/anaconda3/envs/mars0/lib/python3.10/site-packages (from devinterp) (5.3.1)
+Requirement already satisfied: jupyterlab-widgets==3.0.8 in /home/moosa/anaconda3/envs/mars0/lib/python3.10/site-packages (from devinterp) (3.0.8)
+Requirement already satisfied: matplotlib==3.8.0 in /home/moosa/anaconda3/envs/mars0/lib/python3.10/site-packages (from devinterp) (3.8.0)
+Requirement already satisfied: numpy==1.23.5 in /home/moosa/anaconda3/envs/mars0/lib/python3.10/site-packages (from devinterp) (1.23.5)
+Requirement already satisfied: pandas==1.5.3 in /home/moosa/anaconda3/envs/mars0/lib/python3.10/site-packages (from devinterp) (1.5.3)
+Requirement already satisfied: pydantic==2.1.1 in /home/moosa/anaconda3/envs/mars0/lib/python3.10/site-packages (from devinterp) (2.1.1)
+Requirement already satisfied: pydantic-core==2.4.0 in /home/moosa/anaconda3/envs/mars0/lib/python3.10/site-packages (from devinterp) (2.4.0)
+Requirement already satisfied: pytest==7.4.3 in /home/moosa/anaconda3/envs/mars0/lib/python3.10/site-packages (from devinterp) (7.4.3)
+Requirement already satisfied: scipy==1.11.3 in /home/moosa/anaconda3/envs/mars0/lib/python3.10/site-packages (from devinterp) (1.11.3)
+Requirement already satisfied: torchtyping==0.1.4 in /home/moosa/anaconda3/envs/mars0/lib/python3.10/site-packages (from devinterp) (0.1.4)
+Requirement already satisfied: filelock in /home/moosa/anaconda3/envs/mars0/lib/python3.10/site-packages (from torch) (3.13.1)
+Requirement already satisfied: typing-extensions in /home/moosa/anaconda3/envs/mars0/lib/python3.10/site-packages (from torch) (4.9.0)
+Requirement already satisfied: sympy in /home/moosa/anaconda3/envs/mars0/lib/python3.10/site-packages (from torch) (1.12)
+Requirement already satisfied: networkx in /home/moosa/anaconda3/envs/mars0/lib/python3.10/site-packages (from torch) (3.2.1)
+Requirement already satisfied: jinja2 in /home/moosa/anaconda3/envs/mars0/lib/python3.10/site-packages (from torch) (3.1.3)
+Requirement already satisfied: nvidia-cuda-nvrtc-cu11==11.7.99 in /home/moosa/anaconda3/envs/mars0/lib/python3.10/site-packages (from torch) (11.7.99)
+Requirement already satisfied: nvidia-cuda-runtime-cu11==11.7.99 in /home/moosa/anaconda3/envs/mars0/lib/python3.10/site-packages (from torch) (11.7.99)
+Requirement already satisfied: nvidia-cuda-cupti-cu11==11.7.101 in /home/moosa/anaconda3/envs/mars0/lib/python3.10/site-packages (from torch) (11.7.101)
+Requirement already satisfied: nvidia-cudnn-cu11==8.5.0.96 in /home/moosa/anaconda3/envs/mars0/lib/python3.10/site-packages (from torch) (8.5.0.96)
+Requirement already satisfied: nvidia-cublas-cu11==11.10.3.66 in /home/moosa/anaconda3/envs/mars0/lib/python3.10/site-packages (from torch) (11.10.3.66)
+Requirement already satisfied: nvidia-cufft-cu11==10.9.0.58 in /home/moosa/anaconda3/envs/mars0/lib/python3.10/site-packages (from torch) (10.9.0.58)
+Requirement already satisfied: nvidia-curand-cu11==10.2.10.91 in /home/moosa/anaconda3/envs/mars0/lib/python3.10/site-packages (from torch) (10.2.10.91)
+Requirement already satisfied: nvidia-cusolver-cu11==11.4.0.1 in /home/moosa/anaconda3/envs/mars0/lib/python3.10/site-packages (from torch) (11.4.0.1)
+Requirement already satisfied: nvidia-cusparse-cu11==11.7.4.91 in /home/moosa/anaconda3/envs/mars0/lib/python3.10/site-packages (from torch) (11.7.4.91)
+Requirement already satisfied: nvidia-nccl-cu11==2.14.3 in /home/moosa/anaconda3/envs/mars0/lib/python3.10/site-packages (from torch) (2.14.3)
+Requirement already satisfied: nvidia-nvtx-cu11==11.7.91 in /home/moosa/anaconda3/envs/mars0/lib/python3.10/site-packages (from torch) (11.7.91)
+Requirement already satisfied: triton==2.0.0 in /home/moosa/anaconda3/envs/mars0/lib/python3.10/site-packages (from torch) (2.0.0)
+Requirement already satisfied: ipython-genutils in /home/moosa/anaconda3/envs/mars0/lib/python3.10/site-packages (from ipykernel==5.5.6->devinterp) (0.2.0)
+Requirement already satisfied: ipython>=5.0.0 in /home/moosa/anaconda3/envs/mars0/lib/python3.10/site-packages (from ipykernel==5.5.6->devinterp) (8.21.0)
+Requirement already satisfied: traitlets>=4.1.0 in /home/moosa/anaconda3/envs/mars0/lib/python3.10/site-packages (from ipykernel==5.5.6->devinterp) (5.14.1)
+Requirement already satisfied: jupyter-client in /home/moosa/anaconda3/envs/mars0/lib/python3.10/site-packages (from ipykernel==5.5.6->devinterp) (8.6.0)
+Requirement already satisfied: tornado>=4.2 in /home/moosa/anaconda3/envs/mars0/lib/python3.10/site-packages (from ipykernel==5.5.6->devinterp) (6.3.3)
+Requirement already satisfied: widgetsnbextension~=4.0.7 in /home/moosa/anaconda3/envs/mars0/lib/python3.10/site-packages (from ipywidgets==8.0.7->devinterp) (4.0.9)
+Requirement already satisfied: platformdirs>=2.5 in /home/moosa/anaconda3/envs/mars0/lib/python3.10/site-packages (from jupyter-core==5.3.1->devinterp) (4.2.0)
+Requirement already satisfied: contourpy>=1.0.1 in /home/moosa/anaconda3/envs/mars0/lib/python3.10/site-packages (from matplotlib==3.8.0->devinterp) (1.2.0)
+Requirement already satisfied: cycler>=0.10 in /home/moosa/anaconda3/envs/mars0/lib/python3.10/site-packages (from matplotlib==3.8.0->devinterp) (0.12.1)
+Requirement already satisfied: fonttools>=4.22.0 in /home/moosa/anaconda3/envs/mars0/lib/python3.10/site-packages (from matplotlib==3.8.0->devinterp) (4.47.2)
+Requirement already satisfied: kiwisolver>=1.0.1 in /home/moosa/anaconda3/envs/mars0/lib/python3.10/site-packages (from matplotlib==3.8.0->devinterp) (1.4.5)
+Requirement already satisfied: packaging>=20.0 in /home/moosa/anaconda3/envs/mars0/lib/python3.10/site-packages (from matplotlib==3.8.0->devinterp) (23.2)
+Requirement already satisfied: pillow>=6.2.0 in /home/moosa/anaconda3/envs/mars0/lib/python3.10/site-packages (from matplotlib==3.8.0->devinterp) (10.2.0)
+Requirement already satisfied: pyparsing>=2.3.1 in /home/moosa/anaconda3/envs/mars0/lib/python3.10/site-packages (from matplotlib==3.8.0->devinterp) (3.1.1)
+Requirement already satisfied: python-dateutil>=2.7 in /home/moosa/anaconda3/envs/mars0/lib/python3.10/site-packages (from matplotlib==3.8.0->devinterp) (2.8.2)
+Requirement already satisfied: setuptools in /home/moosa/anaconda3/envs/mars0/lib/python3.10/site-packages (from nvidia-cublas-cu11==11.10.3.66->torch) (69.0.3)
+Requirement already satisfied: wheel in /home/moosa/anaconda3/envs/mars0/lib/python3.10/site-packages (from nvidia-cublas-cu11==11.10.3.66->torch) (0.42.0)
+Requirement already satisfied: pytz>=2020.1 in /home/moosa/anaconda3/envs/mars0/lib/python3.10/site-packages (from pandas==1.5.3->devinterp) (2023.4)
+Requirement already satisfied: annotated-types>=0.4.0 in /home/moosa/anaconda3/envs/mars0/lib/python3.10/site-packages (from pydantic==2.1.1->devinterp) (0.6.0)
+Requirement already satisfied: iniconfig in /home/moosa/anaconda3/envs/mars0/lib/python3.10/site-packages (from pytest==7.4.3->devinterp) (2.0.0)
+Requirement already satisfied: pluggy<2.0,>=0.12 in /home/moosa/anaconda3/envs/mars0/lib/python3.10/site-packages (from pytest==7.4.3->devinterp) (1.4.0)
+Requirement already satisfied: exceptiongroup>=1.0.0rc8 in /home/moosa/anaconda3/envs/mars0/lib/python3.10/site-packages (from pytest==7.4.3->devinterp) (1.2.0)
+Requirement already satisfied: tomli>=1.0.0 in /home/moosa/anaconda3/envs/mars0/lib/python3.10/site-packages (from pytest==7.4.3->devinterp) (2.0.1)
+Requirement already satisfied: typeguard>=2.11.1 in /home/moosa/anaconda3/envs/mars0/lib/python3.10/site-packages (from torchtyping==0.1.4->devinterp) (4.1.5)
+Requirement already satisfied: cmake in /home/moosa/anaconda3/envs/mars0/lib/python3.10/site-packages (from triton==2.0.0->torch) (3.28.1)
+Requirement already satisfied: lit in /home/moosa/anaconda3/envs/mars0/lib/python3.10/site-packages (from triton==2.0.0->torch) (17.0.6)
+Requirement already satisfied: requests in /home/moosa/anaconda3/envs/mars0/lib/python3.10/site-packages (from torchvision) (2.31.0)
+Requirement already satisfied: MarkupSafe>=2.0 in /home/moosa/anaconda3/envs/mars0/lib/python3.10/site-packages (from jinja2->torch) (2.1.4)
+Requirement already satisfied: charset-normalizer<4,>=2 in /home/moosa/anaconda3/envs/mars0/lib/python3.10/site-packages (from requests->torchvision) (3.3.2)
+Requirement already satisfied: idna<4,>=2.5 in /home/moosa/anaconda3/envs/mars0/lib/python3.10/site-packages (from requests->torchvision) (3.6)
+Requirement already satisfied: urllib3<3,>=1.21.1 in /home/moosa/anaconda3/envs/mars0/lib/python3.10/site-packages (from requests->torchvision) (2.2.0)
+Requirement already satisfied: certifi>=2017.4.17 in /home/moosa/anaconda3/envs/mars0/lib/python3.10/site-packages (from requests->torchvision) (2023.11.17)
+Requirement already satisfied: mpmath>=0.19 in /home/moosa/anaconda3/envs/mars0/lib/python3.10/site-packages (from sympy->torch) (1.3.0)
+Requirement already satisfied: decorator in /home/moosa/anaconda3/envs/mars0/lib/python3.10/site-packages (from ipython>=5.0.0->ipykernel==5.5.6->devinterp) (5.1.1)
+Requirement already satisfied: jedi>=0.16 in /home/moosa/anaconda3/envs/mars0/lib/python3.10/site-packages (from ipython>=5.0.0->ipykernel==5.5.6->devinterp) (0.19.1)
+Requirement already satisfied: matplotlib-inline in /home/moosa/anaconda3/envs/mars0/lib/python3.10/site-packages (from ipython>=5.0.0->ipykernel==5.5.6->devinterp) (0.1.6)
+Requirement already satisfied: prompt-toolkit<3.1.0,>=3.0.41 in /home/moosa/anaconda3/envs/mars0/lib/python3.10/site-packages (from ipython>=5.0.0->ipykernel==5.5.6->devinterp) (3.0.42)
+Requirement already satisfied: pygments>=2.4.0 in /home/moosa/anaconda3/envs/mars0/lib/python3.10/site-packages (from ipython>=5.0.0->ipykernel==5.5.6->devinterp) (2.17.2)
+Requirement already satisfied: stack-data in /home/moosa/anaconda3/envs/mars0/lib/python3.10/site-packages (from ipython>=5.0.0->ipykernel==5.5.6->devinterp) (0.6.2)
+Requirement already satisfied: pexpect>4.3 in /home/moosa/anaconda3/envs/mars0/lib/python3.10/site-packages (from ipython>=5.0.0->ipykernel==5.5.6->devinterp) (4.9.0)
+Requirement already satisfied: six>=1.5 in /home/moosa/anaconda3/envs/mars0/lib/python3.10/site-packages (from python-dateutil>=2.7->matplotlib==3.8.0->devinterp) (1.16.0)
+Requirement already satisfied: pyzmq>=23.0 in /home/moosa/anaconda3/envs/mars0/lib/python3.10/site-packages (from jupyter-client->ipykernel==5.5.6->devinterp) (25.1.2)
+Requirement already satisfied: parso<0.9.0,>=0.8.3 in /home/moosa/anaconda3/envs/mars0/lib/python3.10/site-packages (from jedi>=0.16->ipython>=5.0.0->ipykernel==5.5.6->devinterp) (0.8.3)
+Requirement already satisfied: ptyprocess>=0.5 in /home/moosa/anaconda3/envs/mars0/lib/python3.10/site-packages (from pexpect>4.3->ipython>=5.0.0->ipykernel==5.5.6->devinterp) (0.7.0)
+Requirement already satisfied: wcwidth in /home/moosa/anaconda3/envs/mars0/lib/python3.10/site-packages (from prompt-toolkit<3.1.0,>=3.0.41->ipython>=5.0.0->ipykernel==5.5.6->devinterp) (0.2.13)
+Requirement already satisfied: executing>=1.2.0 in /home/moosa/anaconda3/envs/mars0/lib/python3.10/site-packages (from stack-data->ipython>=5.0.0->ipykernel==5.5.6->devinterp) (2.0.1)
+Requirement already satisfied: asttokens>=2.1.0 in /home/moosa/anaconda3/envs/mars0/lib/python3.10/site-packages (from stack-data->ipython>=5.0.0->ipykernel==5.5.6->devinterp) (2.4.1)
+Requirement already satisfied: pure-eval in /home/moosa/anaconda3/envs/mars0/lib/python3.10/site-packages (from stack-data->ipython>=5.0.0->ipykernel==5.5.6->devinterp) (0.2.2)
+Installing collected packages: approxngd
