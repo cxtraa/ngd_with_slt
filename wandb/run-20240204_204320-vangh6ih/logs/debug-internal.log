@@ -5666,3 +5666,13 @@
 2024-02-05 00:05:44,070 DEBUG   HandlerThread:5849 [handler.py:handle_request():146] handle_request: status_report
 2024-02-05 00:05:48,518 DEBUG   HandlerThread:5849 [handler.py:handle_request():146] handle_request: keepalive
 2024-02-05 00:05:49,071 DEBUG   HandlerThread:5849 [handler.py:handle_request():146] handle_request: status_report
+2024-02-05 00:05:53,511 DEBUG   HandlerThread:5849 [handler.py:handle_request():146] handle_request: internal_messages
+2024-02-05 00:05:54,072 DEBUG   HandlerThread:5849 [handler.py:handle_request():146] handle_request: status_report
+2024-02-05 00:05:58,522 DEBUG   HandlerThread:5849 [handler.py:handle_request():146] handle_request: keepalive
+2024-02-05 00:05:59,075 DEBUG   HandlerThread:5849 [handler.py:handle_request():146] handle_request: status_report
+2024-02-05 00:06:03,523 DEBUG   HandlerThread:5849 [handler.py:handle_request():146] handle_request: keepalive
+2024-02-05 00:06:04,076 DEBUG   HandlerThread:5849 [handler.py:handle_request():146] handle_request: status_report
+2024-02-05 00:06:08,511 DEBUG   HandlerThread:5849 [handler.py:handle_request():146] handle_request: internal_messages
+2024-02-05 00:06:09,078 DEBUG   HandlerThread:5849 [handler.py:handle_request():146] handle_request: status_report
+2024-02-05 00:06:14,079 DEBUG   HandlerThread:5849 [handler.py:handle_request():146] handle_request: status_report
+2024-02-05 00:06:14,630 INFO    MainThread:5849 [internal.py:handle_exit():76] Internal process exited
