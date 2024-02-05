@@ -1,0 +1,12 @@
+einops
+wandb
+tqdm
+ipykernel
+devinterp
+torch
+torchvision
+tqdm
+plotly
+pandas
+numpy
+approxngd
