@@ -1,0 +1,44 @@
+{
+    "os": "Windows-10-10.0.22621-SP0",
+    "python": "3.11.7",
+    "heartbeatAt": "2024-02-05T15:14:17.899187",
+    "startedAt": "2024-02-05T15:14:16.647468",
+    "docker": null,
+    "cuda": null,
+    "args": [],
+    "state": "running",
+    "program": "<python with no main file>",
+    "codePathLocal": null,
+    "git": {
+        "remote": "https://github.com/cxtraa/ngd_with_slt.git",
+        "commit": "613dd9d5ffac5ccf77c9761cba18b2fe6ff3cbc8"
+    },
+    "email": "liuzihenanhua@gmail.com",
+    "root": "c:/FUTURE/CAISH/ngd_with_slt",
+    "host": "LAPTOP-T75PHJD7",
+    "username": "liuzi",
+    "executable": "c:\\FUTURE\\Coding\\Anaconda\\envs\\devinterp\\python.exe",
+    "cpu_count": 6,
+    "cpu_count_logical": 12,
+    "cpu_freq": {
+        "current": 2100.0,
+        "min": 0.0,
+        "max": 2100.0
+    },
+    "cpu_freq_per_core": [
+        {
+            "current": 2100.0,
+            "min": 0.0,
+            "max": 2100.0
+        }
+    ],
+    "disk": {
+        "/": {
+            "total": 475.69237899780273,
+            "used": 333.8768310546875
+        }
+    },
+    "memory": {
+        "total": 15.372367858886719
+    }
+}
