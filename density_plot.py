@@ -21,12 +21,13 @@
 import math
 import numpy as np
 import matplotlib as mpl
-mpl.use('Agg')
+mpl.use('tkagg')
 import matplotlib.pyplot as plt
 
 
 def get_esd_plot(eigenvalues, weights):
     density, grids = density_generate(eigenvalues, weights)
+    plt.figure(figsize=(10,6))
     plt.semilogy(grids, density + 1.0e-7)
     plt.ylabel('Density (Log Scale)', fontsize=14, labelpad=10)
     plt.xlabel('Eigenvlaue', fontsize=14, labelpad=10)
@@ -34,7 +35,7 @@ def get_esd_plot(eigenvalues, weights):
     plt.yticks(fontsize=12)
     plt.axis([np.min(eigenvalues) - 1, np.max(eigenvalues) + 1, None, None])
     plt.tight_layout()
-    plt.savefig('example.pdf')
+    plt.show()
 
 
 def density_generate(eigenvalues,
