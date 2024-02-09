@@ -254,7 +254,6 @@ def heavy_compute(n,device):
 #%%
 #test gpu/cpu usage
 print('whether to train is',args.train)
-
 if args.train==True:
     print('='*50)
     print('CPU FOR TRAINING')
@@ -278,23 +277,27 @@ if args.train==True:
 
 print('whether to do matrix is',args.matrix)
 if args.matrix==True:
-    print('='*50)
-    start_time = time.time()
-    heavy_compute(args.n,'cpu')
-    print_resource_usage('cpu', start_time)
-    print('CPU FOR MATMUL')
-    print('='*50)
+    try:
+        print('='*50)
+        start_time = time.time()
+        heavy_compute(args.n,'cpu')
+        print_resource_usage('cpu', start_time)
+        print('CPU FOR MATMUL')
+        print('='*50)
 
-    print(' '*50)
+        print(' '*50)
 
-    print('='*50)
-    start_time = time.time()
-    heavy_compute(args.n,'cuda')
-    print_resource_usage('gpu', start_time)
-    print('GPU FOR MATMUL')
-    print('='*50)
+        print('='*50)
+        start_time = time.time()
+        heavy_compute(args.n,'cuda')
+        print_resource_usage('gpu', start_time)
+        print('GPU FOR MATMUL')
+        print('='*50)
 
-    print(' '*50)
+        print(' '*50)
+
+    except Exception as e:
+        print('error with matrix')
 
 
 
