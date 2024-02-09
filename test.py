@@ -276,6 +276,7 @@ if args.train==True:
 
     print(' '*50)
 
+print('whether to do matrix is',args.matrix)
 if args.matrix==True:
     print('='*50)
     start_time = time.time()
