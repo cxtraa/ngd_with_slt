@@ -38,6 +38,7 @@ import GPUtil  # For GPU metrics
 parser = argparse.ArgumentParser(description='Script Description')
 # Add arguments
 parser.add_argument('--n', type=int, default=12000, help='size of matrix to test multiplication, nxn matrix')
+parser.add_argument('--num_epochs', type=int, default=2, help='size of matrix to test multiplication, nxn matrix')
 # Parse the arguments
 args = parser.parse_args()
 
@@ -95,7 +96,7 @@ def train(device):
     hyperparams = {
         "lr": 1e-5,
         "batch_size" : 128,
-        "num_epochs" : 5,  # MUST BE AT LEAST 5 AS RLCT ESTIMATE TAKES AVERAGE OF LAST 5 EPOCHS
+        "num_epochs" : args.num_epochs,  # MUST BE AT LEAST 5 AS RLCT ESTIMATE TAKES AVERAGE OF LAST 5 EPOCHS
         "momentum" : 0.8,
         "num_draws" : 400,
         "num_chains" : 1,
