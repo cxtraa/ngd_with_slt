@@ -255,7 +255,7 @@ def heavy_compute(n,device):
 #test gpu/cpu usage
 print('whether to train is',args.train)
 
-if args.train:
+if args.train==True:
     print('='*50)
     print('CPU FOR TRAINING')
     # Running and measuring on CPU
@@ -276,7 +276,7 @@ if args.train:
 
     print(' '*50)
 
-if args.matrix:
+if args.matrix==True:
     print('='*50)
     start_time = time.time()
     heavy_compute(args.n,'cpu')
