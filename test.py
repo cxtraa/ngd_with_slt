@@ -29,7 +29,8 @@ import plotly.graph_objects as go
 import matplotlib.pyplot as plt
 from matplotlib.cm import get_cmap
 
-device = "cuda" if t.cuda.is_available() else "cpu"
+#device = "cuda" if t.cuda.is_available() else "cpu"
+device = "cuda"
 warnings.filterwarnings("ignore")
 
 #%%
