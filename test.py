@@ -39,8 +39,8 @@ parser = argparse.ArgumentParser(description='Script Description')
 # Add arguments
 parser.add_argument('--n', type=int, default=12000, help='size of matrix to test multiplication, nxn matrix')
 parser.add_argument('--num_epochs', type=int, default=2, help='num epochs to run for train')
-parser.add_argument('--train',action='store_true',help='whether or not to test the training run')
-parser.add_argument('--matrix',action='store_true',help='whether or not to test the matrix compute')
+parser.add_argument('--train',action='store_true',help='default False, add this argument to run it, whether or not to test the training run')
+parser.add_argument('--matrix',action='store_true',help='default False, whether or not to test the matrix compute')
 # Parse the arguments
 args = parser.parse_args()
 
@@ -253,7 +253,6 @@ def heavy_compute(n,device):
 
 #%%
 #test gpu/cpu usage
-print('whether to train is',args.train)
 if args.train==True:
     print('='*50)
     print('CPU FOR TRAINING')
@@ -274,10 +273,6 @@ if args.train==True:
     print('='*50)
 
     print(' '*50)
-
-print('whether to do matrix is',args.matrix)
-if args.matrix==True:
-    print('yes this is tru')
 
 if args.matrix==True:
     try:
