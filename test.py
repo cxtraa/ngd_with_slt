@@ -38,7 +38,7 @@ import GPUtil  # For GPU metrics
 parser = argparse.ArgumentParser(description='Script Description')
 # Add arguments
 parser.add_argument('--n', type=int, default=12000, help='size of matrix to test multiplication, nxn matrix')
-parser.add_argument('--num_epochs', type=int, default=2, help='size of matrix to test multiplication, nxn matrix')
+parser.add_argument('--num_epochs', type=int, default=2, help='num epochs to run for train')
 parser.add_argument('--train',default=True,help='whether or not to test the training run')
 parser.add_argument('--matrix',default=True,help='whether or not to test the matrix compute')
 # Parse the arguments
@@ -253,9 +253,11 @@ def heavy_compute(n,device):
 
 #%%
 #test gpu/cpu usage
+print('whether to train is',args.train)
+
 if args.train:
     print('='*50)
-    print('cpu for training')
+    print('CPU FOR TRAINING')
     # Running and measuring on CPU
     start_time = time.time()
     train('cpu')
@@ -269,7 +271,7 @@ if args.train:
     start_time = time.time()
     train('cuda')
     print_resource_usage('gpu', start_time)
-    print('gpu for training')
+    print('GPU FOR TRAINING')
     print('='*50)
 
     print(' '*50)
@@ -279,7 +281,7 @@ if args.matrix:
     start_time = time.time()
     heavy_compute(args.n,'cpu')
     print_resource_usage('cpu', start_time)
-    print('cpu for matmul')
+    print('CPU FOR MATMUL')
     print('='*50)
 
     print(' '*50)
@@ -288,7 +290,7 @@ if args.matrix:
     start_time = time.time()
     heavy_compute(args.n,'cuda')
     print_resource_usage('gpu', start_time)
-    print('gpu for matmul')
+    print('GPU FOR MATMUL')
     print('='*50)
 
     print(' '*50)
