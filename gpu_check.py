@@ -30,7 +30,7 @@ def heavy_compute():
     print(f"Using device: {device}")
 
     # Large matrix multiplication
-    n = 12000  # Size of the matrix (n x n)
+    n = 120000 # Size of the matrix (n x n)
     a = torch.rand(n, n, device=device)
     b = torch.rand(n, n, device=device)
 
