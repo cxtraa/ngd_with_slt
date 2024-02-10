@@ -35,8 +35,8 @@ from matplotlib.cm import get_cmap
 #from other files
 from models.NN import NeuralNet
 from data.data import build_data
+from engine import train_one_epoch, evaluate
 
-device = "cuda" if t.cuda.is_available() else "cpu"
 warnings.filterwarnings("ignore")
 
 #%%
@@ -65,23 +65,74 @@ def main(args):
     with open("config.json") as f:
         config = json.load(f)
 
-    #%% initialise wandb
-    wandb.login(key=config["wandb_api_key"])
-    wandb.init(project=config["project_name"],
-            entity=config["team_name"],
-            name="checking adam rlct convergence",
-            )
+    # #%% initialise wandb
+    # wandb.login(key=config["wandb_api_key"])
+    # wandb.init(project=config["project_name"],
+    #         entity=config["team_name"],
+    #         name="checking adam rlct convergence",
+    #         )
     
     #%%
-    #load in model
+    #load in model and create optimizers
+    device = "cuda" if t.cuda.is_available() else "cpu"
     model = NeuralNet().to(device)
     print(model)
+
+    epochs = np.arange(1, args.num_epochs+1)
+
+    criterion = {"general":nn.CrossEntropyLoss(),"kfac": nn.CrossEntropyLoss(reduction='mean')}
+    sgd = t.optim.SGD(
+        model.parameters(),
+        lr=args.lr,
+        )
+    adam = t.optim.Adam(
+        model.parameters(),
+        lr=args.lr,
+        )
+    rmsprop = t.optim.RMSprop(
+        model.parameters(),
+        lr=args.lr,
+        momentum=args.momentum,
+    )
+    ngd = KFAC(model, 
+            args.lr, 
+            1e-3,
+            momentum_type='regular',
+            momentum=args.momentum,
+            adapt_damping=False,
+            update_cov_manually=True,
+            )
+    
+    optimizers = [adam, rmsprop, ngd]
 
     #%% Build dataset
     train_loader, test_loader = build_data(args)
 
-    #finish logging
-    wandb.finish()
+    #%% Train Models
+
+    # For each optimiser, train the model and record train and test losses.
+    models = {}
+    train_losses = {}
+    test_losses = {}
+    for optimizer in optimizers:
+        name = f"{optimizer.__class__.__name__}"
+        optim_models = []
+        optim_train_losses = []
+        optim_test_losses = []
+        print(f"\n======================== Training with {name} ==========================")
+        for epoch in range(args.num_epochs):
+            train_loss = train_one_epoch(model, train_loader, optimizer, criterion, device)
+            test_loss = evaluate(model, test_loader, criterion, device)
+            optim_train_losses.append(train_loss)
+            optim_test_losses.append(test_loss)
+            optim_models.append(model)
+            print(f"Epoch {epoch+1}/{args.num_epochs}: train_loss={train_loss:.4f}, test_loss={test_loss:.4f}")
+        train_losses[name] = optim_train_losses
+        test_losses[name] = optim_test_losses
+        models[name] = optim_models
+
+    # #finish logging
+    # wandb.finish()
 
 
 
