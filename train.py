@@ -34,6 +34,7 @@ from matplotlib.cm import get_cmap
 
 #from other files
 from models.NN import NeuralNet
+from data.data import build_data
 
 device = "cuda" if t.cuda.is_available() else "cpu"
 warnings.filterwarnings("ignore")
@@ -45,14 +46,18 @@ def get_train_args_parser():
 
     parser.add_argument('--sweep', action='store_true', help='Decide whether or not to do hyperparameter sweep. Default False.')
 
-    parser.add_argument('--lr', default=1e-4, type=float)
-    parser.add_argument('--lr_backbone', default=1e-5, type=float)
-    parser.add_argument('--batch_size', default=8, type=int)
-    parser.add_argument('--weight_decay', default=1e-4, type=float)
-    parser.add_argument('--epochs', default=3500, type=int)
-    parser.add_argument('--lr_drop', default=3500, type=int)
-    parser.add_argument('--clip_max_norm', default=0.1, type=float,
-                        help='gradient clipping max norm')
+    #model params
+    parser.add_argument('--lr', default=1e-5, type=float, help="learning rate")
+    parser.add_argument('--num_epochs', default=10, type=int,help="number of epochs for training, must be at least 5 for RLCT estimate")
+    parser.add_argument('--momentum', default=0.8, type=float)
+    parser.add_argument('--num_draws', default=400, type=int)
+    parser.add_argument('--num_chains', default=1, type=int)
+    parser.add_argument('--noise_level', default=0.5, type=float)
+    parser.add_argument('--elasticity', default=50, type=float)
+
+    #dataset params
+    parser.add_argument('--batch_size', default=128, type=int)
+
     return parser
 
 def main(args):
@@ -67,9 +72,13 @@ def main(args):
             name="checking adam rlct convergence",
             )
     
+    #%%
     #load in model
     model = NeuralNet().to(device)
     print(model)
+
+    #%% Build dataset
+    train_loader, test_loader = build_data(args)
 
     #finish logging
     wandb.finish()
