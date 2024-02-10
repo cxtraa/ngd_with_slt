@@ -1,0 +1,33 @@
+{
+    "project_name" : "mnist dense nn",
+    "team_name" : "slt_to_the_moon",
+    "wandb_api_key": "a18f5c44660ef8ef9df34ea5a9117407bb7d50c5",
+
+    "sweep_config": {
+      "method": "random",
+      "name": "sweep",
+      "parameters": {
+        "elasticity": {
+          "distribution": "log_uniform_values",
+          "min": 1e0,
+          "max": 1e4
+        },
+        "noise_level": {
+          "distribution": "log_uniform_values",
+          "min": 1e-1,
+          "max": 1e2
+        },
+        "num_draws": {
+          "distribution": "q_uniform",
+          "min": 1e2,
+          "max": 1e3
+        },
+        "num_chains": {
+          "distribution": "int_uniform",
+          "min": 1,
+          "max": 10
+        }
+      }
+    }
+  }
+  
