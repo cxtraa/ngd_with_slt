@@ -1,0 +1,189 @@
+2024-02-10 15:00:32,925 INFO    StreamThr :5271 [internal.py:wandb_internal():86] W&B internal server running at pid: 5271, started at: 2024-02-10 15:00:32.925034
+2024-02-10 15:00:32,927 DEBUG   HandlerThread:5271 [handler.py:handle_request():146] handle_request: status
+2024-02-10 15:00:32,933 INFO    WriterThread:5271 [datastore.py:open_for_write():87] open: /home/flowingpurplecrane/ngd_with_slt/wandb/run-20240210_150032-wj77be59/run-wj77be59.wandb
+2024-02-10 15:00:32,933 DEBUG   SenderThread:5271 [sender.py:send():382] send: header
+2024-02-10 15:00:32,936 DEBUG   SenderThread:5271 [sender.py:send():382] send: run
+2024-02-10 15:00:33,354 INFO    SenderThread:5271 [dir_watcher.py:__init__():211] watching files in: /home/flowingpurplecrane/ngd_with_slt/wandb/run-20240210_150032-wj77be59/files
+2024-02-10 15:00:33,354 INFO    SenderThread:5271 [sender.py:_start_run_threads():1136] run started: wj77be59 with start time 1707577232.927453
+2024-02-10 15:00:33,359 DEBUG   HandlerThread:5271 [handler.py:handle_request():146] handle_request: check_version
+2024-02-10 15:00:33,359 DEBUG   SenderThread:5271 [sender.py:send_request():409] send_request: check_version
+2024-02-10 15:00:33,467 DEBUG   HandlerThread:5271 [handler.py:handle_request():146] handle_request: run_start
+2024-02-10 15:00:33,467 DEBUG   HandlerThread:5271 [system_info.py:__init__():27] System info init
+2024-02-10 15:00:33,467 DEBUG   HandlerThread:5271 [system_info.py:__init__():42] System info init done
+2024-02-10 15:00:33,467 INFO    HandlerThread:5271 [system_monitor.py:start():194] Starting system monitor
+2024-02-10 15:00:33,468 INFO    SystemMonitor:5271 [system_monitor.py:_start():158] Starting system asset monitoring threads
+2024-02-10 15:00:33,470 INFO    SystemMonitor:5271 [interfaces.py:start():190] Started cpu monitoring
+2024-02-10 15:00:33,470 INFO    SystemMonitor:5271 [interfaces.py:start():190] Started disk monitoring
+2024-02-10 15:00:33,471 INFO    HandlerThread:5271 [system_monitor.py:probe():214] Collecting system info
+2024-02-10 15:00:33,472 INFO    SystemMonitor:5271 [interfaces.py:start():190] Started memory monitoring
+2024-02-10 15:00:33,475 INFO    SystemMonitor:5271 [interfaces.py:start():190] Started network monitoring
+2024-02-10 15:00:33,484 DEBUG   HandlerThread:5271 [system_info.py:probe():151] Probing system
+2024-02-10 15:00:33,511 DEBUG   HandlerThread:5271 [system_info.py:_probe_git():136] Probing git
+2024-02-10 15:00:33,515 DEBUG   HandlerThread:5271 [system_info.py:_probe_git():144] Probing git done
+2024-02-10 15:00:33,516 DEBUG   HandlerThread:5271 [system_info.py:probe():199] Probing system done
+2024-02-10 15:00:33,516 DEBUG   HandlerThread:5271 [system_monitor.py:probe():223] {'os': 'Linux-5.15.133.1-microsoft-standard-WSL2-x86_64-with-glibc2.35', 'python': '3.10.12', 'heartbeatAt': '2024-02-10T15:00:33.484110', 'startedAt': '2024-02-10T15:00:32.919050', 'docker': None, 'cuda': None, 'args': (), 'state': 'running', 'program': '/home/flowingpurplecrane/ngd_with_slt/train.py', 'codePathLocal': 'train.py', 'codePath': 'train.py', 'git': {'remote': 'https://github.com/cxtraa/ngd_with_slt.git', 'commit': '601e56aceb261d3707fb0ec845dc8cef077f27ab'}, 'email': 'liuzihenanhua@gmail.com', 'root': '/home/flowingpurplecrane/ngd_with_slt', 'host': 'LAPTOP-T75PHJD7', 'username': 'flowingpurplecrane', 'executable': '/home/flowingpurplecrane/ngd_with_slt/slt/bin/python', 'cpu_count': 6, 'cpu_count_logical': 12, 'cpu_freq': {'current': 2095.998, 'min': 0.0, 'max': 0.0}, 'cpu_freq_per_core': [{'current': 2095.998, 'min': 0.0, 'max': 0.0}, {'current': 2095.998, 'min': 0.0, 'max': 0.0}, {'current': 2095.998, 'min': 0.0, 'max': 0.0}, {'current': 2095.998, 'min': 0.0, 'max': 0.0}, {'current': 2095.998, 'min': 0.0, 'max': 0.0}, {'current': 2095.998, 'min': 0.0, 'max': 0.0}, {'current': 2095.998, 'min': 0.0, 'max': 0.0}, {'current': 2095.998, 'min': 0.0, 'max': 0.0}, {'current': 2095.998, 'min': 0.0, 'max': 0.0}, {'current': 2095.998, 'min': 0.0, 'max': 0.0}, {'current': 2095.998, 'min': 0.0, 'max': 0.0}, {'current': 2095.998, 'min': 0.0, 'max': 0.0}], 'disk': {'/': {'total': 1006.853931427002, 'used': 10.54867935180664}}, 'memory': {'total': 7.448387145996094}}
+2024-02-10 15:00:33,516 INFO    HandlerThread:5271 [system_monitor.py:probe():224] Finished collecting system info
+2024-02-10 15:00:33,516 INFO    HandlerThread:5271 [system_monitor.py:probe():227] Publishing system info
+2024-02-10 15:00:33,516 INFO    HandlerThread:5271 [system_monitor.py:probe():229] Finished publishing system info
+2024-02-10 15:00:33,519 DEBUG   SenderThread:5271 [sender.py:send():382] send: files
+2024-02-10 15:00:33,519 INFO    SenderThread:5271 [sender.py:_save_file():1403] saving file wandb-metadata.json with policy now
+2024-02-10 15:00:33,523 DEBUG   HandlerThread:5271 [handler.py:handle_request():146] handle_request: python_packages
+2024-02-10 15:00:33,524 DEBUG   SenderThread:5271 [sender.py:send_request():409] send_request: python_packages
+2024-02-10 15:00:33,525 DEBUG   HandlerThread:5271 [handler.py:handle_request():146] handle_request: stop_status
+2024-02-10 15:00:33,525 DEBUG   SenderThread:5271 [sender.py:send_request():409] send_request: stop_status
+2024-02-10 15:00:33,527 DEBUG   HandlerThread:5271 [handler.py:handle_request():146] handle_request: internal_messages
+2024-02-10 15:00:33,809 DEBUG   SenderThread:5271 [sender.py:send():382] send: telemetry
+2024-02-10 15:00:33,810 DEBUG   SenderThread:5271 [sender.py:send():382] send: exit
+2024-02-10 15:00:33,810 INFO    SenderThread:5271 [sender.py:send_exit():589] handling exit code: 0
+2024-02-10 15:00:33,810 INFO    SenderThread:5271 [sender.py:send_exit():591] handling runtime: 0
+2024-02-10 15:00:33,810 INFO    SenderThread:5271 [sender.py:_save_file():1403] saving file wandb-summary.json with policy end
+2024-02-10 15:00:33,810 INFO    SenderThread:5271 [sender.py:send_exit():597] send defer
+2024-02-10 15:00:33,811 DEBUG   HandlerThread:5271 [handler.py:handle_request():146] handle_request: defer
+2024-02-10 15:00:33,811 INFO    HandlerThread:5271 [handler.py:handle_request_defer():172] handle defer: 0
+2024-02-10 15:00:33,811 DEBUG   SenderThread:5271 [sender.py:send_request():409] send_request: defer
+2024-02-10 15:00:33,811 INFO    SenderThread:5271 [sender.py:send_request_defer():613] handle sender defer: 0
+2024-02-10 15:00:33,811 INFO    SenderThread:5271 [sender.py:transition_state():617] send defer: 1
+2024-02-10 15:00:33,811 DEBUG   HandlerThread:5271 [handler.py:handle_request():146] handle_request: defer
+2024-02-10 15:00:33,811 INFO    HandlerThread:5271 [handler.py:handle_request_defer():172] handle defer: 1
+2024-02-10 15:00:33,811 DEBUG   SenderThread:5271 [sender.py:send_request():409] send_request: defer
+2024-02-10 15:00:33,812 INFO    SenderThread:5271 [sender.py:send_request_defer():613] handle sender defer: 1
+2024-02-10 15:00:33,812 INFO    SenderThread:5271 [sender.py:transition_state():617] send defer: 2
+2024-02-10 15:00:33,812 DEBUG   HandlerThread:5271 [handler.py:handle_request():146] handle_request: defer
+2024-02-10 15:00:33,812 INFO    HandlerThread:5271 [handler.py:handle_request_defer():172] handle defer: 2
+2024-02-10 15:00:33,812 INFO    HandlerThread:5271 [system_monitor.py:finish():203] Stopping system monitor
+2024-02-10 15:00:33,812 DEBUG   SystemMonitor:5271 [system_monitor.py:_start():172] Starting system metrics aggregation loop
+2024-02-10 15:00:33,812 DEBUG   SystemMonitor:5271 [system_monitor.py:_start():179] Finished system metrics aggregation loop
+2024-02-10 15:00:33,812 DEBUG   SystemMonitor:5271 [system_monitor.py:_start():183] Publishing last batch of metrics
+2024-02-10 15:00:33,813 INFO    HandlerThread:5271 [interfaces.py:finish():202] Joined cpu monitor
+2024-02-10 15:00:33,813 INFO    HandlerThread:5271 [interfaces.py:finish():202] Joined disk monitor
+2024-02-10 15:00:33,813 INFO    HandlerThread:5271 [interfaces.py:finish():202] Joined memory monitor
+2024-02-10 15:00:33,813 INFO    HandlerThread:5271 [interfaces.py:finish():202] Joined network monitor
+2024-02-10 15:00:33,814 DEBUG   SenderThread:5271 [sender.py:send_request():409] send_request: defer
+2024-02-10 15:00:33,814 INFO    SenderThread:5271 [sender.py:send_request_defer():613] handle sender defer: 2
+2024-02-10 15:00:33,814 INFO    SenderThread:5271 [sender.py:transition_state():617] send defer: 3
+2024-02-10 15:00:33,814 DEBUG   SenderThread:5271 [sender.py:send():382] send: stats
+2024-02-10 15:00:33,814 DEBUG   HandlerThread:5271 [handler.py:handle_request():146] handle_request: defer
+2024-02-10 15:00:33,814 INFO    HandlerThread:5271 [handler.py:handle_request_defer():172] handle defer: 3
+2024-02-10 15:00:33,814 DEBUG   SenderThread:5271 [sender.py:send_request():409] send_request: defer
+2024-02-10 15:00:33,814 INFO    SenderThread:5271 [sender.py:send_request_defer():613] handle sender defer: 3
+2024-02-10 15:00:33,814 INFO    SenderThread:5271 [sender.py:transition_state():617] send defer: 4
+2024-02-10 15:00:33,815 DEBUG   HandlerThread:5271 [handler.py:handle_request():146] handle_request: defer
+2024-02-10 15:00:33,815 INFO    HandlerThread:5271 [handler.py:handle_request_defer():172] handle defer: 4
+2024-02-10 15:00:33,815 DEBUG   SenderThread:5271 [sender.py:send_request():409] send_request: defer
+2024-02-10 15:00:33,815 INFO    SenderThread:5271 [sender.py:send_request_defer():613] handle sender defer: 4
+2024-02-10 15:00:33,815 INFO    SenderThread:5271 [sender.py:transition_state():617] send defer: 5
+2024-02-10 15:00:33,815 DEBUG   HandlerThread:5271 [handler.py:handle_request():146] handle_request: defer
+2024-02-10 15:00:33,815 INFO    HandlerThread:5271 [handler.py:handle_request_defer():172] handle defer: 5
+2024-02-10 15:00:33,815 DEBUG   SenderThread:5271 [sender.py:send():382] send: summary
+2024-02-10 15:00:33,816 INFO    SenderThread:5271 [sender.py:_save_file():1403] saving file wandb-summary.json with policy end
+2024-02-10 15:00:33,816 DEBUG   SenderThread:5271 [sender.py:send_request():409] send_request: defer
+2024-02-10 15:00:33,816 INFO    SenderThread:5271 [sender.py:send_request_defer():613] handle sender defer: 5
+2024-02-10 15:00:33,816 INFO    SenderThread:5271 [sender.py:transition_state():617] send defer: 6
+2024-02-10 15:00:33,816 DEBUG   HandlerThread:5271 [handler.py:handle_request():146] handle_request: defer
+2024-02-10 15:00:33,816 INFO    HandlerThread:5271 [handler.py:handle_request_defer():172] handle defer: 6
+2024-02-10 15:00:33,816 DEBUG   SenderThread:5271 [sender.py:send_request():409] send_request: defer
+2024-02-10 15:00:33,816 INFO    SenderThread:5271 [sender.py:send_request_defer():613] handle sender defer: 6
+2024-02-10 15:00:33,819 DEBUG   HandlerThread:5271 [handler.py:handle_request():146] handle_request: status_report
+2024-02-10 15:00:33,983 INFO    SenderThread:5271 [sender.py:transition_state():617] send defer: 7
+2024-02-10 15:00:33,984 DEBUG   HandlerThread:5271 [handler.py:handle_request():146] handle_request: defer
+2024-02-10 15:00:33,984 INFO    HandlerThread:5271 [handler.py:handle_request_defer():172] handle defer: 7
+2024-02-10 15:00:33,984 DEBUG   SenderThread:5271 [sender.py:send_request():409] send_request: defer
+2024-02-10 15:00:33,984 INFO    SenderThread:5271 [sender.py:send_request_defer():613] handle sender defer: 7
+2024-02-10 15:00:34,118 INFO    wandb-upload_0:5271 [upload_job.py:push():131] Uploaded file /tmp/tmp9x37732_wandb/paz3inq3-wandb-metadata.json
+2024-02-10 15:00:34,356 INFO    Thread-13 :5271 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/flowingpurplecrane/ngd_with_slt/wandb/run-20240210_150032-wj77be59/files/config.yaml
+2024-02-10 15:00:34,356 INFO    Thread-13 :5271 [dir_watcher.py:_on_file_created():271] file/dir created: /home/flowingpurplecrane/ngd_with_slt/wandb/run-20240210_150032-wj77be59/files/requirements.txt
+2024-02-10 15:00:34,357 INFO    Thread-13 :5271 [dir_watcher.py:_on_file_created():271] file/dir created: /home/flowingpurplecrane/ngd_with_slt/wandb/run-20240210_150032-wj77be59/files/wandb-summary.json
+2024-02-10 15:00:34,357 INFO    Thread-13 :5271 [dir_watcher.py:_on_file_created():271] file/dir created: /home/flowingpurplecrane/ngd_with_slt/wandb/run-20240210_150032-wj77be59/files/output.log
+2024-02-10 15:00:34,357 INFO    Thread-13 :5271 [dir_watcher.py:_on_file_created():271] file/dir created: /home/flowingpurplecrane/ngd_with_slt/wandb/run-20240210_150032-wj77be59/files/wandb-metadata.json
+2024-02-10 15:00:34,592 DEBUG   HandlerThread:5271 [handler.py:handle_request():146] handle_request: poll_exit
+2024-02-10 15:00:35,814 INFO    SenderThread:5271 [sender.py:transition_state():617] send defer: 8
+2024-02-10 15:00:35,814 DEBUG   SenderThread:5271 [sender.py:send_request():409] send_request: poll_exit
+2024-02-10 15:00:35,814 DEBUG   HandlerThread:5271 [handler.py:handle_request():146] handle_request: defer
+2024-02-10 15:00:35,814 INFO    HandlerThread:5271 [handler.py:handle_request_defer():172] handle defer: 8
+2024-02-10 15:00:35,817 DEBUG   SenderThread:5271 [sender.py:send_request():409] send_request: defer
+2024-02-10 15:00:35,817 INFO    SenderThread:5271 [sender.py:send_request_defer():613] handle sender defer: 8
+2024-02-10 15:00:35,817 INFO    SenderThread:5271 [job_builder.py:build():296] Attempting to build job artifact
+2024-02-10 15:00:35,817 INFO    SenderThread:5271 [job_builder.py:_get_source_type():426] is repo sourced job
+2024-02-10 15:00:35,827 INFO    SenderThread:5271 [job_builder.py:build():402] adding wandb-job metadata file
+2024-02-10 15:00:35,833 INFO    SenderThread:5271 [sender.py:transition_state():617] send defer: 9
+2024-02-10 15:00:35,834 DEBUG   HandlerThread:5271 [handler.py:handle_request():146] handle_request: defer
+2024-02-10 15:00:35,834 INFO    HandlerThread:5271 [handler.py:handle_request_defer():172] handle defer: 9
+2024-02-10 15:00:35,834 DEBUG   SenderThread:5271 [sender.py:send():382] send: artifact
+2024-02-10 15:00:36,356 INFO    Thread-13 :5271 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/flowingpurplecrane/ngd_with_slt/wandb/run-20240210_150032-wj77be59/files/output.log
+2024-02-10 15:00:36,594 DEBUG   HandlerThread:5271 [handler.py:handle_request():146] handle_request: poll_exit
+2024-02-10 15:00:37,006 INFO    wandb-upload_0:5271 [upload_job.py:push():89] Uploaded file /home/flowingpurplecrane/.local/share/wandb/artifacts/staging/tmp_m5vt4qq
+2024-02-10 15:00:37,053 INFO    wandb-upload_1:5271 [upload_job.py:push():89] Uploaded file /home/flowingpurplecrane/.local/share/wandb/artifacts/staging/tmpb_of6n__
+2024-02-10 15:00:37,935 INFO    SenderThread:5271 [sender.py:send_artifact():1494] sent artifact job-https___github.com_cxtraa_ngd_with_slt.git_train.py - {'id': 'QXJ0aWZhY3Q6NzE4OTc3NzE0', 'state': 'PENDING', 'artifactSequence': {'id': 'QXJ0aWZhY3RDb2xsZWN0aW9uOjEzODc0NDY0Mg==', 'latestArtifact': None}}
+2024-02-10 15:00:37,935 DEBUG   SenderThread:5271 [sender.py:send_request():409] send_request: defer
+2024-02-10 15:00:37,935 INFO    SenderThread:5271 [sender.py:send_request_defer():613] handle sender defer: 9
+2024-02-10 15:00:37,936 INFO    SenderThread:5271 [dir_watcher.py:finish():358] shutting down directory watcher
+2024-02-10 15:00:38,359 INFO    SenderThread:5271 [dir_watcher.py:finish():388] scan: /home/flowingpurplecrane/ngd_with_slt/wandb/run-20240210_150032-wj77be59/files
+2024-02-10 15:00:38,359 INFO    SenderThread:5271 [dir_watcher.py:finish():402] scan save: /home/flowingpurplecrane/ngd_with_slt/wandb/run-20240210_150032-wj77be59/files/wandb-summary.json wandb-summary.json
+2024-02-10 15:00:38,359 INFO    SenderThread:5271 [dir_watcher.py:finish():402] scan save: /home/flowingpurplecrane/ngd_with_slt/wandb/run-20240210_150032-wj77be59/files/output.log output.log
+2024-02-10 15:00:38,359 INFO    SenderThread:5271 [dir_watcher.py:finish():402] scan save: /home/flowingpurplecrane/ngd_with_slt/wandb/run-20240210_150032-wj77be59/files/wandb-metadata.json wandb-metadata.json
+2024-02-10 15:00:38,359 INFO    SenderThread:5271 [dir_watcher.py:finish():402] scan save: /home/flowingpurplecrane/ngd_with_slt/wandb/run-20240210_150032-wj77be59/files/config.yaml config.yaml
+2024-02-10 15:00:38,359 INFO    SenderThread:5271 [dir_watcher.py:finish():402] scan save: /home/flowingpurplecrane/ngd_with_slt/wandb/run-20240210_150032-wj77be59/files/requirements.txt requirements.txt
+2024-02-10 15:00:38,359 INFO    SenderThread:5271 [sender.py:transition_state():617] send defer: 10
+2024-02-10 15:00:38,359 DEBUG   SenderThread:5271 [sender.py:send_request():409] send_request: poll_exit
+2024-02-10 15:00:38,360 DEBUG   HandlerThread:5271 [handler.py:handle_request():146] handle_request: defer
+2024-02-10 15:00:38,360 INFO    HandlerThread:5271 [handler.py:handle_request_defer():172] handle defer: 10
+2024-02-10 15:00:38,363 DEBUG   SenderThread:5271 [sender.py:send_request():409] send_request: defer
+2024-02-10 15:00:38,364 INFO    SenderThread:5271 [sender.py:send_request_defer():613] handle sender defer: 10
+2024-02-10 15:00:38,364 INFO    SenderThread:5271 [file_pusher.py:finish():172] shutting down file pusher
+2024-02-10 15:00:38,596 DEBUG   HandlerThread:5271 [handler.py:handle_request():146] handle_request: poll_exit
+2024-02-10 15:00:38,597 DEBUG   SenderThread:5271 [sender.py:send_request():409] send_request: poll_exit
+2024-02-10 15:00:38,680 INFO    wandb-upload_0:5271 [upload_job.py:push():131] Uploaded file /home/flowingpurplecrane/ngd_with_slt/wandb/run-20240210_150032-wj77be59/files/wandb-summary.json
+2024-02-10 15:00:38,767 INFO    wandb-upload_1:5271 [upload_job.py:push():131] Uploaded file /home/flowingpurplecrane/ngd_with_slt/wandb/run-20240210_150032-wj77be59/files/output.log
+2024-02-10 15:00:38,849 INFO    wandb-upload_3:5271 [upload_job.py:push():131] Uploaded file /home/flowingpurplecrane/ngd_with_slt/wandb/run-20240210_150032-wj77be59/files/requirements.txt
+2024-02-10 15:00:39,599 DEBUG   HandlerThread:5271 [handler.py:handle_request():146] handle_request: poll_exit
+2024-02-10 15:00:39,599 DEBUG   SenderThread:5271 [sender.py:send_request():409] send_request: poll_exit
+2024-02-10 15:00:40,601 DEBUG   HandlerThread:5271 [handler.py:handle_request():146] handle_request: poll_exit
+2024-02-10 15:00:40,601 DEBUG   SenderThread:5271 [sender.py:send_request():409] send_request: poll_exit
+2024-02-10 15:00:41,602 DEBUG   HandlerThread:5271 [handler.py:handle_request():146] handle_request: poll_exit
+2024-02-10 15:00:41,603 DEBUG   SenderThread:5271 [sender.py:send_request():409] send_request: poll_exit
+2024-02-10 15:00:42,604 DEBUG   HandlerThread:5271 [handler.py:handle_request():146] handle_request: poll_exit
+2024-02-10 15:00:42,604 DEBUG   SenderThread:5271 [sender.py:send_request():409] send_request: poll_exit
+2024-02-10 15:00:43,606 DEBUG   HandlerThread:5271 [handler.py:handle_request():146] handle_request: status_report
+2024-02-10 15:00:43,606 DEBUG   HandlerThread:5271 [handler.py:handle_request():146] handle_request: poll_exit
+2024-02-10 15:00:43,607 DEBUG   SenderThread:5271 [sender.py:send_request():409] send_request: poll_exit
+2024-02-10 15:00:44,608 DEBUG   HandlerThread:5271 [handler.py:handle_request():146] handle_request: poll_exit
+2024-02-10 15:00:44,609 DEBUG   SenderThread:5271 [sender.py:send_request():409] send_request: poll_exit
+2024-02-10 15:00:45,610 DEBUG   HandlerThread:5271 [handler.py:handle_request():146] handle_request: poll_exit
+2024-02-10 15:00:45,611 DEBUG   SenderThread:5271 [sender.py:send_request():409] send_request: poll_exit
+2024-02-10 15:00:46,612 DEBUG   HandlerThread:5271 [handler.py:handle_request():146] handle_request: poll_exit
+2024-02-10 15:00:46,613 DEBUG   SenderThread:5271 [sender.py:send_request():409] send_request: poll_exit
+2024-02-10 15:00:47,614 DEBUG   HandlerThread:5271 [handler.py:handle_request():146] handle_request: poll_exit
+2024-02-10 15:00:47,614 DEBUG   SenderThread:5271 [sender.py:send_request():409] send_request: poll_exit
+2024-02-10 15:00:48,615 DEBUG   HandlerThread:5271 [handler.py:handle_request():146] handle_request: poll_exit
+2024-02-10 15:00:48,616 DEBUG   HandlerThread:5271 [handler.py:handle_request():146] handle_request: status_report
+2024-02-10 15:00:48,616 DEBUG   SenderThread:5271 [sender.py:send_request():409] send_request: poll_exit
+2024-02-10 15:00:49,618 DEBUG   HandlerThread:5271 [handler.py:handle_request():146] handle_request: poll_exit
+2024-02-10 15:00:49,618 DEBUG   SenderThread:5271 [sender.py:send_request():409] send_request: poll_exit
+2024-02-10 15:00:50,618 DEBUG   HandlerThread:5271 [handler.py:handle_request():146] handle_request: poll_exit
+2024-02-10 15:00:50,620 DEBUG   SenderThread:5271 [sender.py:send_request():409] send_request: poll_exit
+2024-02-10 15:00:51,620 DEBUG   HandlerThread:5271 [handler.py:handle_request():146] handle_request: poll_exit
+2024-02-10 15:00:51,621 DEBUG   SenderThread:5271 [sender.py:send_request():409] send_request: poll_exit
+2024-02-10 15:00:52,622 DEBUG   HandlerThread:5271 [handler.py:handle_request():146] handle_request: poll_exit
+2024-02-10 15:00:52,623 DEBUG   SenderThread:5271 [sender.py:send_request():409] send_request: poll_exit
+2024-02-10 15:00:53,623 DEBUG   HandlerThread:5271 [handler.py:handle_request():146] handle_request: status_report
+2024-02-10 15:00:53,624 DEBUG   HandlerThread:5271 [handler.py:handle_request():146] handle_request: poll_exit
+2024-02-10 15:00:53,625 DEBUG   SenderThread:5271 [sender.py:send_request():409] send_request: poll_exit
+2024-02-10 15:00:54,626 DEBUG   HandlerThread:5271 [handler.py:handle_request():146] handle_request: poll_exit
+2024-02-10 15:00:54,626 DEBUG   SenderThread:5271 [sender.py:send_request():409] send_request: poll_exit
+2024-02-10 15:00:55,626 DEBUG   HandlerThread:5271 [handler.py:handle_request():146] handle_request: poll_exit
+2024-02-10 15:00:55,628 DEBUG   SenderThread:5271 [sender.py:send_request():409] send_request: poll_exit
+2024-02-10 15:00:56,628 DEBUG   HandlerThread:5271 [handler.py:handle_request():146] handle_request: poll_exit
+2024-02-10 15:00:56,629 DEBUG   SenderThread:5271 [sender.py:send_request():409] send_request: poll_exit
+2024-02-10 15:00:57,630 DEBUG   HandlerThread:5271 [handler.py:handle_request():146] handle_request: poll_exit
+2024-02-10 15:00:57,630 DEBUG   SenderThread:5271 [sender.py:send_request():409] send_request: poll_exit
+2024-02-10 15:00:57,962 WARNING StreamThr :5271 [internal.py:is_dead():414] Internal process exiting, parent pid 5239 disappeared
+2024-02-10 15:00:57,962 ERROR   StreamThr :5271 [internal.py:wandb_internal():152] Internal process shutdown.
+2024-02-10 15:00:58,630 INFO    HandlerThread:5271 [handler.py:finish():869] shutting down handler
+2024-02-10 15:00:58,631 INFO    WriterThread:5271 [datastore.py:close():296] close: /home/flowingpurplecrane/ngd_with_slt/wandb/run-20240210_150032-wj77be59/run-wj77be59.wandb
+2024-02-10 15:00:58,631 INFO    SenderThread:5271 [sender.py:finish():1572] shutting down sender
+2024-02-10 15:00:58,632 INFO    SenderThread:5271 [file_pusher.py:finish():172] shutting down file pusher
+2024-02-10 15:00:58,632 INFO    SenderThread:5271 [file_pusher.py:join():178] waiting for file pusher
+2024-02-10 15:09:29,379 INFO    wandb-upload_2:5271 [upload_job.py:push():131] Uploaded file /home/flowingpurplecrane/ngd_with_slt/wandb/run-20240210_150032-wj77be59/files/config.yaml
+2024-02-10 15:09:29,580 INFO    Thread-12 (_thread_body):5271 [sender.py:transition_state():617] send defer: 11
+2024-02-10 15:09:29,882 INFO    SenderThread:5271 [file_stream.py:finish():595] file stream finish called
+2024-02-10 15:09:30,023 INFO    SenderThread:5271 [file_stream.py:finish():599] file stream finish is done

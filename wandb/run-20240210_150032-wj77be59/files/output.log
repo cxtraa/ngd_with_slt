@@ -1,0 +1,12 @@
+NeuralNet(
+  (model): Sequential(
+    (0): Flatten(start_dim=1, end_dim=-1)
+    (1): Linear(in_features=784, out_features=512, bias=True)
+    (2): ReLU()
+    (3): Linear(in_features=512, out_features=512, bias=True)
+    (4): ReLU()
+    (5): Linear(in_features=512, out_features=10, bias=True)
+  )
+)
+a18f5c44660ef8ef9df34ea5a9117407bb7d50c5
+{'method': 'random', 'name': 'sweep', 'parameters': {'elasticity': {'distribution': 'log_uniform_values', 'min': 1.0, 'max': 10000.0}, 'noise_level': {'distribution': 'log_uniform_values', 'min': 0.1, 'max': 100.0}, 'num_draws': {'distribution': 'q_uniform', 'min': 100.0, 'max': 1000.0}, 'num_chains': {'distribution': 'int_uniform', 'min': 1, 'max': 10}}}
