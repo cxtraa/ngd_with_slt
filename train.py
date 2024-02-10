@@ -48,7 +48,7 @@ def get_train_args_parser():
 
     #model params
     parser.add_argument('--lr', default=1e-5, type=float, help="learning rate")
-    parser.add_argument('--num_epochs', default=10, type=int,help="number of epochs for training, must be at least 5 for RLCT estimate")
+    parser.add_argument('--num_epochs', default=5, type=int,help="number of epochs for training, must be at least 5 for RLCT estimate")
     parser.add_argument('--momentum', default=0.8, type=float)
     parser.add_argument('--num_draws', default=400, type=int)
     parser.add_argument('--num_chains', default=1, type=int)
@@ -65,12 +65,12 @@ def main(args):
     with open("config.json") as f:
         config = json.load(f)
 
-    # #%% initialise wandb
-    # wandb.login(key=config["wandb_api_key"])
-    # wandb.init(project=config["project_name"],
-    #         entity=config["team_name"],
-    #         name="checking adam rlct convergence",
-    #         )
+    #%% initialise wandb
+    wandb.login(key=config["wandb_api_key"])
+    wandb.init(project=config["project_name"],
+            entity=config["team_name"],
+            name="checking adam rlct convergence",
+            )
     
     #%%
     #load in model and create optimizers
@@ -131,8 +131,32 @@ def main(args):
         test_losses[name] = optim_test_losses
         models[name] = optim_models
 
-    # #finish logging
-    # wandb.finish()
+    #%%
+    # Send training and testing data to wandb
+    train_fig = go.Figure()
+    for optim, train_loss in train_losses.items():
+        train_fig.add_trace(go.Scatter(x=epochs, y=train_loss, mode='lines+markers', name=optim))
+
+    train_fig.update_layout(title="Training loss",
+                    xaxis_title="Epoch",
+                    yaxis_title="Loss",
+                    legend_title="Optimizers"
+                    )
+    wandb.log({"Training Losses" : train_fig})
+
+    test_fig = go.Figure()
+    for optim, test_loss in test_losses.items():
+        test_fig.add_trace(go.Scatter(x=epochs, y=test_loss, mode='lines+markers', name=optim))
+
+    test_fig.update_layout(title="Test loss",
+                    xaxis_title="Epoch",
+                    yaxis_title="Loss",
+                    legend_title="Optimizers",
+                    )
+    wandb.log({"Test Losses" : test_fig})
+
+    #finish logging
+    wandb.finish()
 
 
 

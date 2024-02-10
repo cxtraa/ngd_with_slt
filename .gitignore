@@ -9,3 +9,5 @@ slt/
 
 #ignore wandb folder
 wandb/
+
+*.pyc
