@@ -6,3 +6,6 @@ slt/
 
 #ignore config.json
 config.json
+
+#ignore wandb folder
+wandb/
