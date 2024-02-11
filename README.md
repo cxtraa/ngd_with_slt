@@ -104,6 +104,7 @@ python run_test.py --weight_path ./weights/SHTechA.pth --output_dir ./logs/
 * there are quite lines of repeated code in both train and eval (see the TODO lines), ideally should remove these
     * these can cause problems if train and eval are run with different params
 * setup hyperparam testing
+* Note that I accidentally deleted the PyHessian module, but I fixed the changes
 
 
 ## About
