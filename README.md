@@ -94,6 +94,17 @@ A trained model (with an MAE of **51.96**) on SHTechPartA is available at "./wei
 ```
 python run_test.py --weight_path ./weights/SHTechA.pth --output_dir ./logs/
 ```
+## TODO
+
+* Make PyHessian work for multiple batches of data
+* Set up checkpointing, saving and loading models (to Weights and Biases)
+    * currently it is to save as pickle file, whereas wandb treats it as new run upon running eval.py
+    * need to use wandb run id to do this
+* wandb takes very long to upload data, not sure why
+* there are quite lines of repeated code in both train and eval (see the TODO lines), ideally should remove these
+    * these can cause problems if train and eval are run with different params
+* setup hyperparam testing
+
 
 ## About
 

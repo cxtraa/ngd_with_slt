@@ -10,4 +10,8 @@ slt/
 #ignore wandb folder
 wandb/
 
+#ignore pycache
 *.pyc
+
+#ignore weight data, training should be done on gpu server
+*.pth
