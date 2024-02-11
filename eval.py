@@ -24,8 +24,8 @@ import plotly.graph_objects as go
 from devinterp.slt import estimate_learning_coeff
 from devinterp.optim.sgld import SGLD
 
-from pyhessian import hessian # Hessian computation
-from density_plot import get_esd_plot # ESD plot
+from PyHessian.pyhessian import hessian # Hessian computation
+from PyHessian.density_plot import *
 
 from tqdm import tqdm
 import json
@@ -130,7 +130,7 @@ def main(args):
 
     for key, hess in hessians.items():
         density_eigen, density_weight = hess.density()
-        temp_fig = get_esd_plot(density_eigen, density_weight, title=f"{key} Hessian eigenspectrum")
+        temp_fig = get_esd_plot_plotly(density_eigen, density_weight, title=f"{key} Hessian eigenspectrum")
         individual_figs.append(temp_fig)
 
         # Assuming get_esd_plot_plotly returns a figure with one trace, add that trace to the overlaid figure
