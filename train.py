@@ -19,9 +19,13 @@ from tqdm import tqdm
 from datetime import datetime
 import json
 import wandb
-import pickle
+
+from devinterp.slt import estimate_learning_coeff
+from devinterp.optim.sgld import SGLD
 
 from approxngd import KFAC
+from PyHessian.pyhessian import hessian
+from PyHessian.density_plot import *
 
 import plotly.express as px
 import plotly.graph_objects as go
@@ -30,19 +34,16 @@ from matplotlib.cm import get_cmap
 
 #from other files
 from models.NN import NeuralNet
-from data.build_data import build_data
+from data.data import build_data
 from engine import train_one_epoch, evaluate
 
 warnings.filterwarnings("ignore")
-# TODO: wandb is set offline, takes very long to upload data not sure why
-os.environ["WANDB_MODE"] = "offline"
 
 #%%
 
 def get_train_args_parser():
     parser = argparse.ArgumentParser('Set parameters for training model', add_help=False)
 
-    # TODO: not implemented yet
     parser.add_argument('--sweep', action='store_true', help='Decide whether or not to do hyperparameter sweep. Default False.')
 
     #model params
@@ -54,11 +55,19 @@ def get_train_args_parser():
     parser.add_argument('--noise_level', default=0.5, type=float)
     parser.add_argument('--elasticity', default=50, type=float)
 
+    #Hessian arguments
+    parser.add_argument(
+        '--mini-hessian-batch-size',
+        type=int,
+        default=200,
+        help='input batch size for mini-hessian batch (default: 200)')
+    parser.add_argument('--hessian-batch-size',
+        type=int,
+        default=200,
+        help='input batch size for hessian (default: 200)')
+
     #dataset params
     parser.add_argument('--batch_size', default=128, type=int)
-
-    #where to save filepath
-    parser.add_argument('--save_path',default='models/model.pkl',type=str, help='the file path to save your family of models')
 
     return parser
 
@@ -71,7 +80,7 @@ def main(args):
     wandb.login(key=config["wandb_api_key"])
     wandb.init(project=config["project_name"],
             entity=config["team_name"],
-            name="training adam rlct convergence",
+            name="checking adam rlct convergence",
             )
     
     #%% load in model and create optimizers
@@ -157,15 +166,43 @@ def main(args):
                     )
     wandb.log({"Test Losses" : test_fig})
 
-    # Save the dictionary using pickle
-    with open(args.save_path, 'wb') as file:
-        pickle.dump(models, file, protocol=pickle.HIGHEST_PROTOCOL)
+    #%% Get Hessian at every epoch
+    # For each model, compute the eigenspectrum of the Hessian (of final model) using the PyHessian library
+    # value becomes from a list of models to a single model
+    final_models = {key : value[-1] for key, value in models.items()}
+
+    #dataloader object
+    hessian_dataloader = []
+    for i, (inputs, labels) in enumerate(train_loader):
+        hessian_dataloader.append((inputs, labels))
+
+    hessians = {}
+    for key, final_model in final_models.items():
+        #note KFAC is used here
+        crit = criterion["kfac"] if key == "KFAC" else criterion["general"]
+        hessians[key] = hessian(final_model, crit, dataloader=hessian_dataloader, cuda=True if device=='cuda' else False)
+
+    # Output trace of Hessian for each optimiser and send results to wandb
+
+    print("\n======================== HESSIAN TRACE SUMMARY BEGIN ==========================")
+    #trail different times to get different estimates of the trace
+    n_iters = 10
+    for hess in hessians:
+        hess_means = []
+        for _ in range(n_iters):
+            hessian_trace = np.mean(hessians[hess].trace())
+            hess_means.append(hessian_trace)
+        final_hess_mean = np.mean(hess_means)
+        print(f"Trace for {hess} : {final_hess_mean}")
+    print("======================== HESSIAN TRACE SUMMARY COMPLETE ==========================")
+
 
     #finish logging
     wandb.finish()
 
 
+
 if __name__ == '__main__':
-    parser = get_train_args_parser()
+    parser = argparse.ArgumentParser('Training and evaluation script', parents=[get_train_args_parser()])
     args = parser.parse_args()
     main(args)
