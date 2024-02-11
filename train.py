@@ -55,6 +55,17 @@ def get_train_args_parser():
     parser.add_argument('--noise_level', default=0.5, type=float)
     parser.add_argument('--elasticity', default=50, type=float)
 
+    #Hessian arguments
+    parser.add_argument(
+        '--mini-hessian-batch-size',
+        type=int,
+        default=200,
+        help='input batch size for mini-hessian batch (default: 200)')
+    parser.add_argument('--hessian-batch-size',
+        type=int,
+        default=200,
+        help='input batch size for hessian (default: 200)')
+
     #dataset params
     parser.add_argument('--batch_size', default=128, type=int)
 
@@ -72,9 +83,10 @@ def main(args):
             name="checking adam rlct convergence",
             )
     
-    #%%
-    #load in model and create optimizers
+    #%% load in model and create optimizers
     device = "cuda" if t.cuda.is_available() else "cpu"
+    #move model to CUDA
+    #TODO: modularize this by allow a different model structure
     model = NeuralNet().to(device)
     print(model)
 
@@ -131,7 +143,6 @@ def main(args):
         test_losses[name] = optim_test_losses
         models[name] = optim_models
 
-    #%%
     # Send training and testing data to wandb
     train_fig = go.Figure()
     for optim, train_loss in train_losses.items():
@@ -154,6 +165,37 @@ def main(args):
                     legend_title="Optimizers",
                     )
     wandb.log({"Test Losses" : test_fig})
+
+    #%% Get Hessian at every epoch
+    # For each model, compute the eigenspectrum of the Hessian (of final model) using the PyHessian library
+    # value becomes from a list of models to a single model
+    final_models = {key : value[-1] for key, value in models.items()}
+
+    #dataloader object
+    hessian_dataloader = []
+    for i, (inputs, labels) in enumerate(train_loader):
+        hessian_dataloader.append((inputs, labels))
+
+    hessians = {}
+    for key, final_model in final_models.items():
+        #note KFAC is used here
+        crit = criterion["kfac"] if key == "KFAC" else criterion["general"]
+        hessians[key] = hessian(final_model, crit, dataloader=hessian_dataloader, cuda=True if device=='cuda' else False)
+
+    # Output trace of Hessian for each optimiser and send results to wandb
+
+    print("\n======================== HESSIAN TRACE SUMMARY BEGIN ==========================")
+    #trail different times to get different estimates of the trace
+    n_iters = 10
+    for hess in hessians:
+        hess_means = []
+        for _ in range(n_iters):
+            hessian_trace = np.mean(hessians[hess].trace())
+            hess_means.append(hessian_trace)
+        final_hess_mean = np.mean(hess_means)
+        print(f"Trace for {hess} : {final_hess_mean}")
+    print("======================== HESSIAN TRACE SUMMARY COMPLETE ==========================")
+
 
     #finish logging
     wandb.finish()
