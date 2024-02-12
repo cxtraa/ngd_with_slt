@@ -7,6 +7,7 @@ Given a family of models, existing as a dictionary
 
 conducts Hessian and RLCT analysis on it
 '''
+
 import wandb
 import pickle
 import os
@@ -34,7 +35,7 @@ import argparse
 from data.build_data import build_data
 
 # TODO: wandb is set offline, takes very long to upload data not sure why
-os.environ["WANDB_MODE"] = "offline"
+# os.environ["WANDB_MODE"] = "offline"
 
 def get_test_args_parser():
     parser = argparse.ArgumentParser('Set parameters for training model', add_help=False)
