@@ -8,6 +8,12 @@ from tqdm import tqdm
 
 from approxngd import KFAC
 
+import matplotlib as mpl
+mpl.use('tkagg')
+import matplotlib.pyplot as plt
+import plotly.graph_objects as go
+from PyHessian.density_plot import density_generate
+
 def train_one_epoch(model, train_loader, optimizer, criterion, device):
     """"
     Train one epoch of a model.
@@ -66,6 +72,25 @@ def evaluate(model, test_loader, criterion, device):
             loss = criterion["general"](output, label)
             test_loss += loss.item()
     return test_loss / len(test_loader)
+
+def get_esd_plot_plotly(eigenvalues, weights, title=None, fig=None, name=None):
+    """Produce eigenspectrum plot in Plotly, with support for overlaid plots."""
+
+    density, grids = density_generate(eigenvalues, weights)
+
+    if not fig:
+        fig = go.Figure()
+        fig.add_trace(go.Scatter(x=grids, y=density + 1.0e-7, mode='lines'))
+        fig.update_layout(
+            title=title,
+            xaxis_title='Eigenvalue',
+            yaxis_title='Density (Log Scale)',
+            yaxis=dict(type='log'),
+        )
+        fig.show()
+        return fig
+    else:
+        fig.add_trace(go.Scatter(x=grids, y=density + 1.0e-7, mode='lines', name=name))
 
 
 

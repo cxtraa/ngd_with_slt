@@ -25,7 +25,7 @@ from devinterp.slt import estimate_learning_coeff
 from devinterp.optim.sgld import SGLD
 
 from PyHessian.pyhessian import hessian # Hessian computation
-from PyHessian.density_plot import *
+from engine import get_esd_plot_plotly
 
 from tqdm import tqdm
 import json
