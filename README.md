@@ -101,7 +101,7 @@ For now we have to manually make sure num_epochs is the same as that for the tra
 * there are quite lines of repeated code in both train and eval (see the TODO lines), ideally should remove these
     * these can cause problems if train and eval are run with different params
 * setup hyperparam testing
-* Note that I accidentally deleted the PyHessian module, but I fixed the changes
+* Note that I accidentally deleted the PyHessian module, - still running into issues after cloning repo and needing to run `git submodule init` and `git submodule update`
 
 
 ## About
