@@ -74,7 +74,9 @@ def evaluate(model, test_loader, criterion, device):
     return test_loss / len(test_loader)
 
 def get_esd_plot_plotly(eigenvalues, weights, title=None, fig=None, name=None):
-    """Produce eigenspectrum plot in Plotly, with support for overlaid plots."""
+    """
+    Produce eigenspectrum plot in Plotly, with support for overlaid plots.
+    """
 
     density, grids = density_generate(eigenvalues, weights)
 
@@ -91,6 +93,15 @@ def get_esd_plot_plotly(eigenvalues, weights, title=None, fig=None, name=None):
         return fig
     else:
         fig.add_trace(go.Scatter(x=grids, y=density + 1.0e-7, mode='lines', name=name))
+
+def count_parameters(model):
+    """
+    Given a model, return the total number of parameters.
+    """
+
+    return sum(layer.numel() for layer in model.parameters())
+
+
 
 
 
