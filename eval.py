@@ -86,14 +86,11 @@ def main(args):
     #TODO: these 2 lines of code are repeated, ideally there no need to define criterion again
     criterion = {"general":nn.CrossEntropyLoss(),"kfac": nn.CrossEntropyLoss(reduction='mean')}
 
-    #%% Get Hessian at every epoch
     for optimizer, m_list in models.items():
         for m in m_list:
             m.eval()
 
-    # For each model, compute the eigenspectrum of the Hessian (of final model) using the PyHessian library
-    # value becomes from a list of models to a single model
-    final_models = {key : value[-1] for key, value in models.items()}
+    #%% Get Hessian at every epoch
 
     #TODO: make data for multiple batches, doesnt seem to work #dataloader object
     # hessian_dataloader = []
@@ -104,31 +101,40 @@ def main(args):
     for image, label in train_loader:
         break
 
-    hessians = {}
-    for key, final_model in final_models.items():
-        #note KFAC is used here
-        crit = criterion["kfac"] if key == "KFAC" else criterion["general"]
-        hessians[key] = hessian(final_model, crit, data=(image,label), cuda=True if device=='cuda' else False)
-
-    # Output trace of Hessian for each optimiser and send results to wandb
-    print("\n======================== HESSIAN TRACE SUMMARY BEGIN ==========================")
-    #trail multiple times to get different estimates of the trace
+    # For each model, compute the eigenspectrum of the Hessian (of final model) using the PyHessian library
+    hessians={}
+    traces={}
     n_iters = 10
-    for hess in hessians:
-        hess_means = []
-        for _ in range(n_iters):
-            hessian_trace = np.mean(hessians[hess].trace())
-            print(hessian_trace)
-            hess_means.append(hessian_trace)
-        final_hess_mean = np.mean(hess_means)
-        print(f"Trace for {hess} : {final_hess_mean}")
-    print("======================== HESSIAN TRACE SUMMARY COMPLETE ==========================")
 
-    # Produce plots of eigenspectrums for final model
+    for optimizer in models:
+        crit = criterion["kfac"] if optimizer == "KFAC" else criterion["general"]
+        print(f"======================== Computing all Hessians and Traces for {optimizer} ==========================")
+        for e, m in enumerate(models[optimizer]):
+            print(f"======================== Computing all Hessians and Traces for {optimizer} and epoch {e} ==========================")
+            hessian_estimate = hessian(m, crit, data=(image,label), cuda=True if device=='cuda' else False)
+
+            model_traces = []
+            for _ in range(n_iters):
+                trace = np.mean(hessian_estimate.trace())
+                model_traces.append(trace)
+            trace_mean = np.mean(model_traces)
+            print(f"Trace for {optimizer} with epoch {e} : {trace_mean}")
+
+            if optimizer in hessians:
+                hessians[optimizer].append(hessian_estimate)
+                traces[optimizer].append(trace_mean)
+            else:
+                hessians[optimizer] = [hessian_estimate]
+                traces[optimizer]=[trace_mean]
+
+
+    # Produce plots of eigenspectrums for final models
+    final_hessians = {key : value[-1] for key, value in hessians.items()}
+
     overlaid_fig = go.Figure()
     individual_figs = []
 
-    for key, hess in hessians.items():
+    for key, hess in final_hessians.items():
         density_eigen, density_weight = hess.density()
         temp_fig = get_esd_plot_plotly(density_eigen, density_weight, title=f"{key} Hessian eigenspectrum")
         individual_figs.append(temp_fig)
@@ -166,6 +172,7 @@ def main(args):
                 criterion=criterion["general"],
                 optimizer_kwargs=dict(
                     lr=args.lr,
+                    # TODO: all these args are repeated, should be taken from the model
                     noise_level=args.noise_level,
                     elasticity=args.elasticity,
                     num_samples=len(train_loader.dataset),
@@ -187,17 +194,21 @@ def main(args):
         #wandb.log({"optimizer" : optimizer, "rlct_estimate" : average_rlct_estimate})
         print(f"======== FINAL RLCT ESTIMATE FOR {optimizer} : {average_rlct_estimate} ========")
     
-    # Quick graphs to visualise how RLCT evolved over time
+    # Quick graphs to visualise how RLCT and Hessians evolved over time
 
     #plt.figure(figsize=(10, 6))
     for optim in rlct_estimates:
         #data = {"Epochs" : np.arange(1, hyperparams["num_epochs"]+1), optim : rlct_estimates[optim]}
-        plt.plot(np.arange(1, args.num_epochs+1), rlct_estimates[optim], label=optim)
+        plt.plot(np.arange(1, args.num_epochs+1), rlct_estimates[optim], label=f'{optim} - rlct')
+        plt.plot(np.arange(1, args.num_epochs+1), traces[optim], label=f'{optim} - trace')
     plt.grid()
-    plt.title("RLCT estimation vs. epochs")
+    plt.title("RLCT + Trace vs. epochs")
     plt.xlabel("Epoch")
-    plt.ylabel("RLCT")
+    plt.ylabel("RLCT or Trace")
     plt.legend()
+
+    # Save the figure to a specified path
+    plt.savefig('figs/figure.png')
 
 
 if __name__ == '__main__':
