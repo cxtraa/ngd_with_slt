@@ -9,7 +9,7 @@ from tqdm import tqdm
 from approxngd import KFAC
 
 import matplotlib as mpl
-mpl.use('tkagg')
+#mpl.use('tkagg')
 import matplotlib.pyplot as plt
 import plotly.graph_objects as go
 from PyHessian.density_plot import density_generate
