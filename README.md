@@ -18,7 +18,8 @@ To evaluate the generalisability of models trained with NGD vs. SGD, we will use
 1. [Methodology](#methodology)
 2. [Set-up](#set-up)
 3. [Training](#training)
-4. [Testing](#testing)
+4. [Evaluation](#evaluation)
+5. [TODO](#todo)
 5. [About](#about)
 
 ## Methodology
@@ -62,45 +63,41 @@ If some of them don't install, then try running `pip install` in the terminal. I
 
 4. Using `wandb` **[WIP]**
 
-When using `wandb`, you will be prompted for an API key. Follow the provided instructions, and you should be able to access the team "slt_to_the_moon".
+Store your Project name, Team Name and API key in `config.json`. Ideally, `config.json` should have dummy variables when you `git push` or `git pull`, and you should key in them yourself.
 
 5. Using GPU **[WIP]**
 
+Refer to David's slack channel in announcements. Note for Linux/MacOS - this should be relatively straightforward. The .ssh file should be in root folder, not your project folder.
+
+After connecting to SSH, Zihe has already git cloned the repo into zihe/ngd_with_slt. Simply run the python commands from the terminal.
 
 ## Training
 
-The network can be trained using the `train.py` script. For training on SHTechPartA, use
+The network can be trained using the `train.py` script. Use
 
 ```
-python train.py --data_root $DATA_ROOT \
-    --dataset_file SHHA \
-    --epochs 3500 \
-    --lr_drop 3500 \
-    --output_dir ./logs \
-    --checkpoints_dir ./weights \
-    --tensorboard_dir ./logs \
-    --lr 0.0001 \
-    --lr_backbone 0.00001 \
-    --batch_size 8 \
-    --eval_freq 1 \
-    --gpu_id 0
+python train.py --num_epochs 5
 ```
-By default, a periodic evaluation will be conducted on the validation set.
 
-## Testing
+or any other value for the number of epochs you wish to train. Further arguments to argparse are in `train.py`. By default, a periodic evaluation will be conducted on the validation set.
 
-A trained model (with an MAE of **51.96**) on SHTechPartA is available at "./weights", run the following commands to launch a visualization demo:
+## Evaluation
 
+A trained model is available at `./models/model.pkl`, run the following commands to evaluate RLCT and Hessian measurements on it
+
+```bash
+python eval.py --num_epochs 5
 ```
-python run_test.py --weight_path ./weights/SHTechA.pth --output_dir ./logs/
-```
+
+For now we have to manually make sure num_epochs is the same as that for the trained family of models but in the future this should not be an argument in `eval.py `
+
 ## TODO
 
 * Make PyHessian work for multiple batches of data
 * Set up checkpointing, saving and loading models (to Weights and Biases)
     * currently it is to save as pickle file, whereas wandb treats it as new run upon running eval.py
     * need to use wandb run id to do this
-* wandb takes very long to upload data, not sure why
+* wandb takes very long to upload data, not sure why. ** I ACTIVATED WANDB TO OFFLINE IN THESE CODE **
 * there are quite lines of repeated code in both train and eval (see the TODO lines), ideally should remove these
     * these can cause problems if train and eval are run with different params
 * setup hyperparam testing
