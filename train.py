@@ -38,7 +38,7 @@ from PyHessian.density_plot import *
 
 warnings.filterwarnings("ignore")
 # TODO: wandb is set offline, takes very long to upload data not sure why
-os.environ["WANDB_MODE"] = "offline"
+os.environ["WANDB_MODE"] = "online"
 
 #%%
 
@@ -59,6 +59,7 @@ def get_train_args_parser():
 
     #dataset params
     parser.add_argument('--batch_size', default=128, type=int)
+    parser.add_argument('--num_workers', default=128, type=int)
 
     #where to save filepath
     parser.add_argument('--save_path',default='models/model.pkl',type=str, help='the file path to save your family of models')
@@ -71,10 +72,10 @@ def main(args):
         config = json.load(f)
 
     #%% initialise wandb
-    wandb.login(key=config["wandb_api_key"])
+    wandb.login()
     wandb.init(project=config["project_name"],
             entity=config["team_name"],
-            name="training adam rlct convergence",
+            name="gpu test run 0",
             )
     
     #%% load in model and create optimizers
@@ -109,7 +110,7 @@ def main(args):
             update_cov_manually=True,
             )
     
-    optimizers = [adam, rmsprop, ngd]
+    optimizers = [adam]
 
     #%% Build dataset
     train_loader, test_loader = build_data(args)

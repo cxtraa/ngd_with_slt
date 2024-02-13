@@ -1,7 +1,7 @@
 {
     "project_name" : "mnist dense nn",
     "team_name" : "slt_to_the_moon",
-    "wandb_api_key": "a18f5c44660ef8ef9df34ea5a9117407bb7d50c5",
+    "wandb_api_key": "7079a24da9cedd161fee1f226cccc384ee3b3403",
 
     "sweep_config": {
       "method": "random",
