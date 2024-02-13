@@ -14,7 +14,8 @@ wandb/
 *.pyc
 
 #ignore weight data, training should be done on gpu server
-*.pth
+# *.pth
+# *.pkl
 
 #ignore figs, this is a temporary folder designed to see figures by matplotlib
 #figs/
