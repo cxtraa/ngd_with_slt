@@ -2,7 +2,7 @@ wandb
 tqdm
 ipykernel
 devinterp
-torch==2.0.1
+torch
 torchvision
 tqdm
 plotly
