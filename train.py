@@ -1,8 +1,9 @@
 '''
 main training script used to obtain models
 '''
-
+"""
 # Import required libraries
+
 import os
 import sys
 import warnings
@@ -32,7 +33,9 @@ from matplotlib.cm import get_cmap
 from models.NN import NeuralNet
 from data.build_data import build_data
 from engine import train_one_epoch, evaluate
-
+"""
+from PyHessian.density_plot import *
+"""
 warnings.filterwarnings("ignore")
 # TODO: wandb is set offline, takes very long to upload data not sure why
 os.environ["WANDB_MODE"] = "offline"
@@ -169,3 +172,4 @@ if __name__ == '__main__':
     parser = get_train_args_parser()
     args = parser.parse_args()
     main(args)
+"""
