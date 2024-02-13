@@ -51,6 +51,7 @@ def get_test_args_parser():
 
     #dataset params
     parser.add_argument('--batch_size', default=128, type=int)
+    parser.add_argument('--num_workers', default=128, type=int)    
 
     #where to load filepath
     parser.add_argument('--load_path',default='models/model.pkl',type=str, help='the file path to load back your family of models')
