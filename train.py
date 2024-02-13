@@ -60,6 +60,10 @@ def get_train_args_parser():
     #where to save filepath
     parser.add_argument('--save_path',default='models/model.pkl',type=str, help='the file path to save your family of models')
 
+    #num_workers for efficient training
+    parser.add_argument('--num_workers',default=6,type=int, 
+                        help='number of worker processes for loading data. play around with this, but one metric is number of cpu cores')
+
     return parser
 
 def main(args):
