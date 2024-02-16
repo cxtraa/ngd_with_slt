@@ -11,3 +11,5 @@ numpy
 approxngd
 pyhessian
 nbformat
+matplotlib
+einops
