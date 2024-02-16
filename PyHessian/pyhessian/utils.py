@@ -22,7 +22,7 @@ import torch
 import math
 from torch.autograd import Variable
 import numpy as np
-
+from numba import jit
 
 def group_product(xs, ys):
     """
@@ -32,7 +32,6 @@ def group_product(xs, ys):
     :return:
     """
     return sum([torch.sum(x * y) for (x, y) in zip(xs, ys)])
-
 
 def group_add(params, update, alpha=1):
     """
@@ -45,7 +44,6 @@ def group_add(params, update, alpha=1):
         params[i].data.add_(update[i] * alpha)
     return params
 
-
 def normalization(v):
     """
     normalization of a list of vectors
@@ -56,7 +54,6 @@ def normalization(v):
     s = s.cpu().item()
     v = [vi / (s + 1e-6) for vi in v]
     return v
-
 
 def get_params_grad(model):
     """
@@ -71,7 +68,6 @@ def get_params_grad(model):
         grads.append(0. if param.grad is None else param.grad + 0.)
     return params, grads
 
-
 def hessian_vector_product(gradsH, params, v):
     """
     compute the hessian vector product of Hv, where
@@ -85,7 +81,6 @@ def hessian_vector_product(gradsH, params, v):
                              only_inputs=True,
                              retain_graph=True)
     return hv
-
 
 def orthnormal(w, v_list):
     """

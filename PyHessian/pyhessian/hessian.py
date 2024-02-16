@@ -22,7 +22,7 @@ import torch
 import math
 from torch.autograd import Variable
 import numpy as np
-
+from numba import jit
 from pyhessian.utils import group_product, group_add, normalization, get_params_grad, hessian_vector_product, orthnormal
 
 
