@@ -13,7 +13,6 @@ from pathlib import Path
 import warnings
 import numpy as np
 import pandas as pd
-import einops
 
 project_root = Path(__file__).resolve().parents[2]
 if str(project_root) not in sys.path:
@@ -56,10 +55,10 @@ def main():
     warnings.filterwarnings("ignore")
 
     ### PRODUCE LIST OF NETWORKS WITH VARYING SIZES ###
-    neurons = [2, 4, 16, 64, 256, 1024, 2048]
+    hidden_layers = [1, 2, 3, 4, 5]
     neural_nets = []
-    for hidden_nodes in neurons:
-        neural_net = NeuralNet(hidden_nodes=hidden_nodes, hidden_layers=2).to(device)
+    for hidden_layer in hidden_layers:
+        neural_net = NeuralNet(hidden_nodes=128, hidden_layers=hidden_layer).to(device)
         neural_nets.append(neural_net)
 
     ### HYPERPARAMETERS, LOSS FUNCTION ###
@@ -115,7 +114,7 @@ def main():
     ### CALCULATE ESTIMATE OF NUMBER OF LARGE EIGENVALUES (DIMENSIONS) IN SPECTRUM ###
     hessian_dims = find_hessian_dimensionality(eigenspectrum_data)
     hessian_fig = go.Figure()
-    hessian_fig.add_trace(go.Scatter(x=neurons, y=list(hessian_dims.values()), mode='markers'))
+    hessian_fig.add_trace(go.Scatter(x=hidden_layers, y=list(hessian_dims.values()), mode='markers'))
     hessian_fig.update_layout(
         title="Hessian dimensionality over models",
         xaxis_title="Hidden neurons",
@@ -139,7 +138,7 @@ def main():
                                 device=device)
         rlct_estimates.append(results["llc/means"][-1]/count_parameters(neural_net))
     rlct_fig = go.Figure()
-    rlct_fig.add_trace(go.Scatter(x=neurons, y=rlct_estimates, mode='markers'))
+    rlct_fig.add_trace(go.Scatter(x=hidden_layers, y=rlct_estimates, mode='markers'))
     rlct_fig.update_layout(
         title=f"Adam RLCT estimation, Elasticity : {hyperparams['elasticity']}, Noise Level : {hyperparams['noise_level']}",
         xaxis_title="Hidden neurons in each layer",

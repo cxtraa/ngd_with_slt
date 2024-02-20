@@ -162,6 +162,9 @@ def sample_from_distribution(eigenvalues, densities, N):
 def write_figs_to_html(figs, dest, title):
     """
     Given a list of Plotly figures, store them in a local HTML file.
+    figs : a List of figures to export.
+    dest : path to destination.
+    title : HTML file title.
     """
 
     div_figs = [fig.to_html(full_html=False) for fig in figs]
@@ -186,6 +189,7 @@ def write_figs_to_html(figs, dest, title):
     """
     final_html = html_template.format(graphs=graphs_html, title=title)
 
+    os.makedirs(os.path.dirname(dest), exist_ok=True)
     with open(dest, 'w', encoding='utf-8') as f:
         f.write(final_html)
 
