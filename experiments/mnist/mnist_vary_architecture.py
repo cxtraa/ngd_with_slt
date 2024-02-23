@@ -55,10 +55,10 @@ def main():
     warnings.filterwarnings("ignore")
 
     ### PRODUCE LIST OF NETWORKS WITH VARYING SIZES ###
-    hidden_layers = [1, 2, 3, 4, 5]
+    hidden_nodes = [2, 4, 8, 16, 32]
     neural_nets = []
-    for hidden_layer in hidden_layers:
-        neural_net = NeuralNet(hidden_nodes=128, hidden_layers=hidden_layer).to(device)
+    for hidden_node in hidden_nodes:
+        neural_net = NeuralNet(hidden_nodes=hidden_node, hidden_layers=2).to(device)
         neural_nets.append(neural_net)
 
     ### HYPERPARAMETERS, LOSS FUNCTION ###
@@ -69,7 +69,7 @@ def main():
         "num_epochs" : 10,  # MUST BE AT LEAST 5 AS RLCT ESTIMATE TAKES AVERAGE OF LAST 5 EPOCHS
         "momentum" : 0.8,
         "num_draws" : 2000,
-        "num_chains" : 3,
+        "num_chains" : 1,
         "noise_level" : 1.0,
         "elasticity" : 1000.0,
     }
@@ -88,8 +88,10 @@ def main():
 
     ### TRAINING LOOP ###
     models = {}
+    model_losses = {}
     for neural_net in neural_nets:
         optimizer = t.optim.Adam(neural_net.parameters(), lr=hyperparams["lr"])
+        title = f"{optimizer.__class__.__name__} {neural_net.hidden_layers} HL {neural_net.hidden_nodes} HN"
         train_losses = []
         test_losses = []
         print(f"\n======================== {neural_net.hidden_layers} hidden layers, {neural_net.hidden_nodes} hidden nodes in each layer ==========================")
@@ -99,7 +101,8 @@ def main():
             train_losses.append(train_loss)
             test_losses.append(test_loss)
             print(f"Epoch {epoch}/{hyperparams['num_epochs']}: train_loss={train_loss:.4f}, test_loss={test_loss:.4f}")
-        models[f"{neural_net.hidden_layers} hidden layers {neural_net.hidden_nodes} hidden nodes with {optimizer.__class__.__name__}"] = neural_net
+        models[title] = neural_net
+        model_losses[title] = [train_losses[-1], test_losses[-1]]
 
     ### PRDOUCE HESSIAN EIGENSPECTRUMS FOR EACH NETWORK ###
     hessians = produce_hessians(models=models,
@@ -114,7 +117,7 @@ def main():
     ### CALCULATE ESTIMATE OF NUMBER OF LARGE EIGENVALUES (DIMENSIONS) IN SPECTRUM ###
     hessian_dims = find_hessian_dimensionality(eigenspectrum_data)
     hessian_fig = go.Figure()
-    hessian_fig.add_trace(go.Scatter(x=hidden_layers, y=list(hessian_dims.values()), mode='markers'))
+    hessian_fig.add_trace(go.Scatter(x=hidden_nodes, y=list(hessian_dims.values()), mode='markers'))
     hessian_fig.update_layout(
         title="Hessian dimensionality over models",
         xaxis_title="Hidden neurons",
@@ -138,13 +141,35 @@ def main():
                                 device=device)
         rlct_estimates.append(results["llc/means"][-1]/count_parameters(neural_net))
     rlct_fig = go.Figure()
-    rlct_fig.add_trace(go.Scatter(x=hidden_layers, y=rlct_estimates, mode='markers'))
+    rlct_fig.add_trace(go.Scatter(x=hidden_nodes, y=rlct_estimates, mode='markers'))
     rlct_fig.update_layout(
         title=f"Adam RLCT estimation, Elasticity : {hyperparams['elasticity']}, Noise Level : {hyperparams['noise_level']}",
         xaxis_title="Hidden neurons in each layer",
         yaxis_title="RLCT",
     )
     figs.append(rlct_fig)
+
+    ### VISUALISE TRAINING / TESTING LOSS OVER OPTIMISERS ###
+    train_test_fig = go.Figure()
+    train_test_fig.add_trace(go.Bar(
+        x=list(model_losses.keys()),
+        y=[loss[0] for loss in model_losses.values()],
+        name="Training Losses",
+        marker_color="indianred",
+    ))
+    train_test_fig.add_trace(go.Bar(
+        x=list(model_losses.keys()),
+        y=[loss[1] for loss in model_losses.values()],
+        name="Testing Losses",
+        marker_color="lightsalmon",
+    ))
+    train_test_fig.update_layout(
+        title="Training and testing losses of model architectures",
+        xaxis_title="Model",
+        yaxis_title="Loss",
+        barmode="group",
+    )
+    figs.append(train_test_fig)
 
     ### PUSH FIGURES TO LOCAL HTML FILE ###
     curr_time = datetime.now().strftime("%Y-%m-%d-%H-%M")
