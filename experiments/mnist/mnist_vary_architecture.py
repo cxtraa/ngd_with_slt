@@ -55,11 +55,13 @@ def main():
     warnings.filterwarnings("ignore")
 
     ### PRODUCE LIST OF NETWORKS WITH VARYING SIZES ###
-    hidden_nodes = [2, 4, 8]
+    hidden_nodes = [2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048]
     hidden_layers = 2
     models = {}
+    titles = []
     for hidden_node in hidden_nodes:
         title = f"{hidden_node} HN {hidden_layers} HL"
+        titles.append(title)
         model = LinearMNIST(hidden_nodes=hidden_node, hidden_layers=hidden_layers).to(device)
         models[title] = model
 
@@ -86,26 +88,6 @@ def main():
     train_loader = t.utils.data.DataLoader(train_set, batch_size=hyperparams["batch_size"], shuffle=True, num_workers=hyperparams["num_workers"], persistent_workers=True)
     test_loader = t.utils.data.DataLoader(test_set, batch_size=hyperparams["batch_size"], shuffle=False, num_workers=hyperparams["num_workers"], persistent_workers=True)
 
-    """
-    ### TRAINING LOOP ###
-    models = {}
-    model_losses = {}
-    for neural_net in neural_nets:
-        optimizer = t.optim.Adam(neural_net.parameters(), lr=hyperparams["lr"])
-        title = f"{optimizer.__class__.__name__} {neural_net.hidden_layers} HL {neural_net.hidden_nodes} HN"
-        train_losses = []
-        test_losses = []
-        print(f"\n======================== {neural_net.hidden_layers} hidden layers, {neural_net.hidden_nodes} hidden nodes in each layer ==========================")
-        for epoch in epochs:
-            train_loss = train_one_epoch(neural_net, train_loader, optimizer, criterion, device)
-            test_loss = evaluate(neural_net, test_loader, criterion, device)
-            train_losses.append(train_loss)
-            test_losses.append(test_loss)
-            print(f"Epoch {epoch}/{hyperparams['num_epochs']}: train_loss={train_loss:.4f}, test_loss={test_loss:.4f}")
-        models[title] = neural_net
-        model_losses[title] = [train_losses[-1], test_losses[-1]]
-    """
-
     ### LOAD MODELS FROM LOCAL FILES ###
     criteria = {
         "model" : "LM",
@@ -117,6 +99,7 @@ def main():
 
     for i in range(len(state_dicts)):
         HN, HL = models_data[i]["description"]["LMHN"], models_data[i]["description"]["LMHL"]
+        print(HN)
         optim = models_data[i]["description"]["optimiser"]
         title = f"{HN} HN {HL} HL"        
         models[title].load_state_dict(state_dicts[i])
@@ -166,18 +149,17 @@ def main():
     )
     figs.append(rlct_fig)
 
-    """
     ### VISUALISE TRAINING / TESTING LOSS OVER OPTIMISERS ###
     train_test_fig = go.Figure()
     train_test_fig.add_trace(go.Bar(
-        x=list(model_losses.keys()),
-        y=[loss[0] for loss in model_losses.values()],
+        x=titles,
+        y=[model_data["train_losses"][-1] for model_data in models_data],
         name="Training Losses",
         marker_color="indianred",
     ))
     train_test_fig.add_trace(go.Bar(
-        x=list(model_losses.keys()),
-        y=[loss[1] for loss in model_losses.values()],
+        x=titles,
+        y=[model_data["test_losses"][-1] for model_data in models_data],
         name="Testing Losses",
         marker_color="lightsalmon",
     ))
@@ -188,7 +170,6 @@ def main():
         barmode="group",
     )
     figs.append(train_test_fig)
-    """
 
     ### PUSH FIGURES TO LOCAL HTML FILE ###
     curr_time = datetime.now().strftime("%Y-%m-%d-%H-%M")
