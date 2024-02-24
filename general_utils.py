@@ -4,6 +4,8 @@ General utility functions used across our files.
 
 import os
 import sys
+import re
+import pickle
 import warnings
 import numpy as np
 import pandas as pd
@@ -225,6 +227,40 @@ def run_callbacks(train_loader, train_set, model, criterion, callbacks, hyperpar
             results.update(callback.sample())
     
     return results
+
+def load_models(base_path, criteria):
+    """
+    Load models that match specific criteria with dynamic parameter parsing.
+
+    Parameters:
+    - base_path (str): Path to the directory containing the models.
+    - criteria (dict): Dictionary of criteria for filtering models. Key is parameter name, value is desired value or a list of acceptable values.
+
+    Returns:
+    - List of model state dictionaries that match the criteria.
+    """
+
+    state_dicts = []
+    models_data = []
+
+    # List all files in the models directory
+    for filename in os.listdir(base_path):
+        if filename.endswith('.pkl'):
+            file_path = os.path.join(base_path, filename)
+            with open(file_path, "rb") as file:
+                model = pickle.load(file)
+            desc = model["args"]
+            print(desc)
+            print(criteria)
+            if all(desc.get(key) in (value if isinstance(value, list) else [value]) for key, value in criteria.items()):
+                model_data = {}
+                state_dicts.append(model["state_dict"])
+                model_data["description"] = model["args"]
+                model_data["train_losses"] = model["train_losses"]
+                model_data["test_losses"] = model["test_losses"]
+                models_data.append(model_data)
+
+    return state_dicts, models_data
     
 
         

@@ -40,7 +40,7 @@ from PyHessian.pyhessian import *
 from PyHessian.density_plot import *
 from general_utils import *
 from hessian_utils import *
-from models.NN import *
+from models.architectures.NN import *
 
 import plotly.express as px
 import plotly.graph_objects as go
@@ -55,19 +55,19 @@ def main():
     warnings.filterwarnings("ignore")
 
     ### PRODUCE LIST OF NETWORKS WITH VARYING SIZES ###
-    hidden_nodes = [2, 4, 8, 16, 32]
-    neural_nets = []
+    hidden_nodes = [2, 4, 8]
+    hidden_layers = 2
+    models = {}
     for hidden_node in hidden_nodes:
-        neural_net = NeuralNet(hidden_nodes=hidden_node, hidden_layers=2).to(device)
-        neural_nets.append(neural_net)
+        title = f"{hidden_node} HN {hidden_layers} HL"
+        model = LinearMNIST(hidden_nodes=hidden_node, hidden_layers=hidden_layers).to(device)
+        models[title] = model
 
     ### HYPERPARAMETERS, LOSS FUNCTION ###
     hyperparams = {
-        "lr": 1e-5,
         "batch_size" : 128,
-        "num_workers" : 16,
-        "num_epochs" : 10,  # MUST BE AT LEAST 5 AS RLCT ESTIMATE TAKES AVERAGE OF LAST 5 EPOCHS
-        "momentum" : 0.8,
+        "num_epochs" : 5,
+        "num_workers" : 12,
         "num_draws" : 2000,
         "num_chains" : 1,
         "noise_level" : 1.0,
@@ -86,6 +86,7 @@ def main():
     train_loader = t.utils.data.DataLoader(train_set, batch_size=hyperparams["batch_size"], shuffle=True, num_workers=hyperparams["num_workers"], persistent_workers=True)
     test_loader = t.utils.data.DataLoader(test_set, batch_size=hyperparams["batch_size"], shuffle=False, num_workers=hyperparams["num_workers"], persistent_workers=True)
 
+    """
     ### TRAINING LOOP ###
     models = {}
     model_losses = {}
@@ -103,7 +104,23 @@ def main():
             print(f"Epoch {epoch}/{hyperparams['num_epochs']}: train_loss={train_loss:.4f}, test_loss={test_loss:.4f}")
         models[title] = neural_net
         model_losses[title] = [train_losses[-1], test_losses[-1]]
+    """
 
+    ### LOAD MODELS FROM LOCAL FILES ###
+    criteria = {
+        "model" : "LM",
+        "optimiser" : "adam",
+        "LMHN" : hidden_nodes,
+        "LMHL" : hidden_layers,
+    }
+    state_dicts, models_data = load_models(".\models", criteria=criteria)
+
+    for i in range(len(state_dicts)):
+        HN, HL = models_data[i]["description"]["LMHN"], models_data[i]["description"]["LMHL"]
+        optim = models_data[i]["description"]["optimiser"]
+        title = f"{HN} HN {HL} HL"        
+        models[title].load_state_dict(state_dicts[i])
+        
     ### PRDOUCE HESSIAN EIGENSPECTRUMS FOR EACH NETWORK ###
     hessians = produce_hessians(models=models,
                                 data_loader=test_loader, 
@@ -131,15 +148,15 @@ def main():
                                        len(train_set), 
                                        device=device)
     rlct_estimates = []
-    for neural_net in neural_nets:
+    for model in models.values():
         results = run_callbacks(train_loader,
                                 train_set,
-                                model=neural_net,
+                                model=model,
                                 hyperparams=hyperparams,
                                 callbacks=[llc_estimator],
                                 criterion=criterion["general"],
                                 device=device)
-        rlct_estimates.append(results["llc/means"][-1]/count_parameters(neural_net))
+        rlct_estimates.append(results["llc/means"][-1]/count_parameters(model))
     rlct_fig = go.Figure()
     rlct_fig.add_trace(go.Scatter(x=hidden_nodes, y=rlct_estimates, mode='markers'))
     rlct_fig.update_layout(
@@ -149,6 +166,7 @@ def main():
     )
     figs.append(rlct_fig)
 
+    """
     ### VISUALISE TRAINING / TESTING LOSS OVER OPTIMISERS ###
     train_test_fig = go.Figure()
     train_test_fig.add_trace(go.Bar(
@@ -170,6 +188,7 @@ def main():
         barmode="group",
     )
     figs.append(train_test_fig)
+    """
 
     ### PUSH FIGURES TO LOCAL HTML FILE ###
     curr_time = datetime.now().strftime("%Y-%m-%d-%H-%M")
