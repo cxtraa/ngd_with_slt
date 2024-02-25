@@ -255,16 +255,17 @@ def load_models(base_path, criteria):
     for filename in os.listdir(base_path):
         if filename.endswith('.pkl'):
             file_path = os.path.join(base_path, filename)
-            print('---------', file_path, '---------','\n')
             with open(file_path, "rb") as file:
                 if t.cuda.is_available():
                     model = pickle.load(file)
                 else:
                     model = CPU_Unpickler(file).load()
             desc = model["args"]
-            print(desc)
-            print(criteria)
             if all(desc.get(key) in (value if isinstance(value, list) else [value]) for key, value in criteria.items()):
+                print('---------', file_path, '---------','\n')
+                print(desc)
+                print(criteria)
+
                 model_data = {}
                 state_dicts.append(model["state_dict"])
                 model_data["description"] = model["args"]
