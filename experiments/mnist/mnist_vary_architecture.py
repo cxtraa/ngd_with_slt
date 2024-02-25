@@ -177,5 +177,5 @@ def main():
     write_figs_to_html(figs, f"./experiments/mnist/mnist_hidden_nodes_{curr_time}.html", title="Investigating effect of hidden nodes on RLCT / Hessian eigenspectrum")
 
 if __name__ == "__main__":
-    #freeze_support()    # ONLY REQUIRED FOR WINDOWS, REMOVE IF USING MAC OR LINUX
+    freeze_support()    # ONLY REQUIRED FOR WINDOWS, REMOVE IF USING MAC OR LINUX
     main()
