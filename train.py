@@ -37,6 +37,7 @@ from PyHessian.density_plot import *
 from general_utils import *
 from hessian_utils import *
 from models.architectures.NN import *
+from data.build_data import build_data
 
 import plotly.express as px
 import plotly.graph_objects as go
@@ -83,14 +84,8 @@ def main(args):
     if args.model == "LM":
         filename += f"_{args.LMHL}-HL_{args.LMHN}-HN"
         model = LinearMNIST(hidden_layers=args.LMHL, hidden_nodes=args.LMHN).to(device)
-        transform = transforms.Compose([
-            transforms.ToTensor(),
-            transforms.Normalize((0.1307,), (0.3081,))
-        ])
-        train_set = datasets.MNIST(root='./data', train=True, download=True, transform=transform)
-        test_set = datasets.MNIST(root='./data', train=False, download=True, transform=transform)
-        train_loader = t.utils.data.DataLoader(train_set, batch_size=args.batch_size, shuffle=True, num_workers=args.num_workers, persistent_workers=True)
-        test_loader = t.utils.data.DataLoader(test_set, batch_size=args.batch_size, shuffle=False, num_workers=args.num_workers, persistent_workers=True)
+        train_loader, test_loader = build_data(args)
+
     else:
         raise NotImplementedError("The requested model does not exist.")
 
