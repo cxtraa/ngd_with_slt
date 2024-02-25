@@ -40,6 +40,14 @@ import plotly.express as px
 import plotly.graph_objects as go
 import matplotlib.pyplot as plt
 from matplotlib.cm import get_cmap
+import io
+
+class CPU_Unpickler(pickle.Unpickler):
+    def find_class(self, module, name):
+        if module == 'torch.storage' and name == '_load_from_bytes':
+            return lambda b: t.load(io.BytesIO(b), map_location='cpu')
+        else:
+            return super().find_class(module, name)
 
 def train_one_epoch(model, train_loader, optimizer, criterion, device):
     """"
@@ -247,8 +255,12 @@ def load_models(base_path, criteria):
     for filename in os.listdir(base_path):
         if filename.endswith('.pkl'):
             file_path = os.path.join(base_path, filename)
+            print('---------', file_path, '---------','\n')
             with open(file_path, "rb") as file:
-                model = pickle.load(file)
+                if t.cuda.is_available():
+                    model = pickle.load(file)
+                else:
+                    model = CPU_Unpickler(file).load()
             desc = model["args"]
             print(desc)
             print(criteria)
