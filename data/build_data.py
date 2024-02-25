@@ -20,7 +20,7 @@ def build_data(args):
     except Exception as e:
         print('Cannot find data')
 
-    train_loader = t.utils.data.DataLoader(train_set, batch_size=args.batch_size, shuffle=True, num_workers=args.num_workers)
-    test_loader = t.utils.data.DataLoader(test_set, batch_size=args.batch_size, shuffle=False, num_workers=args.num_workers)
+    train_loader = t.utils.data.DataLoader(train_set, batch_size=args.batch_size, shuffle=True, num_workers=args.num_workers,persistent_workers=True)
+    test_loader = t.utils.data.DataLoader(test_set, batch_size=args.batch_size, shuffle=False, num_workers=args.num_workers,persistent_workers=True)
 
     return train_loader, test_loader

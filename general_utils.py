@@ -40,6 +40,14 @@ import plotly.express as px
 import plotly.graph_objects as go
 import matplotlib.pyplot as plt
 from matplotlib.cm import get_cmap
+import io
+
+class CPU_Unpickler(pickle.Unpickler):
+    def find_class(self, module, name):
+        if module == 'torch.storage' and name == '_load_from_bytes':
+            return lambda b: t.load(io.BytesIO(b), map_location='cpu')
+        else:
+            return super().find_class(module, name)
 
 def train_one_epoch(model, train_loader, optimizer, criterion, device):
     """"
@@ -195,16 +203,16 @@ def write_figs_to_html(figs, dest, title):
     with open(dest, 'w', encoding='utf-8') as f:
         f.write(final_html)
 
-def run_callbacks(train_loader, train_set, model, criterion, callbacks, hyperparams, device):
+def run_callbacks(train_loader, model, criterion, callbacks, args, device):
     """
     Perform LLC (local learning coefficient) estimation on a model.
     """
     
     optim_kwargs = {
         "lr" : 1e-6,
-        "elasticity" : hyperparams["elasticity"],
+        "elasticity" : args.elasticity,
         "temperature" : "adaptive",
-        "num_samples" : len(train_set),
+        "num_samples" : len(train_loader.dataset),
         "save_noise" : True,
     }
 
@@ -214,8 +222,8 @@ def run_callbacks(train_loader, train_set, model, criterion, callbacks, hyperpar
         criterion=criterion,
         optimizer_kwargs=optim_kwargs,
         sampling_method=SGLD,
-        num_chains=hyperparams["num_chains"],
-        num_draws=hyperparams["num_draws"],
+        num_chains=args.num_chains,
+        num_draws=args.num_draws,
         callbacks=callbacks,
         device=device
     )
@@ -248,11 +256,16 @@ def load_models(base_path, criteria):
         if filename.endswith('.pkl'):
             file_path = os.path.join(base_path, filename)
             with open(file_path, "rb") as file:
-                model = pickle.load(file)
+                if t.cuda.is_available():
+                    model = pickle.load(file)
+                else:
+                    model = CPU_Unpickler(file).load()
             desc = model["args"]
-            print(desc)
-            print(criteria)
             if all(desc.get(key) in (value if isinstance(value, list) else [value]) for key, value in criteria.items()):
+                print('---------', file_path, '---------','\n')
+                print(desc)
+                print(criteria)
+
                 model_data = {}
                 state_dicts.append(model["state_dict"])
                 model_data["description"] = model["args"]
