@@ -102,6 +102,8 @@ def main(args):
         "LMHL" : hidden_layers,
     }
     state_dicts, models_data = load_models("./models", criteria=criteria)
+    num_epochs = models_data[0]["description"]["num_epochs"]
+    epochs = np.arange(1, num_epochs+1)
 
     for i in range(len(state_dicts)):
         HN, HL = models_data[i]["description"]["LMHN"], models_data[i]["description"]["LMHL"]
@@ -124,7 +126,7 @@ def main(args):
     figs, eigenspectrum_data = produce_hessian_eigenspectra(hessians, plot_type="log")
 
     ### CALCULATE ESTIMATE OF NUMBER OF LARGE EIGENVALUES (DIMENSIONS) IN SPECTRUM ###
-    hessian_dims = find_hessian_dimensionality(eigenspectrum_data)
+    hessian_dims, hessian_dims_norm = find_hessian_dimensionality(eigenspectrum_data)
     hessian_fig = go.Figure()
     hessian_fig.add_trace(go.Scatter(x=hidden_nodes, y=list(hessian_dims.values()), mode='markers'))
     hessian_fig.update_layout(
@@ -140,6 +142,7 @@ def main(args):
                                        len(train_loader.dataset), 
                                        device=device)
     rlct_estimates = []
+    rlct_estimates_norm = []
     for model in models.values():
         results = run_callbacks(train_loader,
                                 model=model,
@@ -147,7 +150,8 @@ def main(args):
                                 callbacks=[llc_estimator],
                                 criterion=criterion["general"],
                                 device=device)
-        rlct_estimates.append(results["llc/means"][-1]/count_parameters(model))
+        rlct_estimates.append(results["llc/means"][-1])
+        rlct_estimates_norm.append(results["llc/means"][-1]/count_parameters(model))
     rlct_fig = go.Figure()
     rlct_fig.add_trace(go.Scatter(x=hidden_nodes, y=rlct_estimates, mode='markers'))
     rlct_fig.update_layout(
@@ -178,6 +182,32 @@ def main(args):
         barmode="group",
     )
     figs.append(train_test_fig)
+
+    train_fig = go.Figure()
+    test_fig = go.Figure()
+    for model_data in models_data:
+        train_fig.add_trace(go.Scatter(
+            x=epochs,
+            y=model_data["train_losses"],
+            name=model_data["description"]["optimiser"],
+        ))
+        test_fig.add_trace(go.Scatter(
+            x=epochs,
+            y=model_data["test_losses"],
+            name=model_data["description"]["optimiser"],
+        ))
+    train_fig.update_layout(
+        title="Evolution of training loss over optimisers",
+        xaxis_title="Epochs",
+        yaxis_title="Loss",
+    )
+    test_fig.update_layout(
+        title="Evolution of testing loss over optimisers",
+        xaxis_title="Epochs",
+        yaxis_title="Loss",
+    )
+    figs.append(train_fig)
+    figs.append(test_fig)
 
     ### PUSH FIGURES TO LOCAL HTML FILE ###
     curr_time = datetime.now().strftime("%Y-%m-%d-%H-%M")
