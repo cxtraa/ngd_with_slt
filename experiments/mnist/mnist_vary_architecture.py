@@ -41,6 +41,7 @@ from PyHessian.density_plot import *
 from general_utils import *
 from hessian_utils import *
 from models.architectures.NN import *
+from data.build_data import build_data
 
 import plotly.express as px
 import plotly.graph_objects as go
@@ -48,7 +49,34 @@ import matplotlib
 import matplotlib.pyplot as plt
 from matplotlib.cm import get_cmap
 
-def main():
+
+def get_mnist_vary_architecture_args_parser():
+    parser = argparse.ArgumentParser(description='Set parameters for training model', add_help=False)
+
+    # Arguments organized by group
+    arg_groups = {
+        'RLCT Hyperparameters': [
+            {'name': '--num_draws', 'default': 2000, 'type': int},
+            {'name': '--num_chains', 'default': 1, 'type': int},
+            {'name': '--noise_level', 'default': 1.0, 'type': float},
+            {'name': '--elasticity', 'default': 1000.0, 'type': float}
+        ],
+        'Data Loading Parameters': [
+            {'name': '--batch_size', 'default': 128, 'type': int},
+            {'name': '--num_workers', 'default': 12, 'type': int}
+        ]
+    }
+
+    # Loop through the argument groups and add them to the parser
+    for group_name, args in arg_groups.items():
+        group = parser.add_argument_group(group_name)
+        for arg in args:
+            group.add_argument(arg['name'], default=arg['default'], type=arg['type'], help=arg.get('help', ''))
+
+    return parser
+
+
+def main(args):
     ### CHECK DEVICE ###
     device = "cuda" if t.cuda.is_available() else "cpu"
     print(f"DEVICE : {device}")
@@ -65,29 +93,6 @@ def main():
         model = LinearMNIST(hidden_nodes=hidden_node, hidden_layers=hidden_layers).to(device)
         models[title] = model
 
-    ### HYPERPARAMETERS, LOSS FUNCTION ###
-    hyperparams = {
-        "batch_size" : 128,
-        "num_epochs" : 5,
-        "num_workers" : 12,
-        "num_draws" : 2000,
-        "num_chains" : 1,
-        "noise_level" : 1.0,
-        "elasticity" : 1000.0,
-    }
-    epochs = np.arange(1, hyperparams["num_epochs"]+1)
-    criterion = {"general":nn.CrossEntropyLoss(),"kfac": nn.CrossEntropyLoss(reduction='mean')}
-
-    ### LOAD MNIST DATA ###
-    transform = transforms.Compose([
-        transforms.ToTensor(),
-        transforms.Normalize((0.1307,), (0.3081,))
-    ])
-    train_set = datasets.MNIST(root='./data', train=True, download=True, transform=transform)
-    test_set = datasets.MNIST(root='./data', train=False, download=True, transform=transform)
-    train_loader = t.utils.data.DataLoader(train_set, batch_size=hyperparams["batch_size"], shuffle=True, num_workers=hyperparams["num_workers"], persistent_workers=True)
-    test_loader = t.utils.data.DataLoader(test_set, batch_size=hyperparams["batch_size"], shuffle=False, num_workers=hyperparams["num_workers"], persistent_workers=True)
-
     ### LOAD MODELS FROM LOCAL FILES ###
     criteria = {
         "model" : "LM",
@@ -103,6 +108,9 @@ def main():
         optim = models_data[i]["description"]["optimiser"]
         title = f"{HN} HN {HL} HL"        
         models[title].load_state_dict(state_dicts[i])
+
+    criterion = {"general":nn.CrossEntropyLoss(),"kfac": nn.CrossEntropyLoss(reduction='mean')}
+    train_loader,test_loader=build_data(args)
         
     ### PRDOUCE HESSIAN EIGENSPECTRUMS FOR EACH NETWORK ###
     hessians = produce_hessians(models=models,
@@ -126,16 +134,15 @@ def main():
     figs.append(hessian_fig)
 
     ### LLC ESTIMATIONS FOR EACH ARCHITECTURE AT CONVERGENCE ###
-    llc_estimator = OnlineLLCEstimator(hyperparams["num_chains"],                                       
-                                       hyperparams["num_draws"], 
-                                       len(train_set), 
+    llc_estimator = OnlineLLCEstimator(args.num_chains,                                       
+                                       args.num_draws, 
+                                       len(train_loader.dataset), 
                                        device=device)
     rlct_estimates = []
     for model in models.values():
         results = run_callbacks(train_loader,
-                                train_set,
                                 model=model,
-                                hyperparams=hyperparams,
+                                args=args,
                                 callbacks=[llc_estimator],
                                 criterion=criterion["general"],
                                 device=device)
@@ -143,7 +150,7 @@ def main():
     rlct_fig = go.Figure()
     rlct_fig.add_trace(go.Scatter(x=hidden_nodes, y=rlct_estimates, mode='markers'))
     rlct_fig.update_layout(
-        title=f"Adam RLCT estimation, Elasticity : {hyperparams['elasticity']}, Noise Level : {hyperparams['noise_level']}",
+        title=f"Adam RLCT estimation, Elasticity : {args.elasticity}, Noise Level : {args.noise_level}",
         xaxis_title="Hidden neurons in each layer",
         yaxis_title="RLCT",
     )
@@ -177,4 +184,6 @@ def main():
 
 if __name__ == "__main__":
     freeze_support()    # ONLY REQUIRED FOR WINDOWS, REMOVE IF USING MAC OR LINUX
-    main()
+    parser = get_mnist_vary_architecture_args_parser()
+    args = parser.parse_args()
+    main(args)

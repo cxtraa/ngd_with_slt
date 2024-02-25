@@ -195,16 +195,16 @@ def write_figs_to_html(figs, dest, title):
     with open(dest, 'w', encoding='utf-8') as f:
         f.write(final_html)
 
-def run_callbacks(train_loader, train_set, model, criterion, callbacks, hyperparams, device):
+def run_callbacks(train_loader, model, criterion, callbacks, args, device):
     """
     Perform LLC (local learning coefficient) estimation on a model.
     """
     
     optim_kwargs = {
         "lr" : 1e-6,
-        "elasticity" : hyperparams["elasticity"],
+        "elasticity" : args.elasticity,
         "temperature" : "adaptive",
-        "num_samples" : len(train_set),
+        "num_samples" : len(train_loader.dataset),
         "save_noise" : True,
     }
 
@@ -214,8 +214,8 @@ def run_callbacks(train_loader, train_set, model, criterion, callbacks, hyperpar
         criterion=criterion,
         optimizer_kwargs=optim_kwargs,
         sampling_method=SGLD,
-        num_chains=hyperparams["num_chains"],
-        num_draws=hyperparams["num_draws"],
+        num_chains=args.num_chains,
+        num_draws=args.num_draws,
         callbacks=callbacks,
         device=device
     )
