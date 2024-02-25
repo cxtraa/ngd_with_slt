@@ -124,6 +124,8 @@ def main(args):
     }
     with open(f"models/{filename}.pkl", 'wb') as file:
         pickle.dump(data_to_save, file, protocol=pickle.HIGHEST_PROTOCOL)
+        #t.save(data_to_save, file)
+
 
 if __name__ == '__main__':
     parser = get_train_args_parser()
