@@ -13,3 +13,6 @@ pyhessian
 nbformat
 matplotlib
 einops
+scipy
+chardet
+numba
