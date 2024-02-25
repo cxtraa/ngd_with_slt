@@ -42,6 +42,7 @@ from hessian_utils import *
 from models.architectures.NN import *
 
 import plotly.express as px
+from plotly.subplots import make_subplots
 import plotly.graph_objects as go
 import matplotlib
 import matplotlib.pyplot as plt
@@ -52,45 +53,28 @@ def main():
     device = "cuda" if t.cuda.is_available() else "cpu"
     print(f"DEVICE : {device}")
     warnings.filterwarnings("ignore")
-    figs = []   # place to store all figures for viewing
+
+    ### PRODUCE MULTIPLE MODELS FOR TRAINING WITH DIFFERENT OPTIMISERS ###
+    HIDDEN_LAYERS = 2
+    HIDDEN_NODES = 128
+    optimisers = ["sgd", "rmsprop", "adam", "ngd"]
+    models = {}
+    for optim in optimisers:
+        model = LinearMNIST(hidden_layers=HIDDEN_LAYERS, hidden_nodes=HIDDEN_NODES).to(device)
+        models[optim] = model
 
     ### HYPERPARAMETERS, MODEL, AND OPTIMISERS ###
-    model = NeuralNet(hidden_layers=2, hidden_nodes=256).to(device)
     hyperparams = {
         "lr": 1e-5,
         "batch_size" : 128,
-        "num_workers" : 16,
         "num_epochs" : 10,
-        "momentum" : 0.8,
-        "num_draws" : 4000,
-        "num_chains" : 5,
+        "num_workers" : 12,
+        "num_draws" : 2000,
+        "num_chains" : 1,
         "noise_level" : 2.0,
-        "elasticity" : 10000.0,
+        "elasticity" : 1000.0,
     }
-    epochs = np.arange(1, hyperparams["num_epochs"]+1)
     criterion = {"general":nn.CrossEntropyLoss(),"kfac": nn.CrossEntropyLoss(reduction='mean')}
-    sgd = t.optim.SGD(
-        model.parameters(),
-        lr=hyperparams["lr"],
-        )
-    adam = t.optim.Adam(
-        model.parameters(),
-        lr=hyperparams["lr"],
-        )
-    rmsprop = t.optim.RMSprop(
-        model.parameters(),
-        lr=hyperparams["lr"],
-        momentum=hyperparams["momentum"],
-    )
-    ngd = KFAC(model, 
-            hyperparams["lr"], 
-            1e-3,
-            momentum_type='regular',
-            momentum=hyperparams["momentum"],
-            adapt_damping=False,
-            update_cov_manually=True,
-            )
-    optimizers = [sgd, adam, rmsprop, ngd]
 
     ### DATA LOADING ###
     transform = transforms.Compose([
@@ -102,98 +86,139 @@ def main():
     train_loader = t.utils.data.DataLoader(train_set, batch_size=hyperparams["batch_size"], shuffle=True, num_workers=hyperparams["num_workers"], persistent_workers=True)
     test_loader = t.utils.data.DataLoader(test_set, batch_size=hyperparams["batch_size"], shuffle=False, num_workers=hyperparams["num_workers"], persistent_workers=True)
 
-    ### TRAINING LOOP ###
-    models = {}
-    train_losses = {}
-    test_losses = {}
-    for optimizer in optimizers:
-        name = f"{optimizer.__class__.__name__}"
-        optim_models = []
-        optim_train_losses = []
-        optim_test_losses = []
-        print(f"\n======================== Training with {name} ==========================")
-        for epoch in range(hyperparams["num_epochs"]):
-            train_loss = train_one_epoch(model, train_loader, optimizer, criterion, device)
-            test_loss = evaluate(model, test_loader, criterion, device)
-            optim_train_losses.append(train_loss)
-            optim_test_losses.append(test_loss)
-            optim_models.append(model)
-            print(f"Epoch {epoch+1}/{hyperparams['num_epochs']}: train_loss={train_loss:.4f}, test_loss={test_loss:.4f}")
-        train_losses[name] = optim_train_losses
-        test_losses[name] = optim_test_losses
-        models[name] = optim_models
-    
-    ### GENERATE TRAINING / TESTING PLOTS ###
-    train_fig = go.Figure()
-    for optim, train_loss in train_losses.items():
-        train_fig.add_trace(go.Scatter(x=epochs, y=train_loss, mode='lines+markers', name=optim))
-    train_fig.update_layout(title="Training loss",
-                    xaxis_title="Epoch",
-                    yaxis_title="Loss",
-                    legend_title="Optimizers"
-                    )
-    test_fig = go.Figure()
-    for optim, test_loss in test_losses.items():
-        test_fig.add_trace(go.Scatter(x=epochs, y=test_loss, mode='lines+markers', name=optim))
+    ### LOAD MODELS FROM LOCAL FILES ###
+    criteria = {
+        "model" : "LM",
+        "optimiser" : ["adam", "rmsprop", "ngd", "sgd"],
+        "LMHN" : HIDDEN_NODES,
+        "LMHL" : HIDDEN_LAYERS,
+    }
+    state_dicts, models_data = load_models("./models", criteria=criteria)
+    num_epochs = models_data[0]["description"]["num_epochs"]
+    epochs = np.arange(1, num_epochs+1)
 
-    test_fig.update_layout(title="Test loss",
-                    xaxis_title="Epoch",
-                    yaxis_title="Loss",
-                    legend_title="Optimizers",
-                    )
-    figs.append(train_fig)
-    figs.append(test_fig)
+    for i in range(len(state_dicts)):
+        optim = models_data[i]["description"]["optimiser"]   
+        models[optim].load_state_dict(state_dicts[i])
 
     ### COMPUTE MODEL EIGENSPECTRA ###
-    hessians = produce_hessians(models={key : value[-1] for key, value in models.items()},
-                                data_loader=train_loader,
+    hessians = produce_hessians(models=models,
+                                data_loader=test_loader,
                                 num_batches=10,
                                 criterion=criterion,
                                 device=device)
     
     ### COMPUTE FIGURES AND EIGENSPECTRUM DATA ###
-    hessian_figs, eigenspectrum_data = produce_hessian_eigenspectra(hessians, plot_type="log")
-    for hessian_fig in hessian_figs:
-        figs.append(hessian_fig)
+    figs, eigenspectrum_data = produce_hessian_eigenspectra(hessians, plot_type="log")
     
     ### CALCULATE ESTIMATE OF NUMBER OF LARGE EIGENVALUES (DIMENSIONS) IN SPECTRUM ###
-    hessian_dims = find_hessian_dimensionality(eigenspectrum_data)
-    hessian_fig = go.Figure()
-    hessian_fig.add_trace(go.Bar(x=list(models.keys()), y=list(hessian_dims.values())))
-    hessian_fig.update_layout(
-        title="Hessian dimensionality over models",
-        xaxis_title="Hidden neurons",
-        yaxis_title="Dimensionality",
+    hessian_dims, hessian_dims_norm = find_hessian_dimensionality(eigenspectrum_data)
+    hessian_dims_fig = go.Figure()
+    hessian_dims_fig.add_trace(go.Bar(
+        x=optimisers,
+        y=list(hessian_dims.values()),
+        name="Dims (Raw)",
+    ))
+    hessian_dims_fig.add_trace(go.Bar(
+        x=optimisers,
+        y=list(hessian_dims_norm.values()),
+        name="Dims (Normalised)",
+    ))
+    hessian_dims_fig.update_layout(
+        title="Hessian dimensionality over optimisers",
+        xaxis_title="Optimiser",
+        yaxis_title="Hessian dimensions",
     )
-    figs.append(hessian_fig)
+    figs.append(hessian_dims_fig)
 
+    ### VISUALISE TRAINING / TESTING LOSS OVER OPTIMISERS ###
+    train_test_fig = go.Figure()
+    train_test_fig.add_trace(go.Bar(
+        x=[model_data["description"]["optimiser"] for model_data in models_data],
+        y=[model_data["train_losses"][-1] for model_data in models_data],
+        name="Training Losses",
+        marker_color="indianred",
+    ))
+    train_test_fig.add_trace(go.Bar(
+        x=[model_data["description"]["optimiser"] for model_data in models_data],
+        y=[model_data["test_losses"][-1] for model_data in models_data],
+        name="Testing Losses",
+        marker_color="lightsalmon",
+    ))
+    train_test_fig.update_layout(
+        title="Training and testing losses of model architectures",
+        xaxis_title="Model",
+        yaxis_title="Loss",
+        barmode="group",
+    )
+    figs.append(train_test_fig)
+
+    train_fig = go.Figure()
+    test_fig = go.Figure()
+    for model_data in models_data:
+        train_fig.add_trace(go.Scatter(
+            x=epochs,
+            y=model_data["train_losses"],
+            name=model_data["description"]["optimiser"],
+        ))
+        test_fig.add_trace(go.Scatter(
+            x=epochs,
+            y=model_data["test_losses"],
+            name=model_data["description"]["optimiser"],
+        ))
+    train_fig.update_layout(
+        title="Evolution of training loss over optimisers",
+        xaxis_title="Epochs",
+        yaxis_title="Loss",
+    )
+    test_fig.update_layout(
+        title="Evolution of testing loss over optimisers",
+        xaxis_title="Epochs",
+        yaxis_title="Loss",
+    )
+    figs.append(train_fig)
+    figs.append(test_fig)
+
+    """
     ### LLC ESTIMATIONS FOR EACH ARCHITECTURE AT CONVERGENCE ###
     llc_estimator = OnlineLLCEstimator(hyperparams["num_chains"],                                       
                                        hyperparams["num_draws"], 
                                        len(train_set), 
                                        device=device)
-    rlct_estimates = []
-    for optimiser, neural_nets in models.items():
+    rlct_estimates = {}
+    rlct_estimates_norm = {}
+    for optimiser, model in models.items():
         results = run_callbacks(train_loader,
                                 train_set,
-                                model=neural_nets[-1],
+                                model=model,
                                 hyperparams=hyperparams,
                                 callbacks=[llc_estimator],
                                 criterion=criterion["general"],
                                 device=device)
-        rlct_estimates.append(results["llc/means"][-1]/count_parameters(neural_nets[-1]))
+        rlct_estimates[optimiser] = results["llc/means"][-1]
+        rlct_estimates_norm[optimiser] = results["llc/means"][-1]/count_parameters(model)
     rlct_fig = go.Figure()
-    rlct_fig.add_trace(go.Bar(x=list(models.keys()), y=rlct_estimates))
+    rlct_fig.add_trace(go.Bar(
+        x=list(rlct_estimates.keys()),
+        y=list(rlct_estimates.values()),
+        name="RLCT (Raw)"
+    ))
+    rlct_fig.add_trace(go.Bar(
+        x=list(rlct_estimates_norm.keys()),
+        y=list(rlct_estimates_norm.values()),
+        name="RLCT (Normalised)"
+    ))
     rlct_fig.update_layout(
         title=f"RLCT values for optimisers",
         xaxis_title="Optimiser",
         yaxis_title="RLCT",
     )
     figs.append(rlct_fig)
+    """
 
     ### PUSH FIGURES TO LOCAL HTML FILE ###
     curr_time = datetime.now().strftime("%Y-%m-%d-%H-%M")
-    write_figs_to_html(figs, f".\experiments\mnist\mnist_optimisers_{curr_time}.html", title="Investigating effect of optimiser on RLCT / Hessian eigenspectrum")
+    write_figs_to_html(figs, f"./experiments/mnist/mnist_optimisers_{curr_time}.html", title="Investigating effect of optimiser on RLCT / Hessian eigenspectrum")
 
 if __name__ == "__main__":
     freeze_support()

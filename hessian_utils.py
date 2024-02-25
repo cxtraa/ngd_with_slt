@@ -116,6 +116,7 @@ def find_hessian_dimensionality(eigenspectrum_data):
     """
 
     hessian_dims = {}
+    hessian_dims_norm = {}
     for key, value in eigenspectrum_data.items():
 
         eigenvalues = np.array(value["x"])
@@ -134,7 +135,8 @@ def find_hessian_dimensionality(eigenspectrum_data):
         area_small = simps(density_small, eigenvalues_small)
         small_eigenvalues = round(area_small * num_params)
         dimensions = num_params - small_eigenvalues
-        hessian_dims[key] = dimensions / num_params
+        hessian_dims[key] = dimensions
+        hessian_dims_norm[key] = dimensions / num_params
 
         # print(f"\n====== EIGENVALUES SUMMARY: {key} ======")
         # print(f"Mean: {mu} Standard deviation: {sigma}")
@@ -142,4 +144,4 @@ def find_hessian_dimensionality(eigenspectrum_data):
         # print(f"Number of small eigenvalues: {small_eigenvalues} / {num_params}")
         # print(f"MODEL DIMENSONALITY ACCORDING TO HESSIAN : {dimensions}")
     
-    return hessian_dims
+    return hessian_dims, hessian_dims_norm
