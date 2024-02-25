@@ -55,7 +55,8 @@ def main():
     warnings.filterwarnings("ignore")
 
     ### PRODUCE LIST OF NETWORKS WITH VARYING SIZES ###
-    hidden_nodes = [2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048]
+    #hidden_nodes = [2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048]
+    hidden_nodes = [8, 16, 32]
     hidden_layers = 2
     models = {}
     titles = []
@@ -95,7 +96,7 @@ def main():
         "LMHN" : hidden_nodes,
         "LMHL" : hidden_layers,
     }
-    state_dicts, models_data = load_models(".\models", criteria=criteria)
+    state_dicts, models_data = load_models("./models", criteria=criteria)
 
     for i in range(len(state_dicts)):
         HN, HL = models_data[i]["description"]["LMHN"], models_data[i]["description"]["LMHL"]
@@ -173,8 +174,8 @@ def main():
 
     ### PUSH FIGURES TO LOCAL HTML FILE ###
     curr_time = datetime.now().strftime("%Y-%m-%d-%H-%M")
-    write_figs_to_html(figs, f".\experiments\mnist\mnist_hidden_nodes_{curr_time}.html", title="Investigating effect of hidden nodes on RLCT / Hessian eigenspectrum")
+    write_figs_to_html(figs, f"./experiments/mnist/mnist_hidden_nodes_{curr_time}.html", title="Investigating effect of hidden nodes on RLCT / Hessian eigenspectrum")
 
 if __name__ == "__main__":
-    freeze_support()    # ONLY REQUIRED FOR WINDOWS, REMOVE IF USING MAC OR LINUX
+    #freeze_support()    # ONLY REQUIRED FOR WINDOWS, REMOVE IF USING MAC OR LINUX
     main()
