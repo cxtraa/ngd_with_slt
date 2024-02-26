@@ -90,7 +90,7 @@ def main(args):
         raise NotImplementedError("The requested model does not exist.")
 
     ### OPTIMISER AND LOSS FUNCTION ###
-    criterion = {"general":nn.CrossEntropyLoss(),"kfac": nn.CrossEntropyLoss(reduction='mean')}
+    criterion = nn.CrossEntropyLoss(reduction='mean') if args.optimiser=="ngd" else nn.CrossEntropyLoss()
     sgd = t.optim.SGD(model.parameters(), lr=args.lr)
     adam = t.optim.Adam(model.parameters(), lr=args.lr)
     rmsprop = t.optim.RMSprop(model.parameters(), lr=args.lr, momentum=0.8)

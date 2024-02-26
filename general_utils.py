@@ -70,20 +70,20 @@ def train_one_epoch(model, train_loader, optimizer, criterion, device):
             # Estimate with model distribution
             with optimizer.track_forward():
                 output = model(image)
-                loss = criterion["kfac"](output, label)
+                loss = criterion(output, label)
             with optimizer.track_backward():
                 loss.backward()
             optimizer.update_cov()
             # Compute loss to backprop
             model.zero_grad()
             output = model(image)
-            loss = criterion["kfac"](output, label)
+            loss = criterion(output, label)
             loss.backward()
             optimizer.step(loss=loss)
         else:
             optimizer.zero_grad()
             output = model(image)
-            loss = criterion["general"](output, label)
+            loss = criterion(output, label)
             train_loss += loss.item()
             loss.backward()
             optimizer.step()
@@ -104,7 +104,7 @@ def evaluate(model, test_loader, criterion, device):
         for image, label in test_loader:
             image, label = image.to(device), label.to(device)
             output = model(image)
-            loss = criterion["general"](output, label)
+            loss = criterion(output, label)
             test_loss += loss.item()
     return test_loss / len(test_loader)
 
