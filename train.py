@@ -36,7 +36,7 @@ from PyHessian.pyhessian import *
 from PyHessian.density_plot import *
 from general_utils import *
 from hessian_utils import *
-from models.architectures.NN import *
+from architectures.NN import *
 from data.build_data import build_data
 
 import plotly.express as px
@@ -122,7 +122,7 @@ def main(args):
         "test_losses" : test_losses,
         "state_dict" : model.state_dict(),
     }
-    with open(f"models/{filename}.pkl", 'wb') as file:
+    with open(f"saved_models/{filename}.pkl", 'wb') as file:
         pickle.dump(data_to_save, file, protocol=pickle.HIGHEST_PROTOCOL)
         #t.save(data_to_save, file)
 

@@ -93,7 +93,7 @@ def main():
         "LMHN" : HIDDEN_NODES,
         "LMHL" : HIDDEN_LAYERS,
     }
-    state_dicts, models_data = load_models("./models", criteria=criteria)
+    state_dicts, models_data = load_models("./saved_models", criteria=criteria)
     num_epochs = models_data[0]["description"]["num_epochs"]
     epochs = np.arange(1, num_epochs+1)
 

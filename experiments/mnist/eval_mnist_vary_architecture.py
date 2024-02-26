@@ -40,7 +40,7 @@ from PyHessian.pyhessian import *
 from PyHessian.density_plot import *
 from general_utils import *
 from hessian_utils import *
-from models.architectures.NN import *
+from architectures.NN import *
 from data.build_data import build_data
 
 import plotly.express as px
@@ -101,7 +101,7 @@ def main(args):
         "LMHN" : hidden_nodes,
         "LMHL" : hidden_layers,
     }
-    state_dicts, models_data = load_models("./models", criteria=criteria)
+    state_dicts, models_data = load_models("./saved_models", criteria=criteria)
     num_epochs = models_data[0]["description"]["num_epochs"]
     epochs = np.arange(1, num_epochs+1)
 
