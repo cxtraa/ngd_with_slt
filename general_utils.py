@@ -177,8 +177,8 @@ def write_figs_to_html(figs, dest, title):
     title : HTML file title.
     """
 
-    div_figs = [fig.to_html(full_html=False) for fig in figs]
-
+    #div_figs = [fig.to_html(full_html=False) for fig in figs]
+    div_figs = [fig.to_html(full_html=True) for fig in figs]
     graphs_html = ''.join(f'<div>{div}</div>' for div in div_figs)
 
     html_template = """
@@ -262,15 +262,17 @@ def load_models(base_path, criteria):
                     model = CPU_Unpickler(file).load()
             desc = model["args"]
             if all(desc.get(key) in (value if isinstance(value, list) else [value]) for key, value in criteria.items()):
-                print('---------', file_path, '---------','\n')
+                print('---------', file_path, '---------')
                 print(desc)
                 print(criteria)
+                print('\n')
 
                 model_data = {}
                 state_dicts.append(model["state_dict"])
                 model_data["description"] = model["args"]
                 model_data["train_losses"] = model["train_losses"]
                 model_data["test_losses"] = model["test_losses"]
+                model_data["total_parameters"] = model["total_parameters"]
                 models_data.append(model_data)
 
     return state_dicts, models_data
