@@ -121,6 +121,7 @@ def main(args):
         "train_losses" : train_losses,
         "test_losses" : test_losses,
         "state_dict" : model.state_dict(),
+        "total_parameters": count_parameters(model)
     }
     with open(f"models/{filename}.pkl", 'wb') as file:
         pickle.dump(data_to_save, file, protocol=pickle.HIGHEST_PROTOCOL)
