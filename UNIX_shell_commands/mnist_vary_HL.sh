@@ -1,4 +1,4 @@
-hidden_nodes=(2 4 8 )
+hidden_nodes=(512 1024 2048)
 hidden_layers=2
 
 for HN in "${hidden_nodes[@]}"

@@ -84,7 +84,7 @@ def main(args):
 
     ### PRODUCE LIST OF NETWORKS WITH VARYING SIZES ###
     #hidden_nodes = [2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048]
-    hidden_nodes = [8, 16, 32]
+    hidden_nodes = [512, 1024, 2048]
     hidden_layers = 2
     models = {}
     titles = []
@@ -126,7 +126,7 @@ def main(args):
     figs, eigenspectrum_data = produce_hessian_eigenspectra(hessians, plot_type="log")
 
     ### CALCULATE ESTIMATE OF NUMBER OF LARGE EIGENVALUES (DIMENSIONS) IN SPECTRUM ###
-    hessian_dims, hessian_dims_norm = find_hessian_dimensionality(eigenspectrum_data)
+    hessian_dims = find_hessian_dimensionality(eigenspectrum_data)[0]
     hessian_fig = go.Figure()
     hessian_fig.add_trace(go.Scatter(x=hidden_nodes, y=list(hessian_dims.values()), mode='markers'))
     hessian_fig.update_layout(
@@ -136,24 +136,29 @@ def main(args):
     )
     figs.append(hessian_fig)
 
-    ### LLC ESTIMATIONS FOR EACH ARCHITECTURE AT CONVERGENCE ###
+    ### LLC ESTIMATIONS FOR EACH ARCHITECTURE (Hidden nodes) AT CONVERGENCE ###
     llc_estimator = OnlineLLCEstimator(args.num_chains,                                       
                                        args.num_draws, 
                                        len(train_loader.dataset), 
                                        device=device)
-    rlct_estimates = []
-    rlct_estimates_norm = []
-    for model in models.values():
+    rlct_estimates = {}
+    rlct_estimates_norm = {}
+    neg_log_likelyhoods = {}
+    for title, model in models.items():
         results = run_callbacks(train_loader,
                                 model=model,
                                 args=args,
                                 callbacks=[llc_estimator],
                                 criterion=criterion["general"],
                                 device=device)
-        rlct_estimates.append(results["llc/means"][-1])
-        rlct_estimates_norm.append(results["llc/means"][-1]/count_parameters(model))
+        #rlct_estimates_norm.append(results["llc/means"][-1]/count_parameters(model))
+        rlct_estimates[title] = results["llc/means"][-1]
+        rlct_estimates_norm[title] = results["llc/means"][-1]/count_parameters(model)
+        neg_log_likelyhoods[title] = results["loss/trace"][-1][-1] # shape of results["loss/trace"] = (1,2000)
     rlct_fig = go.Figure()
-    rlct_fig.add_trace(go.Scatter(x=hidden_nodes, y=rlct_estimates, mode='markers'))
+    Y = [rlct_estimates[f"{hn} HN {hidden_layers} HL"] for hn in hidden_nodes]
+    #rlct_fig.add_trace(go.Scatter(x=hidden_nodes, y=Y, mode='markers'))
+    rlct_fig.add_trace(go.Scatter(x=hidden_nodes, y=Y))
     rlct_fig.update_layout(
         title=f"Adam RLCT estimation, Elasticity : {args.elasticity}, Noise Level : {args.noise_level}",
         xaxis_title="Hidden neurons in each layer",
@@ -161,7 +166,17 @@ def main(args):
     )
     figs.append(rlct_fig)
 
-    ### VISUALISE TRAINING / TESTING LOSS OVER OPTIMISERS ###
+    rlct_fig_norm = go.Figure()
+    Y_norm = [rlct_estimates_norm[f"{hn} HN {hidden_layers} HL"] for hn in hidden_nodes]
+    rlct_fig_norm.add_trace(go.Scatter(x=hidden_nodes, y=Y_norm))
+    rlct_fig_norm.update_layout(
+        title=f"Adam RLCT_norm estimation, Elasticity : {args.elasticity}, Noise Level : {args.noise_level}",
+        xaxis_title="Hidden neurons in each layer",
+        yaxis_title="RLCT_norm",
+    )
+    figs.append(rlct_fig_norm)
+
+    ### VISUALISE TRAINING / TESTING LOSS OVER MODEL ARCHITECTURES ###
     train_test_fig = go.Figure()
     train_test_fig.add_trace(go.Bar(
         x=titles,
@@ -183,32 +198,26 @@ def main(args):
     )
     figs.append(train_test_fig)
 
-    train_fig = go.Figure()
-    test_fig = go.Figure()
+    ### VISUALISE GENERALISATION LOSS OVER MODEL ARCHITECTURES (Hidden Nodes) ###
+    generalisation_losses = {}
     for model_data in models_data:
-        train_fig.add_trace(go.Scatter(
-            x=epochs,
-            y=model_data["train_losses"],
-            name=model_data["description"]["optimiser"],
-        ))
-        test_fig.add_trace(go.Scatter(
-            x=epochs,
-            y=model_data["test_losses"],
-            name=model_data["description"]["optimiser"],
-        ))
-    train_fig.update_layout(
-        title="Evolution of training loss over optimisers",
-        xaxis_title="Epochs",
-        yaxis_title="Loss",
+        HN, HL = model_data["description"]["LMHN"], model_data["description"]["LMHL"]
+        title = f"{HN} HN {HL} HL"    
+        generalisation_losses[title] = neg_log_likelyhoods[title] - rlct_estimates[title]/args.num_draws
+    generalisation_fig = go.Figure()
+    generalisation_fig.add_trace(go.Scatter(
+        x=titles,
+        y=[generalisation_losses[title] for title in titles],
+        name="Generalisation Losses",
+        marker_color="indianred",
+    ))
+    generalisation_fig.update_layout(
+        title="Generalisation losses of model architectures",
+        xaxis_title="Model",
+        yaxis_title="Generalisation Loss",
+        #barmode="group",
     )
-    test_fig.update_layout(
-        title="Evolution of testing loss over optimisers",
-        xaxis_title="Epochs",
-        yaxis_title="Loss",
-    )
-    figs.append(train_fig)
-    figs.append(test_fig)
-
+    figs.append(generalisation_fig)
     ### PUSH FIGURES TO LOCAL HTML FILE ###
     curr_time = datetime.now().strftime("%Y-%m-%d-%H-%M")
     write_figs_to_html(figs, f"./experiments/mnist/figs/mnist_hidden_nodes_{curr_time}.html", title="Investigating effect of hidden nodes on RLCT / Hessian eigenspectrum")
