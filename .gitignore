@@ -10,6 +10,9 @@ slt/
 #ignore wandb folder
 wandb/
 
+#ignore models folder (sent to google cloud storage)
+saved_models/
+
 #ignore pycache
 *.pyc
 
