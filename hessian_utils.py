@@ -30,7 +30,7 @@ from approxngd import KFAC
 from PyHessian.pyhessian import *
 from PyHessian.density_plot import *
 from general_utils import *
-from models.architectures.NN import *
+from architectures.NN import *
 
 import plotly.express as px
 import plotly.graph_objects as go

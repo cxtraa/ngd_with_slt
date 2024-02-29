@@ -84,8 +84,9 @@ def main(args):
 
     ### PRODUCE LIST OF NETWORKS WITH VARYING SIZES ###
     #hidden_nodes = [2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048]
-    hidden_nodes = [512, 1024, 2048]
-    hidden_layers = 2
+    hidden_nodes = [2,4,8]
+    #fixed number of hidden layers
+    hidden_layers = 4
     models = {}
     titles = []
     for hidden_node in hidden_nodes:
@@ -155,6 +156,7 @@ def main(args):
         rlct_estimates[title] = results["llc/means"][-1]
         rlct_estimates_norm[title] = results["llc/means"][-1]/count_parameters(model)
         neg_log_likelyhoods[title] = results["loss/trace"][-1][-1] # shape of results["loss/trace"] = (1,2000)
+
     rlct_fig = go.Figure()
     Y = [rlct_estimates[f"{hn} HN {hidden_layers} HL"] for hn in hidden_nodes]
     #rlct_fig.add_trace(go.Scatter(x=hidden_nodes, y=Y, mode='markers'))
@@ -202,7 +204,8 @@ def main(args):
     generalisation_losses = {}
     for model_data in models_data:
         HN, HL = model_data["description"]["LMHN"], model_data["description"]["LMHL"]
-        title = f"{HN} HN {HL} HL"    
+        title = f"{HN} HN {HL} HL"
+        #generalisation loss equation
         generalisation_losses[title] = neg_log_likelyhoods[title] - rlct_estimates[title]/args.num_draws
     generalisation_fig = go.Figure()
     generalisation_fig.add_trace(go.Scatter(

@@ -245,7 +245,15 @@ def load_models(base_path, criteria):
     - criteria (dict): Dictionary of criteria for filtering models. Key is parameter name, value is desired value or a list of acceptable values.
 
     Returns:
-    - List of model state dictionaries that match the criteria.
+    - state_dicts: [ state_dict_model1, state_dict_model2]
+    - models_data: [ {
+                    "description_model1": training_argparse
+                    "train_losses_model1": list of training loss for model
+                    "test_losses_model1": list of test loss for model
+                    "total_parameters": total params
+                },
+                {model_data_model2}
+                ]
     """
 
     state_dicts = []

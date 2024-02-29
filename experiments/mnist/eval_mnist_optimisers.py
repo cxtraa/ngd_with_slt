@@ -39,7 +39,7 @@ from PyHessian.pyhessian import *
 from PyHessian.density_plot import *
 from general_utils import *
 from hessian_utils import *
-from models.architectures.NN import *
+from architectures.NN import *
 
 import plotly.express as px
 from plotly.subplots import make_subplots
@@ -179,7 +179,6 @@ def main():
     figs.append(train_fig)
     figs.append(test_fig)
 
-    """
     ### LLC ESTIMATIONS FOR EACH ARCHITECTURE AT CONVERGENCE ###
     llc_estimator = OnlineLLCEstimator(hyperparams["num_chains"],                                       
                                        hyperparams["num_draws"], 
@@ -188,8 +187,9 @@ def main():
     rlct_estimates = {}
     rlct_estimates_norm = {}
     for optimiser, model in models.items():
-        results = run_callbacks(train_loader,
-                                train_set,
+        print(type(model))
+        
+        results = run_callbacks(train_loader=train_loader,
                                 model=model,
                                 hyperparams=hyperparams,
                                 callbacks=[llc_estimator],
@@ -214,11 +214,10 @@ def main():
         yaxis_title="RLCT",
     )
     figs.append(rlct_fig)
-    """
 
     ### PUSH FIGURES TO LOCAL HTML FILE ###
     curr_time = datetime.now().strftime("%Y-%m-%d-%H-%M")
-    write_figs_to_html(figs, f"./experiments/mnist/mnist_optimisers_{curr_time}.html", title="Investigating effect of optimiser on RLCT / Hessian eigenspectrum")
+    write_figs_to_html(figs, f"./experiments/mnist/figs/mnist_optimisers_{curr_time}.html", title="Investigating effect of optimiser on RLCT / Hessian eigenspectrum")
 
 if __name__ == "__main__":
     freeze_support()
