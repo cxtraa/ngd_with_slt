@@ -13,6 +13,8 @@ wandb/
 #ignore models folder (sent to google cloud storage)
 saved_models/
 
+cnn_experiments/
+
 #ignore pycache
 *.pyc
 
