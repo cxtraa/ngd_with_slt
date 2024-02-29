@@ -39,7 +39,7 @@ from PyHessian.pyhessian import *
 from PyHessian.density_plot import *
 from general_utils import *
 from hessian_utils import *
-from models.architectures.NN import *
+from networks import *
 
 import plotly.express as px
 from plotly.subplots import make_subplots
@@ -56,8 +56,8 @@ def main():
 
     ### PRODUCE MULTIPLE MODELS FOR TRAINING WITH DIFFERENT OPTIMISERS ###
     HIDDEN_LAYERS = 2
-    HIDDEN_NODES = 128
-    optimisers = ["sgd", "rmsprop", "adam", "ngd"]
+    HIDDEN_NODES = 1024
+    optimisers = ["sgd", "ngd"]
     models = {}
     for optim in optimisers:
         model = LinearMNIST(hidden_layers=HIDDEN_LAYERS, hidden_nodes=HIDDEN_NODES).to(device)
@@ -67,12 +67,12 @@ def main():
     hyperparams = {
         "lr": 1e-5,
         "batch_size" : 128,
-        "num_epochs" : 10,
+        "num_epochs" : 20,
         "num_workers" : 12,
         "num_draws" : 2000,
-        "num_chains" : 1,
-        "noise_level" : 2.0,
-        "elasticity" : 1000.0,
+        "num_chains" : 2,
+        "noise_level" : 1.0,
+        "elasticity" : 0.0,
     }
     criterion = {"general":nn.CrossEntropyLoss(),"kfac": nn.CrossEntropyLoss(reduction='mean')}
 
@@ -89,7 +89,7 @@ def main():
     ### LOAD MODELS FROM LOCAL FILES ###
     criteria = {
         "model" : "LM",
-        "optimiser" : ["adam", "rmsprop", "ngd", "sgd"],
+        "optimiser" : ["ngd", "sgd"],
         "LMHN" : HIDDEN_NODES,
         "LMHL" : HIDDEN_LAYERS,
     }
@@ -112,17 +112,12 @@ def main():
     figs, eigenspectrum_data = produce_hessian_eigenspectra(hessians, plot_type="log")
     
     ### CALCULATE ESTIMATE OF NUMBER OF LARGE EIGENVALUES (DIMENSIONS) IN SPECTRUM ###
-    hessian_dims, hessian_dims_norm = find_hessian_dimensionality(eigenspectrum_data)
+    hessian_dims, _ = find_hessian_dimensionality(eigenspectrum_data)
     hessian_dims_fig = go.Figure()
     hessian_dims_fig.add_trace(go.Bar(
         x=optimisers,
         y=list(hessian_dims.values()),
         name="Dims (Raw)",
-    ))
-    hessian_dims_fig.add_trace(go.Bar(
-        x=optimisers,
-        y=list(hessian_dims_norm.values()),
-        name="Dims (Normalised)",
     ))
     hessian_dims_fig.update_layout(
         title="Hessian dimensionality over optimisers",
@@ -218,7 +213,7 @@ def main():
 
     ### PUSH FIGURES TO LOCAL HTML FILE ###
     curr_time = datetime.now().strftime("%Y-%m-%d-%H-%M")
-    write_figs_to_html(figs, f"./experiments/mnist/mnist_optimisers_{curr_time}.html", title="Investigating effect of optimiser on RLCT / Hessian eigenspectrum")
+    write_figs_to_html(figs, f"./experiments/mnist/figs/mnist_optimisers_{curr_time}.html", title="Investigating effect of optimiser on RLCT / Hessian eigenspectrum")
 
 if __name__ == "__main__":
     freeze_support()

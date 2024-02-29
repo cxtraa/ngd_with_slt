@@ -73,13 +73,8 @@ def train_one_epoch(model, train_loader, optimizer, criterion, device):
                 loss = criterion(output, label)
             with optimizer.track_backward():
                 loss.backward()
-            optimizer.update_cov()
-            # Compute loss to backprop
-            model.zero_grad()
-            output = model(image)
-            loss = criterion(output, label)
-            loss.backward()
             optimizer.step(loss=loss)
+            train_loss += loss.item()            
         else:
             optimizer.zero_grad()
             output = model(image)

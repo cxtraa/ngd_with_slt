@@ -40,7 +40,7 @@ from PyHessian.pyhessian import *
 from PyHessian.density_plot import *
 from general_utils import *
 from hessian_utils import *
-from architectures.NN import *
+from networks import *
 from data.build_data import build_data
 
 import plotly.express as px
@@ -56,8 +56,8 @@ def get_mnist_vary_architecture_args_parser():
     # Arguments organized by group
     arg_groups = {
         'RLCT Hyperparameters': [
-            {'name': '--num_draws', 'default': 2000, 'type': int},
-            {'name': '--num_chains', 'default': 1, 'type': int},
+            {'name': '--num_draws', 'default': 1000, 'type': int},
+            {'name': '--num_chains', 'default': 2, 'type': int},
             {'name': '--noise_level', 'default': 1.0, 'type': float},
             {'name': '--elasticity', 'default': 1000.0, 'type': float}
         ],
@@ -83,37 +83,36 @@ def main(args):
     warnings.filterwarnings("ignore")
 
     ### PRODUCE LIST OF NETWORKS WITH VARYING SIZES ###
-    #hidden_nodes = [2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048]
-    hidden_nodes = [512, 1024, 2048]
-    hidden_layers = 2
+    hidden_conv_layers = [1, 2, 3, 4]
+    kernel_size = 3
+    optim = "sgd"
     models = {}
     titles = []
-    for hidden_node in hidden_nodes:
-        title = f"{hidden_node} HN {hidden_layers} HL"
+    for hidden_conv_layer in hidden_conv_layers:
+        title = f"{kernel_size} KS {hidden_conv_layer} HL {optim} optimiser"
         titles.append(title)
-        model = LinearMNIST(hidden_nodes=hidden_node, hidden_layers=hidden_layers).to(device)
+        model = CnnMNIST(hidden_conv_layers=hidden_conv_layer).to(device)
         models[title] = model
 
     ### LOAD MODELS FROM LOCAL FILES ###
     criteria = {
-        "model" : "LM",
-        "optimiser" : "adam",
-        "LMHN" : hidden_nodes,
-        "LMHL" : hidden_layers,
+        "model" : "CM",
+        "optimiser" : "sgd",
+        "CMHL" : hidden_conv_layers,
+        "KS" : kernel_size,
     }
     state_dicts, models_data = load_models("./saved_models", criteria=criteria)
     num_epochs = models_data[0]["description"]["num_epochs"]
     epochs = np.arange(1, num_epochs+1)
 
     for i in range(len(state_dicts)):
-        HN, HL = models_data[i]["description"]["LMHN"], models_data[i]["description"]["LMHL"]
-        print(HN)
+        KS, HL = models_data[i]["description"]["KS"], models_data[i]["description"]["CMHL"]
         optim = models_data[i]["description"]["optimiser"]
-        title = f"{HN} HN {HL} HL"        
+        title = f"{KS} KS {HL} HL {optim} optimiser"        
         models[title].load_state_dict(state_dicts[i])
 
     criterion = {"general":nn.CrossEntropyLoss(),"kfac": nn.CrossEntropyLoss(reduction='mean')}
-    train_loader,test_loader=build_data(args)
+    train_loader, test_loader = build_data(args)
         
     ### PRDOUCE HESSIAN EIGENSPECTRUMS FOR EACH NETWORK ###
     hessians = produce_hessians(models=models,
@@ -126,16 +125,18 @@ def main(args):
     figs, eigenspectrum_data = produce_hessian_eigenspectra(hessians, plot_type="log")
 
     ### CALCULATE ESTIMATE OF NUMBER OF LARGE EIGENVALUES (DIMENSIONS) IN SPECTRUM ###
-    hessian_dims = find_hessian_dimensionality(eigenspectrum_data)[0]
+    hessian_dims, hessian_dims_norm = find_hessian_dimensionality(eigenspectrum_data)
     hessian_fig = go.Figure()
-    hessian_fig.add_trace(go.Scatter(x=hidden_nodes, y=list(hessian_dims.values()), mode='markers'))
+    hessian_fig.add_trace(go.Scatter(x=hidden_conv_layers, y=list(hessian_dims.values()), mode='markers', name='Raw'))
+    hessian_fig.add_trace(go.Scatter(x=hidden_conv_layers, y=list(hessian_dims_norm.values()), mode='markers', name='Normalised'))
     hessian_fig.update_layout(
         title="Hessian dimensionality over models",
-        xaxis_title="Hidden neurons",
+        xaxis_title="Hidden conv layers",
         yaxis_title="Dimensionality",
     )
     figs.append(hessian_fig)
 
+    """
     ### LLC ESTIMATIONS FOR EACH ARCHITECTURE (Hidden nodes) AT CONVERGENCE ###
     llc_estimator = OnlineLLCEstimator(args.num_chains,                                       
                                        args.num_draws, 
@@ -156,9 +157,9 @@ def main(args):
         rlct_estimates_norm[title] = results["llc/means"][-1]/count_parameters(model)
         neg_log_likelyhoods[title] = results["loss/trace"][-1][-1] # shape of results["loss/trace"] = (1,2000)
     rlct_fig = go.Figure()
-    Y = [rlct_estimates[f"{hn} HN {hidden_layers} HL"] for hn in hidden_nodes]
+    Y = [rlct_estimates[f"{hn} HN {out_channels} HL"] for hn in kernel_sizes]
     #rlct_fig.add_trace(go.Scatter(x=hidden_nodes, y=Y, mode='markers'))
-    rlct_fig.add_trace(go.Scatter(x=hidden_nodes, y=Y))
+    rlct_fig.add_trace(go.Scatter(x=kernel_sizes, y=Y))
     rlct_fig.update_layout(
         title=f"Adam RLCT estimation, Elasticity : {args.elasticity}, Noise Level : {args.noise_level}",
         xaxis_title="Hidden neurons in each layer",
@@ -167,14 +168,15 @@ def main(args):
     figs.append(rlct_fig)
 
     rlct_fig_norm = go.Figure()
-    Y_norm = [rlct_estimates_norm[f"{hn} HN {hidden_layers} HL"] for hn in hidden_nodes]
-    rlct_fig_norm.add_trace(go.Scatter(x=hidden_nodes, y=Y_norm))
+    Y_norm = [rlct_estimates_norm[f"{hn} HN {out_channels} HL"] for hn in kernel_sizes]
+    rlct_fig_norm.add_trace(go.Scatter(x=kernel_sizes, y=Y_norm))
     rlct_fig_norm.update_layout(
         title=f"Adam RLCT_norm estimation, Elasticity : {args.elasticity}, Noise Level : {args.noise_level}",
         xaxis_title="Hidden neurons in each layer",
         yaxis_title="RLCT_norm",
     )
     figs.append(rlct_fig_norm)
+    """
 
     ### VISUALISE TRAINING / TESTING LOSS OVER MODEL ARCHITECTURES ###
     train_test_fig = go.Figure()
@@ -198,6 +200,7 @@ def main(args):
     )
     figs.append(train_test_fig)
 
+    """
     ### VISUALISE GENERALISATION LOSS OVER MODEL ARCHITECTURES (Hidden Nodes) ###
     generalisation_losses = {}
     for model_data in models_data:
@@ -218,9 +221,11 @@ def main(args):
         #barmode="group",
     )
     figs.append(generalisation_fig)
+    """
+
     ### PUSH FIGURES TO LOCAL HTML FILE ###
     curr_time = datetime.now().strftime("%Y-%m-%d-%H-%M")
-    write_figs_to_html(figs, f"./experiments/mnist/figs/mnist_hidden_nodes_{curr_time}.html", title="Investigating effect of hidden nodes on RLCT / Hessian eigenspectrum")
+    write_figs_to_html(figs, f"./experiments/mnist/figs/mnist_hidden_nodes_{curr_time}.html", title="Investigating effect of hidden conv layers on CNN Hessian eigenspectrum")
 
 if __name__ == "__main__":
     freeze_support()    # ONLY REQUIRED FOR WINDOWS, REMOVE IF USING MAC OR LINUX
