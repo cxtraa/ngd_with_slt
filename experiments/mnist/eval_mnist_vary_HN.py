@@ -41,7 +41,7 @@ from PyHessian.pyhessian import *
 from PyHessian.density_plot import *
 from general_utils import *
 from hessian_utils import *
-from networks import *
+from architectures.Linear import *
 from data.build_data import build_data
 
 import plotly.express as px
