@@ -95,7 +95,6 @@ def main(args):
     warnings.filterwarnings("ignore")
 
     ### PRODUCE LIST OF NETWORKS WITH VARYING SIZES ###
-<<<<<<< HEAD:experiments/mnist/eval_mnist_vary_HN.py
 
     models = {}
     titles = []
@@ -103,32 +102,14 @@ def main(args):
         title = f"{hidden_node} HN {args.hidden_layers} HL"
         titles.append(title)
         model = LinearMNIST(hidden_nodes=hidden_node, hidden_layers=args.hidden_layers).to(device)
-=======
-    #hidden_nodes = [2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048]
-    hidden_nodes = [512, 1024, 2048]
-    hidden_layers = 2
-    models = {}
-    titles = []
-    for hidden_conv_layer in hidden_conv_layers:
-        title = f"{kernel_size} KS {hidden_conv_layer} HL {optim} optimiser"
-        titles.append(title)
-        model = CnnMNIST(hidden_conv_layers=hidden_conv_layer).to(device)
->>>>>>> 8dae476ab524a31dd5e5b5b4bbea17a2c7c654a2:experiments/mnist/eval_mnist_vary_architecture.py
         models[title] = model
 
     ### LOAD MODELS FROM LOCAL FILES ###
     criteria = {
-<<<<<<< HEAD:experiments/mnist/eval_mnist_vary_HN.py
         "model" : args.model,
         "optimiser" : args.optimiser,
         "LMHN" : args.hidden_nodes,
         "LMHL" : args.hidden_layers,
-=======
-        "model" : "CM",
-        "optimiser" : "sgd",
-        "CMHL" : hidden_conv_layers,
-        "KS" : kernel_size,
->>>>>>> 8dae476ab524a31dd5e5b5b4bbea17a2c7c654a2:experiments/mnist/eval_mnist_vary_architecture.py
     }
 
     state_dicts, models_data = load_models("./weights", criteria=criteria)
@@ -158,12 +139,7 @@ def main(args):
     ### CALCULATE ESTIMATE OF NUMBER OF LARGE EIGENVALUES (DIMENSIONS) IN SPECTRUM ###
     hessian_dims, hessian_dims_norm = find_hessian_dimensionality(eigenspectrum_data)
     hessian_fig = go.Figure()
-<<<<<<< HEAD:experiments/mnist/eval_mnist_vary_HN.py
     hessian_fig.add_trace(go.Scatter(x=args.hidden_nodes, y=list(hessian_dims.values()), mode='markers'))
-=======
-    hessian_fig.add_trace(go.Scatter(x=hidden_conv_layers, y=list(hessian_dims.values()), mode='markers', name='Raw'))
-    hessian_fig.add_trace(go.Scatter(x=hidden_conv_layers, y=list(hessian_dims_norm.values()), mode='markers', name='Normalised'))
->>>>>>> 8dae476ab524a31dd5e5b5b4bbea17a2c7c654a2:experiments/mnist/eval_mnist_vary_architecture.py
     hessian_fig.update_layout(
         title="Hessian dimensionality over models",
         xaxis_title="Hidden conv layers",
@@ -193,15 +169,9 @@ def main(args):
         neg_log_likelyhoods[title] = results["loss/trace"][-1][-1] # shape of results["loss/trace"] = (1,2000)
 
     rlct_fig = go.Figure()
-<<<<<<< HEAD:experiments/mnist/eval_mnist_vary_HN.py
     Y = [rlct_estimates[f"{hn} HN {args.hidden_layers} HL"] for hn in args.hidden_nodes]
     #rlct_fig.add_trace(go.Scatter(x=args.hidden_nodes, y=Y, mode='markers'))
     rlct_fig.add_trace(go.Scatter(x=args.hidden_nodes, y=Y))
-=======
-    Y = [rlct_estimates[f"{hn} HN {out_channels} HL"] for hn in kernel_sizes]
-    #rlct_fig.add_trace(go.Scatter(x=hidden_nodes, y=Y, mode='markers'))
-    rlct_fig.add_trace(go.Scatter(x=kernel_sizes, y=Y))
->>>>>>> 8dae476ab524a31dd5e5b5b4bbea17a2c7c654a2:experiments/mnist/eval_mnist_vary_architecture.py
     rlct_fig.update_layout(
         title=f"Adam RLCT estimation, Elasticity : {args.elasticity}, Noise Level : {args.noise_level}",
         xaxis_title="Hidden neurons in each layer",
@@ -210,13 +180,8 @@ def main(args):
     figs.append(rlct_fig)
 
     rlct_fig_norm = go.Figure()
-<<<<<<< HEAD:experiments/mnist/eval_mnist_vary_HN.py
     Y_norm = [rlct_estimates_norm[f"{hn} HN {args.hidden_layers} HL"] for hn in args.hidden_nodes]
     rlct_fig_norm.add_trace(go.Scatter(x=args.hidden_nodes, y=Y_norm))
-=======
-    Y_norm = [rlct_estimates_norm[f"{hn} HN {out_channels} HL"] for hn in kernel_sizes]
-    rlct_fig_norm.add_trace(go.Scatter(x=kernel_sizes, y=Y_norm))
->>>>>>> 8dae476ab524a31dd5e5b5b4bbea17a2c7c654a2:experiments/mnist/eval_mnist_vary_architecture.py
     rlct_fig_norm.update_layout(
         title=f"Adam RLCT_norm estimation, Elasticity : {args.elasticity}, Noise Level : {args.noise_level}",
         xaxis_title="Hidden neurons in each layer",
