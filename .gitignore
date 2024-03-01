@@ -17,6 +17,8 @@ wandb/
 #ignore google cloud sdk folder
 google-cloud-sdk/
 
+cnn_experiments/
+
 #ignore pycache
 *.pyc
 
