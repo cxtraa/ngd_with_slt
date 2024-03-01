@@ -1,6 +1,8 @@
 """
 EXPERIMENT NAME: Investigating the eigenspectra, Hessian dimensionality, and RLCT values converged to by different optimisers.
 EXPERIMENT DESCRIPTION: We train deep neural networks on the MNIST dataset, and compare their eigenspectra and RLCT for different optimisers.
+
+You need to change the Selection Criteria arg group yourself!
 """
 
 ### IMPORT LIBRARIES ###
@@ -69,6 +71,14 @@ def get_eval_mnist_optimisers_args_parser():
 
         ],
         'Selection Criteria':[
+            {'name' : '--model', 'default' : 'LM', 'type' : str},   # Linear MNIST
+            {'name' : '--LMHN', 'default' : 16, 'type' : int},  # Linear MNIST Hidden Nodes
+            {'name' : '--LMHL', 'default' : 2, 'type' : int},   # Linear MNIST Hidden Layers
+            # {'name' : '--CMKS', 'default' : 5, 'type' : int}, # CNN MNIST kernel size
+            # {'name' : '--CMHL', 'default' : 10, 'type' : int}, # CNN MNIST hidden conv layers
+
+            #vary type of optimizers
+            {'name': '--optimiser', 'default': ['sgd','ngd'], 'type': list}
         ]
     }
 
@@ -103,8 +113,8 @@ def main(args):
     criteria = {
         "model" : "CM",
         "optimiser" : ["ngd", "sgd"],
-        "LMHN" : HIDDEN_NODES,
-        "LMHL" : HIDDEN_LAYERS,
+        "CMKS" : HIDDEN_NODES,
+        "CMHL" : HIDDEN_LAYERS,
     }
     state_dicts, models_data = load_models("./saved_models", criteria=criteria)
     num_epochs = models_data[0]["description"]["num_epochs"]
@@ -222,4 +232,5 @@ if __name__ == "__main__":
     freeze_support()    # ONLY REQUIRED FOR WINDOWS, REMOVE IF USING MAC OR LINUX
     parser = get_eval_mnist_optimisers_args_parser()
     args = parser.parse_args()
-    main(args)
+    print(dir(args))
+    #main(args)

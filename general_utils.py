@@ -234,6 +234,17 @@ def run_callbacks(train_loader, model, criterion, callbacks, args, device):
     return results
 
 def produce_rlct(models, dataloader,criterion, device, args):
+    '''
+    Produce RLCT data for family of models
+
+    Parameters:
+    - models (dict): key as title, value as model
+
+    Returns:
+    - rlct_estimates (dict)
+    - rlct_estimates_norm (dict)
+    - nge_log_likelyhoods (dict)
+    '''
     
     ### LLC ESTIMATIONS FOR EACH ARCHITECTURE (Hidden nodes) AT CONVERGENCE ###
     llc_estimator = OnlineLLCEstimator(args.num_chains,                                       
