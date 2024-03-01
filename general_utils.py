@@ -87,6 +87,7 @@ def train_one_epoch(model, train_loader, optimizer, criterion, device):
             train_loss += loss.item()
             loss.backward()
             optimizer.step()
+    
     return train_loss / len(train_loader)
 
 def evaluate(model, test_loader, criterion, device):
@@ -122,9 +123,10 @@ def find_value(data, target, tolerance=1e-9):
     """
 
     for x, y in zip(data["x"], data["y"]):
+        #only returns positive eigenvalue
         if abs(y - target) < tolerance and x > 0:
             return x
-    return -1 # if not found
+    raise Exception("eigenvalue not found!") # if not found
 
 def sample_from_distribution(eigenvalues, densities, N):
     """
@@ -268,13 +270,16 @@ def load_models(base_path, criteria):
                     model = pickle.load(file)
                 else:
                     model = CPU_Unpickler(file).load()
+            #desc is the argparse object, as a dictionary
             desc = model["args"]
+
+            #for each criterion in criteria, if the corresponding value in description exists in the criteria.items()
             if all(desc.get(key) in (value if isinstance(value, list) else [value]) for key, value in criteria.items()):
                 print('---------', file_path, '---------')
                 print(desc)
-                print(criteria)
                 print('\n')
 
+                #reconstruct state_dicts and models_data
                 model_data = {}
                 state_dicts.append(model["state_dict"])
                 model_data["description"] = model["args"]

@@ -117,13 +117,14 @@ def main(args):
 
     ### EXPORTING DATA ###
     data_to_save = {
+        #args becomes a dictionary
         "args" : vars(args),
         "train_losses" : train_losses,
         "test_losses" : test_losses,
         "state_dict" : model.state_dict(),
         "total_parameters": count_parameters(model)
     }
-    with open(f"saved_models/{filename}.pkl", 'wb') as file:
+    with open(f"weights/{filename}.pkl", 'wb') as file:
         pickle.dump(data_to_save, file, protocol=pickle.HIGHEST_PROTOCOL)
         #t.save(data_to_save, file)
 
