@@ -36,7 +36,7 @@ from PyHessian.pyhessian import *
 from PyHessian.density_plot import *
 from general_utils import *
 from hessian_utils import *
-from architectures.NN import *
+from networks import *
 from data.build_data import build_data
 
 import plotly.express as px
@@ -55,10 +55,12 @@ def get_train_args_parser():
             {'name' : '--model', 'default' : 'LM', 'type' : str},   # Linear MNIST
             {'name' : '--LMHN', 'default' : 16, 'type' : int},  # Linear MNIST Hidden Nodes
             {'name' : '--LMHL', 'default' : 2, 'type' : int},   # Linear MNIST Hidden Layers
+            {'name' : '--CMKS', 'default' : 3, 'type' : int}, # CNN MNIST kernel size
+            {'name' : '--CMHL', 'default' : 1, 'type' : int}, # CNN MNIST hidden conv layers
         ],
         'Training Hyperparameters': [
             {'name': '--lr', 'default': 1e-5, 'type': float},
-            {'name': '--num_epochs', 'default': 5, 'type': int},
+            {'name': '--num_epochs', 'default': 20, 'type': int},
             {'name': '--optimiser', 'default': 'adam', 'type': str}
         ],
         'Data Loading Parameters': [
@@ -80,21 +82,25 @@ def main(args):
 
     ### SETUP AND DATA LOADING ###
     device = "cuda" if t.cuda.is_available() else "cpu"
+    print(f"DEVICE: {device}")
     filename = f"{args.model}-model_{args.optimiser}-optimiser_{args.lr}-LR_{args.num_epochs}-epochs_{args.batch_size}-batchsize"
     if args.model == "LM":
         filename += f"_{args.LMHL}-HL_{args.LMHN}-HN"
         model = LinearMNIST(hidden_layers=args.LMHL, hidden_nodes=args.LMHN).to(device)
-        train_loader, test_loader = build_data(args)
-
+    elif args.model == "CM":
+        filename += f"_{args.KS}-KS_{args.CMHL}-HL"
+        model = CnnMNIST(kernel_size=args.KS, hidden_conv_layers=args.CMHL).to(device)
     else:
         raise NotImplementedError("The requested model does not exist.")
+
+    train_loader, test_loader = build_data(args)
 
     ### OPTIMISER AND LOSS FUNCTION ###
     criterion = nn.CrossEntropyLoss(reduction='mean') if args.optimiser=="ngd" else nn.CrossEntropyLoss()
     sgd = t.optim.SGD(model.parameters(), lr=args.lr)
     adam = t.optim.Adam(model.parameters(), lr=args.lr)
     rmsprop = t.optim.RMSprop(model.parameters(), lr=args.lr, momentum=0.8)
-    ngd = KFAC(model, args.lr, 1e-3, momentum_type='regular', momentum=0.8, adapt_damping=False, update_cov_manually=True)
+    ngd = KFAC(model, args.lr, damping=0.01, momentum_type='regular', momentum=0.8, adapt_damping=False, update_cov_manually=False)
     optimisers = {
         'sgd' : sgd,
         'adam' : adam,

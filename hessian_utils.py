@@ -30,7 +30,7 @@ from approxngd import KFAC
 from PyHessian.pyhessian import *
 from PyHessian.density_plot import *
 from general_utils import *
-from architectures.NN import *
+from networks import *
 
 import plotly.express as px
 import plotly.graph_objects as go
@@ -158,5 +158,8 @@ def find_hessian_dimensionality(eigenspectrum_data):
         # print(f"Proportion of small eigenvalues: {area_small}")
         # print(f"Number of small eigenvalues: {small_eigenvalues} / {num_params}")
         # print(f"MODEL DIMENSONALITY ACCORDING TO HESSIAN : {dimensions}")
+
+    print(hessian_dims)
+    print(hessian_dims_norm)
     
     return hessian_dims, hessian_dims_norm
