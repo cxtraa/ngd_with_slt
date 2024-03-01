@@ -119,7 +119,7 @@ def main(args):
     for i in range(len(state_dicts)):
         HN, HL = models_data[i]["description"]["LMHN"], models_data[i]["description"]["LMHL"]
         optim = models_data[i]["description"]["optimiser"]
-        title = f"{HN} HN {HL} HL {optim} optimiser"        
+        title = f"{HN} HN {HL} HL"
         models[title].load_state_dict(state_dicts[i])
 
     criterion = {"general":nn.CrossEntropyLoss(),"kfac": nn.CrossEntropyLoss(reduction='mean')}
@@ -142,31 +142,13 @@ def main(args):
     hessian_fig.add_trace(go.Scatter(x=args.hidden_nodes, y=list(hessian_dims.values()), mode='markers'))
     hessian_fig.update_layout(
         title="Hessian dimensionality over models",
-        xaxis_title="Hidden conv layers",
+        xaxis_title="Hidden layers",
         yaxis_title="Dimensionality",
     )
     figs.append(hessian_fig)
 
-    """
-    ### LLC ESTIMATIONS FOR EACH ARCHITECTURE (Hidden nodes) AT CONVERGENCE ###
-    llc_estimator = OnlineLLCEstimator(args.num_chains,                                       
-                                       args.num_draws, 
-                                       len(train_loader.dataset), 
-                                       device=device)
-    rlct_estimates = {}
-    rlct_estimates_norm = {}
-    neg_log_likelyhoods = {}
-    for title, model in models.items():
-        results = run_callbacks(train_loader,
-                                model=model,
-                                args=args,
-                                callbacks=[llc_estimator],
-                                criterion=criterion["general"],
-                                device=device)
-        #rlct_estimates_norm.append(results["llc/means"][-1]/count_parameters(model))
-        rlct_estimates[title] = results["llc/means"][-1]
-        rlct_estimates_norm[title] = results["llc/means"][-1]/count_parameters(model)
-        neg_log_likelyhoods[title] = results["loss/trace"][-1][-1] # shape of results["loss/trace"] = (1,2000)
+    ### ESTIMATE RLCT
+    rlct_estimates, rlct_estimates_norm, neg_log_likelyhoods = produce_rlct(models, train_loader,criterion, device, args)
 
     rlct_fig = go.Figure()
     Y = [rlct_estimates[f"{hn} HN {args.hidden_layers} HL"] for hn in args.hidden_nodes]
@@ -188,7 +170,6 @@ def main(args):
         yaxis_title="RLCT_norm",
     )
     figs.append(rlct_fig_norm)
-    """
 
     ### VISUALISE TRAINING / TESTING LOSS OVER MODEL ARCHITECTURES ###
     train_test_fig = go.Figure()
@@ -212,7 +193,7 @@ def main(args):
     )
     figs.append(train_test_fig)
 
-    """
+
     ### VISUALISE GENERALISATION LOSS OVER MODEL ARCHITECTURES (Hidden Nodes) ###
     generalisation_losses = {}
     for model_data in models_data:
@@ -234,7 +215,6 @@ def main(args):
         #barmode="group",
     )
     figs.append(generalisation_fig)
-    """
 
     ### PUSH FIGURES TO LOCAL HTML FILE ###
     curr_time = datetime.now().strftime("%Y-%m-%d-%H-%M")
