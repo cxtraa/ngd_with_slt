@@ -72,10 +72,10 @@ def get_mnist_vary_HN_args_parser():
 
         ],
         'Selection Criteria':[
-            {'name': '--hidden_nodes', 'default': [2,4,8], 'type': list},
+            {'name': '--hidden_conv_layers', 'default': [2,4,8], 'type': list},
             #fixed number of hidden layers
-            {'name': '--hidden_layers', 'default': 2, 'type': int},
-            {'name': '--model', 'default': "LM", 'type': str},
+            {'name': '--kernel_size', 'default': 2, 'type': str},
+            {'name': '--model', 'default': "CM", 'type': str},
             {'name': '--optimiser', 'default': "adam", 'type': str},
         ]
     }
@@ -94,6 +94,8 @@ def main(args):
     device = "cuda" if t.cuda.is_available() else "cpu"
     print(f"DEVICE : {device}")
     warnings.filterwarnings("ignore")
+
+    # FIXME: fix the hidden_conv_layers and kernel_size
 
     ### PRODUCE LIST OF NETWORKS WITH VARYING SIZES ###
     models = {}
@@ -150,24 +152,8 @@ def main(args):
 
     """
     ### LLC ESTIMATIONS FOR EACH ARCHITECTURE (Hidden nodes) AT CONVERGENCE ###
-    llc_estimator = OnlineLLCEstimator(args.num_chains,                                       
-                                       args.num_draws, 
-                                       len(train_loader.dataset), 
-                                       device=device)
-    rlct_estimates = {}
-    rlct_estimates_norm = {}
-    neg_log_likelyhoods = {}
-    for title, model in models.items():
-        results = run_callbacks(train_loader,
-                                model=model,
-                                args=args,
-                                callbacks=[llc_estimator],
-                                criterion=criterion["general"],
-                                device=device)
-        #rlct_estimates_norm.append(results["llc/means"][-1]/count_parameters(model))
-        rlct_estimates[title] = results["llc/means"][-1]
-        rlct_estimates_norm[title] = results["llc/means"][-1]/count_parameters(model)
-        neg_log_likelyhoods[title] = results["loss/trace"][-1][-1] # shape of results["loss/trace"] = (1,2000)
+    use this 
+    rlct_estimates, rlct_estimates_norm, neg_log_likelyhoods = produce_rlct(models, train_loader,criterion, device, args)
 
     rlct_fig = go.Figure()
     Y = [rlct_estimates[f"{hn} HN {out_channels} HL"] for hn in kernel_sizes]

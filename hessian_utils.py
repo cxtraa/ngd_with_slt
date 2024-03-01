@@ -158,8 +158,5 @@ def find_hessian_dimensionality(eigenspectrum_data):
         # print(f"Proportion of small eigenvalues: {area_small}")
         # print(f"Number of small eigenvalues: {small_eigenvalues} / {num_params}")
         # print(f"MODEL DIMENSONALITY ACCORDING TO HESSIAN : {dimensions}")
-
-    print(hessian_dims)
-    print(hessian_dims_norm)
     
     return hessian_dims, hessian_dims_norm

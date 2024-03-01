@@ -56,8 +56,8 @@ def get_train_args_parser():
             {'name' : '--model', 'default' : 'LM', 'type' : str},   # Linear MNIST
             {'name' : '--LMHN', 'default' : 16, 'type' : int},  # Linear MNIST Hidden Nodes
             {'name' : '--LMHL', 'default' : 2, 'type' : int},   # Linear MNIST Hidden Layers
-            {'name' : '--CMKS', 'default' : 3, 'type' : int}, # CNN MNIST kernel size
-            {'name' : '--CMHL', 'default' : 1, 'type' : int}, # CNN MNIST hidden conv layers
+            {'name' : '--CMKS', 'default' : 5, 'type' : int}, # CNN MNIST kernel size
+            {'name' : '--CMHL', 'default' : 10, 'type' : int}, # CNN MNIST hidden conv layers
         ],
         'Training Hyperparameters': [
             {'name': '--lr', 'default': 1e-5, 'type': float},
@@ -89,8 +89,8 @@ def main(args):
         filename += f"_{args.LMHL}-HL_{args.LMHN}-HN"
         model = LinearMNIST(hidden_layers=args.LMHL, hidden_nodes=args.LMHN).to(device)
     elif args.model == "CM":
-        filename += f"_{args.KS}-KS_{args.CMHL}-HL"
-        model = CnnMNIST(kernel_size=args.KS, hidden_conv_layers=args.CMHL).to(device)
+        filename += f"_{args.CMKS}-KS_{args.CMHL}-HL"
+        model = CnnMNIST(kernel_size=args.CMKS, hidden_conv_layers=args.CMHL).to(device)
     else:
         raise NotImplementedError("The requested model does not exist.")
 

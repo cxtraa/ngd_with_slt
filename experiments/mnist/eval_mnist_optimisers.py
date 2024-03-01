@@ -39,7 +39,8 @@ from PyHessian.pyhessian import *
 from PyHessian.density_plot import *
 from general_utils import *
 from hessian_utils import *
-from architectures.NN import *
+from architectures.Linear import LinearMNIST
+from data.build_data import build_data
 
 import plotly.express as px
 from plotly.subplots import make_subplots
@@ -48,7 +49,38 @@ import matplotlib
 import matplotlib.pyplot as plt
 from matplotlib.cm import get_cmap
 
-def main():
+def get_eval_mnist_optimisers_args_parser():
+    parser = argparse.ArgumentParser(description='Set parameters for training model', add_help=False)
+
+    # Arguments organized by group
+    arg_groups = {
+        'RLCT Hyperparameters': [
+            {'name': '--num_draws', 'default': 1000, 'type': int},
+            {'name': '--num_chains', 'default': 2, 'type': int},
+            {'name': '--noise_level', 'default': 1.0, 'type': float},
+            {'name': '--elasticity', 'default': 1000.0, 'type': float}
+        ],
+        'Hessian Parameters': [
+            {'name': '--hessian_batch_size', 'default': 12, 'type': int},
+        ],
+        'Data Loading Parameters': [
+            {'name': '--batch_size', 'default': 128, 'type': int},
+            {'name': '--num_workers', 'default': 12, 'type': int},
+
+        ],
+        'Selection Criteria':[
+        ]
+    }
+
+    # Loop through the argument groups and add them to the parser
+    for group_name, args in arg_groups.items():
+        group = parser.add_argument_group(group_name)
+        for arg in args:
+            group.add_argument(arg['name'], default=arg['default'], type=arg['type'], help=arg.get('help', ''))
+
+    return parser
+
+def main(args):
     ### CHECK DEVICE ###
     device = "cuda" if t.cuda.is_available() else "cpu"
     print(f"DEVICE : {device}")
@@ -57,39 +89,20 @@ def main():
     ### PRODUCE MULTIPLE MODELS FOR TRAINING WITH DIFFERENT OPTIMISERS ###
     HIDDEN_LAYERS = 2
     HIDDEN_NODES = 128
-    optimisers = ["sgd", "rmsprop", "adam", "ngd"]
+    optimisers = ["sgd", "ngd"]
     models = {}
     for optim in optimisers:
         model = LinearMNIST(hidden_layers=HIDDEN_LAYERS, hidden_nodes=HIDDEN_NODES).to(device)
         models[optim] = model
 
-    ### HYPERPARAMETERS, MODEL, AND OPTIMISERS ###
-    hyperparams = {
-        "lr": 1e-5,
-        "batch_size" : 128,
-        "num_epochs" : 10,
-        "num_workers" : 12,
-        "num_draws" : 2000,
-        "num_chains" : 1,
-        "noise_level" : 2.0,
-        "elasticity" : 1000.0,
-    }
-    criterion = {"general":nn.CrossEntropyLoss(),"kfac": nn.CrossEntropyLoss(reduction='mean')}
 
-    ### DATA LOADING ###
-    transform = transforms.Compose([
-        transforms.ToTensor(),
-        transforms.Normalize((0.1307,), (0.3081,))
-    ])
-    train_set = datasets.MNIST(root='./data', train=True, download=True, transform=transform)
-    test_set = datasets.MNIST(root='./data', train=False, download=True, transform=transform)
-    train_loader = t.utils.data.DataLoader(train_set, batch_size=hyperparams["batch_size"], shuffle=True, num_workers=hyperparams["num_workers"], persistent_workers=True)
-    test_loader = t.utils.data.DataLoader(test_set, batch_size=hyperparams["batch_size"], shuffle=False, num_workers=hyperparams["num_workers"], persistent_workers=True)
+    criterion = {"general":nn.CrossEntropyLoss(),"kfac": nn.CrossEntropyLoss(reduction='mean')}
+    train_loader, test_loader = build_data(args)
 
     ### LOAD MODELS FROM LOCAL FILES ###
     criteria = {
-        "model" : "LM",
-        "optimiser" : ["adam", "rmsprop", "ngd", "sgd"],
+        "model" : "CM",
+        "optimiser" : ["ngd", "sgd"],
         "LMHN" : HIDDEN_NODES,
         "LMHL" : HIDDEN_LAYERS,
     }
@@ -103,8 +116,8 @@ def main():
 
     ### COMPUTE MODEL EIGENSPECTRA ###
     hessians = produce_hessians(models=models,
-                                data_loader=test_loader,
-                                num_batches=10,
+                                data_loader=train_loader,
+                                num_batches=args.hessian_batch_size,
                                 criterion=criterion,
                                 device=device)
     
@@ -180,23 +193,8 @@ def main():
     figs.append(test_fig)
 
     ### LLC ESTIMATIONS FOR EACH ARCHITECTURE AT CONVERGENCE ###
-    llc_estimator = OnlineLLCEstimator(hyperparams["num_chains"],                                       
-                                       hyperparams["num_draws"], 
-                                       len(train_set), 
-                                       device=device)
-    rlct_estimates = {}
-    rlct_estimates_norm = {}
-    for optimiser, model in models.items():
-        print(type(model))
-        
-        results = run_callbacks(train_loader=train_loader,
-                                model=model,
-                                hyperparams=hyperparams,
-                                callbacks=[llc_estimator],
-                                criterion=criterion["general"],
-                                device=device)
-        rlct_estimates[optimiser] = results["llc/means"][-1]
-        rlct_estimates_norm[optimiser] = results["llc/means"][-1]/count_parameters(model)
+    rlct_estimates, rlct_estimates_norm, neg_log_likelyhoods = produce_rlct(models, train_loader,criterion, device, args)
+
     rlct_fig = go.Figure()
     rlct_fig.add_trace(go.Bar(
         x=list(rlct_estimates.keys()),
@@ -219,6 +217,9 @@ def main():
     curr_time = datetime.now().strftime("%Y-%m-%d-%H-%M")
     write_figs_to_html(figs, f"./experiments/mnist/figs/mnist_optimisers_{curr_time}.html", title="Investigating effect of optimiser on RLCT / Hessian eigenspectrum")
 
+
 if __name__ == "__main__":
-    freeze_support()
-    main()
+    freeze_support()    # ONLY REQUIRED FOR WINDOWS, REMOVE IF USING MAC OR LINUX
+    parser = get_eval_mnist_optimisers_args_parser()
+    args = parser.parse_args()
+    main(args)

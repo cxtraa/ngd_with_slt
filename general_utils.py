@@ -233,6 +233,30 @@ def run_callbacks(train_loader, model, criterion, callbacks, args, device):
     
     return results
 
+def produce_rlct(models, dataloader,criterion, device, args):
+    
+    ### LLC ESTIMATIONS FOR EACH ARCHITECTURE (Hidden nodes) AT CONVERGENCE ###
+    llc_estimator = OnlineLLCEstimator(args.num_chains,                                       
+                                       args.num_draws, 
+                                       len(dataloader.dataset), 
+                                       device=device)
+    rlct_estimates = {}
+    rlct_estimates_norm = {}
+    neg_log_likelyhoods = {}
+    for title, model in models.items():
+        results = run_callbacks(dataloader,
+                                model=model,
+                                args=args,
+                                callbacks=[llc_estimator],
+                                criterion=criterion["general"],
+                                device=device)
+        #rlct_estimates_norm.append(results["llc/means"][-1]/count_parameters(model))
+        rlct_estimates[title] = results["llc/means"][-1]
+        rlct_estimates_norm[title] = results["llc/means"][-1]/count_parameters(model)
+        neg_log_likelyhoods[title] = results["loss/trace"][-1][-1] # shape of results["loss/trace"] = (1,2000)
+
+    return rlct_estimates, rlct_estimates_norm, neg_log_likelyhoods
+
 def load_models(base_path, criteria):
     """
     Load models that match specific criteria with dynamic parameter parsing.
@@ -271,7 +295,6 @@ def load_models(base_path, criteria):
             #for each criterion in criteria, if the corresponding value in description exists in the criteria.items()
             if all(desc.get(key) in (value if isinstance(value, list) else [value]) for key, value in criteria.items()):
                 print('---------', file_path, '---------')
-                print(desc)
                 print('\n')
 
                 #reconstruct state_dicts and models_data
