@@ -11,7 +11,11 @@ slt/
 wandb/
 
 #ignore models folder (sent to google cloud storage)
-saved_models/
+#unable to get google cloud working yet
+#saved_models/
+
+#ignore google cloud sdk folder
+google-cloud-sdk/
 
 #ignore pycache
 *.pyc

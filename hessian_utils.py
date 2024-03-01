@@ -58,9 +58,14 @@ def get_esd_plot_plotly(eigenvalues, weights, plot_type, title=None, fig=None, n
 
 def produce_hessians(models, data_loader, num_batches, criterion, device):
     """
-    Return a dictionary where each key represents a model,
-    and each value is its corresponding Hessian object from
-    the PyHessian library.
+    Produces hessians from a dictionary of models
+
+    Parameters:
+    models (dict): each key is the title of model, and values are the models themselves with weights loaded
+
+    Returns:
+    a dictionary where each key represents a model, 
+    and each value is its corresponding Hessian object from the PyHessian library.
     """
 
     images, labels = [], []
@@ -83,6 +88,13 @@ def produce_hessian_eigenspectra(hessians, plot_type="linear"):
     Given a list of Hessian classes for different models, return a list
     of figures containing their eigenspectra, as well as a dictionary
     containing all the trace data.
+
+    Parameters:
+    hessians (dict): the dictionary containing keys as model titles, and the hessian for that model
+
+    Returns:
+    list: return a list of figures containing their eigenspectra, as well as a dictionary
+    containing all the trace data.
     """
 
     overlaid_fig = go.Figure()
@@ -90,16 +102,19 @@ def produce_hessian_eigenspectra(hessians, plot_type="linear"):
     eigenspectrum_data = {}
     for key, hessian in hessians.items():
         density_eigen, density_weight = hessian.density()
+        #temp_fig is eigenspectrum plot for one model
         temp_fig = get_esd_plot_plotly(density_eigen, density_weight, title=f"{key} Hessian eigenspectrum", plot_type=plot_type)
         figs.append(temp_fig)
         trace=temp_fig.data[0]
         trace.name=key
         overlaid_fig.add_trace(trace)
+        #eigenspectrum_data contains eigenvalue as x, density of eigenvalues as y, and num_params of model
         eigenspectrum_data[key] = {
             "x" : list(trace.x),
             "y" : list(trace.y),
+            "num_params": count_parameters(hessian.model)
         }
-        eigenspectrum_data[key]["num_params"] = count_parameters(hessian.model)
+    #overlaid_fig overlays eigenspectrum for all models
     overlaid_fig.update_layout(title="Hessian eigenspectrum of optimisers",
                     xaxis_title="Eigenvalue",
                     yaxis_title="Density",
@@ -121,7 +136,7 @@ def find_hessian_dimensionality(eigenspectrum_data):
 
         eigenvalues = np.array(value["x"])
         density = np.array(value["y"])
-        num_params = eigenspectrum_data[key]["num_params"]
+        num_params = value["num_params"]
         cut_off = find_value(value, 100e-9)
 
         mu = simps(eigenvalues*density, eigenvalues)
