@@ -45,7 +45,7 @@ from architectures.Linear import LinearMNIST
 from architectures.CNN import CnnMNIST
 from data.build_data import build_data
 
-import plotly.express as px
+import plotly as px
 from plotly.subplots import make_subplots
 import plotly.graph_objects as go
 import matplotlib
@@ -146,11 +146,14 @@ def main(args):
         y=list(hessian_dims.values()),
         name="Dims (Raw)",
     ))
+    '''
+    #hessian_dims_norm are way too small to be useful
     hessian_dims_fig.add_trace(go.Bar(
         x=args.criteria['optimiser'],
         y=list(hessian_dims_norm.values()),
         name="Dims (Normalised)",
     ))
+    '''
     hessian_dims_fig.update_layout(
         title="Hessian dimensionality over optimisers",
         xaxis_title="Optimiser",
@@ -159,53 +162,36 @@ def main(args):
     figs.append(hessian_dims_fig)
 
     ### VISUALISE TRAINING / TESTING/ GENERALIZATION LOSS OVER OPTIMISERS ###
-    train_test_fig = go.Figure()
-    train_test_fig.add_trace(go.Bar(
-        x=[model_data["description"]["optimiser"] for model_data in models_data],
-        y=[model_data["train_losses"][-1] for model_data in models_data],
-        name="Training Losses",
-        marker_color="indianred",
-    ))
-    train_test_fig.add_trace(go.Bar(
-        x=[model_data["description"]["optimiser"] for model_data in models_data],
-        y=[model_data["test_losses"][-1] for model_data in models_data],
-        name="Testing Losses",
-        marker_color="lightsalmon",
-    ))
-    train_test_fig.update_layout(
-        title="Training and testing losses of model architectures",
-        xaxis_title="Model",
-        yaxis_title="Loss",
-        barmode="group",
-    )
-    figs.append(train_test_fig)
+    colors=iter(px.colors.qualitative.Plotly)
+    loss_fig = go.Figure()
 
-
-    train_fig = go.Figure()
-    test_fig = go.Figure()
     for model_data in models_data:
-        train_fig.add_trace(go.Scatter(
+        color=next(colors)
+        loss_fig.add_trace(go.Scatter(
             x=epochs,
             y=model_data["train_losses"],
-            name=model_data["description"]["optimiser"],
+            name=model_data["description"]["optimiser"]+"-Training Loss",
+            line=dict(dash='dash',color=color)
         ))
-        test_fig.add_trace(go.Scatter(
+        loss_fig.add_trace(go.Scatter(
             x=epochs,
             y=model_data["test_losses"],
-            name=model_data["description"]["optimiser"],
+            name=model_data["description"]["optimiser"]+"-Testing Loss",
+            line=dict(dash='solid',color=color)
         ))
-    train_fig.update_layout(
-        title="Evolution of training loss over optimisers",
+        
+        # loss_fig.add_trace(go.Bar(
+        #     x=epochs,
+        #     y=[neg_log_likelyhoods[title] - rlct_estimates[title]/args.num_draws for title,model in models.items()],
+        #     name="Generalization Losses",
+        #     marker_color="mediumseagreen",
+        # ))
+    loss_fig.update_layout(
+        title="Evolution of loss over optimisers",
         xaxis_title="Epochs",
         yaxis_title="Loss",
     )
-    test_fig.update_layout(
-        title="Evolution of testing loss over optimisers",
-        xaxis_title="Epochs",
-        yaxis_title="Loss",
-    )
-    figs.append(train_fig)
-    figs.append(test_fig)
+    figs.append(loss_fig)
 
     ### LLC ESTIMATIONS FOR EACH ARCHITECTURE AT CONVERGENCE ###
     rlct_estimates, rlct_estimates_norm, neg_log_likelyhoods = produce_rlct(models, train_loader,criterion, device, args)
@@ -216,17 +202,20 @@ def main(args):
         y=list(rlct_estimates.values()),
         name="RLCT (Raw)"
     ))
+    #These are way too small to be generally useful
     rlct_fig.add_trace(go.Bar(
         x=list(rlct_estimates_norm.keys()),
         y=list(rlct_estimates_norm.values()),
         name="RLCT (Normalised)"
     ))
+
     rlct_fig.update_layout(
         title=f"RLCT values for optimisers",
         xaxis_title="Optimiser",
         yaxis_title="RLCT",
     )
     figs.append(rlct_fig)
+
 
     ### PUSH FIGURES TO LOCAL HTML FILE ###
     curr_time = datetime.now().strftime("%Y-%m-%d-%H-%M")
