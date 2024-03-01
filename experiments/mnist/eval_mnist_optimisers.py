@@ -42,6 +42,7 @@ from PyHessian.density_plot import *
 from general_utils import *
 from hessian_utils import *
 from architectures.Linear import LinearMNIST
+from architectures.CNN import CnnMNIST
 from data.build_data import build_data
 
 import plotly.express as px
@@ -71,14 +72,17 @@ def get_eval_mnist_optimisers_args_parser():
 
         ],
         'Selection Criteria':[
-            {'name' : '--model', 'default' : 'LM', 'type' : str},   # Linear MNIST
-            {'name' : '--LMHN', 'default' : 16, 'type' : int},  # Linear MNIST Hidden Nodes
-            {'name' : '--LMHL', 'default' : 2, 'type' : int},   # Linear MNIST Hidden Layers
-            # {'name' : '--CMKS', 'default' : 5, 'type' : int}, # CNN MNIST kernel size
-            # {'name' : '--CMHL', 'default' : 10, 'type' : int}, # CNN MNIST hidden conv layers
-
-            #vary type of optimizers
-            {'name': '--optimiser', 'default': ['sgd','ngd'], 'type': list}
+            #change your selection criteria here
+            {'name': '--criteria', 
+             'default': {
+                 'model':'LM',
+                 'optimiser':['sgd','ngd'],
+                 #List of available hidden nodes
+                 'LMHN':8,
+                 #fixed number of hidden layers
+                 'LMHL':2
+             }, 
+             'type': dict},
         ]
     }
 
@@ -97,26 +101,26 @@ def main(args):
     warnings.filterwarnings("ignore")
 
     ### PRODUCE MULTIPLE MODELS FOR TRAINING WITH DIFFERENT OPTIMISERS ###
-    HIDDEN_LAYERS = 2
-    HIDDEN_NODES = 128
-    optimisers = ["sgd", "ngd"]
-    models = {}
-    for optim in optimisers:
-        model = LinearMNIST(hidden_layers=HIDDEN_LAYERS, hidden_nodes=HIDDEN_NODES).to(device)
-        models[optim] = model
 
+    models = {}
+    for optim in args.criteria['optimiser']:
+
+        if args.criteria['model'] == "LM":
+            filename = f"LM_{args.criteria['LMHL']}-HL_{args.criteria['LMHN']}-HN"
+            model = LinearMNIST(hidden_layers=args.criteria['LMHL'], hidden_nodes=args.criteria['LMHN']).to(device)
+            models[optim] = model
+        elif args.criteria['model'] == "CM":
+            filename = f"CM_{args.criteria['CMKS']}-KS_{args.criteria['CMHL']}-HL"
+            model = CnnMNIST(kernel_size=args.criteria['CMKS'], hidden_conv_layers=args.criteria['CMHL']).to(device)
+        else:
+            raise NotImplementedError("The requested model does not exist.")
+        models[optim] = model
 
     criterion = {"general":nn.CrossEntropyLoss(),"kfac": nn.CrossEntropyLoss(reduction='mean')}
     train_loader, test_loader = build_data(args)
 
     ### LOAD MODELS FROM LOCAL FILES ###
-    criteria = {
-        "model" : "CM",
-        "optimiser" : ["ngd", "sgd"],
-        "CMKS" : HIDDEN_NODES,
-        "CMHL" : HIDDEN_LAYERS,
-    }
-    state_dicts, models_data = load_models("./saved_models", criteria=criteria)
+    state_dicts, models_data = load_models("./weights", criteria=args.criteria)
     num_epochs = models_data[0]["description"]["num_epochs"]
     epochs = np.arange(1, num_epochs+1)
 
@@ -138,12 +142,12 @@ def main(args):
     hessian_dims, hessian_dims_norm = find_hessian_dimensionality(eigenspectrum_data)
     hessian_dims_fig = go.Figure()
     hessian_dims_fig.add_trace(go.Bar(
-        x=optimisers,
+        x=args.criteria['optimiser'],
         y=list(hessian_dims.values()),
         name="Dims (Raw)",
     ))
     hessian_dims_fig.add_trace(go.Bar(
-        x=optimisers,
+        x=args.criteria['optimiser'],
         y=list(hessian_dims_norm.values()),
         name="Dims (Normalised)",
     ))
@@ -154,7 +158,7 @@ def main(args):
     )
     figs.append(hessian_dims_fig)
 
-    ### VISUALISE TRAINING / TESTING LOSS OVER OPTIMISERS ###
+    ### VISUALISE TRAINING / TESTING/ GENERALIZATION LOSS OVER OPTIMISERS ###
     train_test_fig = go.Figure()
     train_test_fig.add_trace(go.Bar(
         x=[model_data["description"]["optimiser"] for model_data in models_data],
@@ -175,6 +179,7 @@ def main(args):
         barmode="group",
     )
     figs.append(train_test_fig)
+
 
     train_fig = go.Figure()
     test_fig = go.Figure()
@@ -225,12 +230,11 @@ def main(args):
 
     ### PUSH FIGURES TO LOCAL HTML FILE ###
     curr_time = datetime.now().strftime("%Y-%m-%d-%H-%M")
-    write_figs_to_html(figs, f"./experiments/mnist/figs/mnist_optimisers_{curr_time}.html", title="Investigating effect of optimiser on RLCT / Hessian eigenspectrum")
+    write_figs_to_html(figs, f"./experiments/mnist/figs/mnist_optimisers_{filename}_{curr_time}.html", title="Investigating effect of optimiser on RLCT / Hessian eigenspectrum")
 
 
 if __name__ == "__main__":
     freeze_support()    # ONLY REQUIRED FOR WINDOWS, REMOVE IF USING MAC OR LINUX
     parser = get_eval_mnist_optimisers_args_parser()
     args = parser.parse_args()
-    print(dir(args))
-    #main(args)
+    main(args)
