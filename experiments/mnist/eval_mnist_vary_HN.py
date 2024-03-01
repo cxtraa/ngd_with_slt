@@ -192,7 +192,7 @@ def main(args):
 
     loss_fig.add_trace(go.Bar(
         x=titles,
-        y=[neg_log_likelyhoods[title] - rlct_estimates[title]/args.num_draws for title in titles],
+        y=[neg_log_likelyhoods[title] - rlct_estimates[title]/args.num_draws for title,model in models.items()],
         name="Generalization Losses",
         marker_color="mediumseagreen",
     ))
