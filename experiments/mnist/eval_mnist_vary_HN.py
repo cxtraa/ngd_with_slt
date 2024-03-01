@@ -71,11 +71,17 @@ def get_mnist_vary_HN_args_parser():
 
         ],
         'Selection Criteria':[
-            {'name': '--hidden_nodes', 'default': [2,4,8], 'type': list},
-            #fixed number of hidden layers
-            {'name': '--hidden_layers', 'default': 2, 'type': int},
-            {'name': '--model', 'default': "LM", 'type': str},
-            {'name': '--optimiser', 'default': "adam", 'type': str},
+            #change your selection criteria here
+            {'name': '--criteria', 
+             'default': {
+                 'model':'LM',
+                 'optimiser':'adam',
+                 #List of available hidden nodes
+                 'LMHN':[2,4,8],
+                 #fixed number of hidden layers
+                 'LMHL':2
+             }, 
+             'type': dict},
         ]
     }
 
@@ -95,26 +101,23 @@ def main(args):
     warnings.filterwarnings("ignore")
 
     ### PRODUCE LIST OF NETWORKS WITH VARYING SIZES ###
+    hidden_nodes=args.criteria['LMHN']
+    hidden_layers=args.criteria['LMHL']
 
     models = {}
     titles = []
-    for hidden_node in args.hidden_nodes:
-        title = f"{hidden_node} HN {args.hidden_layers} HL"
+
+    for hidden_node in hidden_nodes:
+        title = f"{hidden_node} HN {hidden_layers} HL"
         titles.append(title)
-        model = LinearMNIST(hidden_nodes=hidden_node, hidden_layers=args.hidden_layers).to(device)
+        model = LinearMNIST(hidden_nodes=hidden_node, hidden_layers=hidden_layers).to(device)
         models[title] = model
 
-    ### LOAD MODELS FROM LOCAL FILES ###
-    criteria = {
-        "model" : args.model,
-        "optimiser" : args.optimiser,
-        "LMHN" : args.hidden_nodes,
-        "LMHL" : args.hidden_layers,
-    }
-
-    state_dicts, models_data = load_models("./weights", criteria=criteria)
+    ### LOAD MODELS FROM LOCAL FILES###
+    state_dicts, models_data = load_models("./weights", criteria=args.criteria)
     num_epochs = models_data[0]["description"]["num_epochs"]
     epochs = np.arange(1, num_epochs+1)
+
 
     for i in range(len(state_dicts)):
         HN, HL = models_data[i]["description"]["LMHN"], models_data[i]["description"]["LMHL"]
@@ -139,7 +142,7 @@ def main(args):
     ### CALCULATE ESTIMATE OF NUMBER OF LARGE EIGENVALUES (DIMENSIONS) IN SPECTRUM ###
     hessian_dims, hessian_dims_norm = find_hessian_dimensionality(eigenspectrum_data)
     hessian_fig = go.Figure()
-    hessian_fig.add_trace(go.Scatter(x=args.hidden_nodes, y=list(hessian_dims.values()), mode='markers'))
+    hessian_fig.add_trace(go.Scatter(x=hidden_nodes, y=list(hessian_dims.values()), mode='markers'))
     hessian_fig.update_layout(
         title="Hessian dimensionality over models",
         xaxis_title="Hidden layers",
@@ -151,9 +154,9 @@ def main(args):
     rlct_estimates, rlct_estimates_norm, neg_log_likelyhoods = produce_rlct(models, train_loader,criterion, device, args)
 
     rlct_fig = go.Figure()
-    Y = [rlct_estimates[f"{hn} HN {args.hidden_layers} HL"] for hn in args.hidden_nodes]
-    #rlct_fig.add_trace(go.Scatter(x=args.hidden_nodes, y=Y, mode='markers'))
-    rlct_fig.add_trace(go.Scatter(x=args.hidden_nodes, y=Y))
+    Y = [rlct_estimates[f"{hn} HN {hidden_layers} HL"] for hn in hidden_nodes]
+    #rlct_fig.add_trace(go.Scatter(x=hidden_nodes, y=Y, mode='markers'))
+    rlct_fig.add_trace(go.Scatter(x=hidden_nodes, y=Y))
     rlct_fig.update_layout(
         title=f"Adam RLCT estimation, Elasticity : {args.elasticity}, Noise Level : {args.noise_level}",
         xaxis_title="Hidden neurons in each layer",
@@ -162,8 +165,8 @@ def main(args):
     figs.append(rlct_fig)
 
     rlct_fig_norm = go.Figure()
-    Y_norm = [rlct_estimates_norm[f"{hn} HN {args.hidden_layers} HL"] for hn in args.hidden_nodes]
-    rlct_fig_norm.add_trace(go.Scatter(x=args.hidden_nodes, y=Y_norm))
+    Y_norm = [rlct_estimates_norm[f"{hn} HN {hidden_layers} HL"] for hn in hidden_nodes]
+    rlct_fig_norm.add_trace(go.Scatter(x=hidden_nodes, y=Y_norm))
     rlct_fig_norm.update_layout(
         title=f"Adam RLCT_norm estimation, Elasticity : {args.elasticity}, Noise Level : {args.noise_level}",
         xaxis_title="Hidden neurons in each layer",
@@ -171,50 +174,35 @@ def main(args):
     )
     figs.append(rlct_fig_norm)
 
-    ### VISUALISE TRAINING / TESTING LOSS OVER MODEL ARCHITECTURES ###
-    train_test_fig = go.Figure()
-    train_test_fig.add_trace(go.Bar(
+    ### VISUALISE TRAINING / TESTING / GENERALIZATION LOSS OVER MODEL ARCHITECTURES ###
+
+    loss_fig = go.Figure()
+    loss_fig.add_trace(go.Bar(
         x=titles,
         y=[model_data["train_losses"][-1] for model_data in models_data],
         name="Training Losses",
         marker_color="indianred",
     ))
-    train_test_fig.add_trace(go.Bar(
+    loss_fig.add_trace(go.Bar(
         x=titles,
         y=[model_data["test_losses"][-1] for model_data in models_data],
         name="Testing Losses",
         marker_color="lightsalmon",
     ))
-    train_test_fig.update_layout(
-        title="Training and testing losses of model architectures",
+
+    loss_fig.add_trace(go.Bar(
+        x=titles,
+        y=[neg_log_likelyhoods[title] - rlct_estimates[title]/args.num_draws for title in titles],
+        name="Generalization Losses",
+        marker_color="mediumseagreen",
+    ))
+    loss_fig.update_layout(
+        title="Training, testing and generalisation losses of model architectures",
         xaxis_title="Model",
         yaxis_title="Loss",
         barmode="group",
     )
-    figs.append(train_test_fig)
-
-
-    ### VISUALISE GENERALISATION LOSS OVER MODEL ARCHITECTURES (Hidden Nodes) ###
-    generalisation_losses = {}
-    for model_data in models_data:
-        HN, HL = model_data["description"]["LMHN"], model_data["description"]["LMHL"]
-        title = f"{HN} HN {HL} HL"
-        #generalisation loss equation
-        generalisation_losses[title] = neg_log_likelyhoods[title] - rlct_estimates[title]/args.num_draws
-    generalisation_fig = go.Figure()
-    generalisation_fig.add_trace(go.Scatter(
-        x=titles,
-        y=[generalisation_losses[title] for title in titles],
-        name="Generalisation Losses",
-        marker_color="indianred",
-    ))
-    generalisation_fig.update_layout(
-        title="Generalisation losses of model architectures",
-        xaxis_title="Model",
-        yaxis_title="Generalisation Loss",
-        #barmode="group",
-    )
-    figs.append(generalisation_fig)
+    figs.append(loss_fig)
 
     ### PUSH FIGURES TO LOCAL HTML FILE ###
     curr_time = datetime.now().strftime("%Y-%m-%d-%H-%M")
