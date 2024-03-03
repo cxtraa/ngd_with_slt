@@ -13,6 +13,7 @@ from pathlib import Path
 import warnings
 import numpy as np
 import pandas as pd
+import copy
 
 import torch as t
 import torch.nn as nn
@@ -97,7 +98,7 @@ def main(args):
     train_loader, test_loader = build_data(args)
 
     ### OPTIMISER AND LOSS FUNCTION ###
-    criterion = nn.CrossEntropyLoss(reduction='mean') if args.optimiser=="ngd" else nn.CrossEntropyLoss()
+    metric = nn.CrossEntropyLoss(reduction='mean') if args.optimiser=="ngd" else nn.CrossEntropyLoss()
     sgd = t.optim.SGD(model.parameters(), lr=args.lr)
     adam = t.optim.Adam(model.parameters(), lr=args.lr)
     rmsprop = t.optim.RMSprop(model.parameters(), lr=args.lr, momentum=0.8)
@@ -114,14 +115,17 @@ def main(args):
     train_losses = []
     test_losses = []
     model_history=[]
+
     print(f"\n======================== Training with {args.optimiser} ==========================")
     pprint.pprint(vars(args))
     for epoch in range(args.num_epochs):
-        train_loss = train_one_epoch(model, train_loader, optimiser, criterion, device)
-        test_loss = evaluate(model, test_loader, criterion, device)
+        train_loss = train_one_epoch(model, train_loader, optimiser, metric, device)
+        test_loss = evaluate(model, test_loader, metric, device)
         train_losses.append(train_loss)
         test_losses.append(test_loss)
-        model_history.append(model.state_dict())
+        #IMPORTANT: if you want to add an entire model/statedict during training,make sure to use copy.deepcopy, else itll reference the final weights
+        model_history.append(copy.deepcopy(model.state_dict()))
+
         print(f"Epoch {epoch+1}/{args.num_epochs}: train_loss={train_loss:.4f}, test_loss={test_loss:.4f}")
 
     ### EXPORTING DATA ###

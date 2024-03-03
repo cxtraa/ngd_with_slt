@@ -116,7 +116,7 @@ def main(args):
     ### LOAD MODELS FROM LOCAL FILES###
     #this loads in all model histories for one model
     models_histories, models_data = load_models("./weights", criteria=args.criteria)
-    #select only the last model
+    #select only the last epoch for each model architecture
     state_dicts = [history[-1] for history in models_histories]
     
     num_epochs = models_data[0]["description"]["num_epochs"]
@@ -129,7 +129,7 @@ def main(args):
         title = f"{HN} HN {HL} HL"
         models[title].load_state_dict(state_dicts[i])
 
-    criterion = {"general":nn.CrossEntropyLoss(),"kfac": nn.CrossEntropyLoss(reduction='mean')}
+    metric = {"general":nn.CrossEntropyLoss(),"kfac": nn.CrossEntropyLoss(reduction='mean')}
     train_loader, test_loader = build_data(args)
         
     ### PRDOUCE HESSIAN EIGENSPECTRUMS FOR EACH NETWORK ###
@@ -138,7 +138,7 @@ def main(args):
                                 data_loader=train_loader, 
                                 num_batches=args.hessian_batch_size,
                                 device=device,
-                                criterion=criterion,
+                                criterion=metric,
                                 history=False)
 
     ### VISUALISE EIGENSPECTRUM PLOTS IN PLOTLY ###
@@ -156,7 +156,7 @@ def main(args):
     figs.append(hessian_fig)
 
     ### ESTIMATE RLCT
-    rlct_estimates, rlct_estimates_norm, neg_log_likelyhoods = produce_rlct(models, train_loader,criterion, device, args,history=False)
+    rlct_estimates, rlct_estimates_norm, neg_log_likelyhoods = produce_rlct(models, train_loader,metric, device, args,history=False)
 
     rlct_fig = go.Figure()
     Y = [rlct_estimates[f"{hn} HN {hidden_layers} HL"] for hn in hidden_nodes]

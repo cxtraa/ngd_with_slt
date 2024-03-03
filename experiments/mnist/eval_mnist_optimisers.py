@@ -3,6 +3,7 @@ EXPERIMENT NAME: Investigating the eigenspectra, Hessian dimensionality, and RLC
 EXPERIMENT DESCRIPTION: We train deep neural networks on the MNIST dataset, and compare their eigenspectra and RLCT for different optimisers.
 
 You need to change the Selection Criteria arg group yourself!
+When loading models, this will be a history of models across all epochs
 """
 
 ### IMPORT LIBRARIES ###
@@ -29,6 +30,7 @@ from tqdm import tqdm
 from datetime import datetime
 import json
 import wandb
+import copy
 
 from devinterp.slt import estimate_learning_coeff
 from devinterp.optim.sgld import SGLD
@@ -41,8 +43,6 @@ from PyHessian.pyhessian import *
 from PyHessian.density_plot import *
 from general_utils import *
 from hessian_utils import *
-from architectures.Linear import LinearMNIST
-from architectures.CNN import CnnMNIST
 from data.build_data import build_data
 
 import plotly as px
@@ -80,7 +80,10 @@ def get_eval_mnist_optimisers_args_parser():
                  #List of available hidden nodes
                  'LMHN':8,
                  #fixed number of hidden layers
-                 'LMHL':2
+                 'LMHL':2,
+                 #another criteria, as different models have different batch sizes, otherwise return models with differing batch_sizes
+                 'batch_size':512,
+                 'lr':1e-3
              }, 
              'type': dict},
         ]
@@ -103,123 +106,125 @@ def main(args):
     ### PRODUCE MULTIPLE MODELS FOR TRAINING WITH DIFFERENT OPTIMISERS ###
 
     models = {}
-    for optim in args.criteria['optimiser']:
-
-        if args.criteria['model'] == "LM":
-            filename = f"LM_{args.criteria['LMHL']}-HL_{args.criteria['LMHN']}-HN"
-            model = LinearMNIST(hidden_layers=args.criteria['LMHL'], hidden_nodes=args.criteria['LMHN']).to(device)
-            models[optim] = model
-        elif args.criteria['model'] == "CM":
-            filename = f"CM_{args.criteria['CMKS']}-KS_{args.criteria['CMHL']}-HL"
-            model = CnnMNIST(kernel_size=args.criteria['CMKS'], hidden_conv_layers=args.criteria['CMHL']).to(device)
-        else:
-            raise NotImplementedError("The requested model does not exist.")
-        models[optim] = model
-
-    criterion = {"general":nn.CrossEntropyLoss(),"kfac": nn.CrossEntropyLoss(reduction='mean')}
+    metric = {"general":nn.CrossEntropyLoss(),"kfac": nn.CrossEntropyLoss(reduction='mean')}
     train_loader, test_loader = build_data(args)
 
     ### LOAD MODELS FROM LOCAL FILES ###
-    state_dicts, models_data = load_models("./weights", criteria=args.criteria)
-    num_epochs = models_data[0]["description"]["num_epochs"]
-    epochs = np.arange(1, num_epochs+1)
+    try:
+        state_dicts, models_data = load_models("./weights", criteria=args.criteria)
+    except Exception as e:
+        print('check if the required models even exist, or if selection criteria is wrong')
 
     for i in range(len(state_dicts)):
-        optim = models_data[i]["description"]["optimiser"]   
-        models[optim].load_state_dict(state_dicts[i])
+        #num_epochs may be different for each model class
+        num_epochs = models_data[i]["description"]["num_epochs"]
+        epochs = np.arange(1, num_epochs+1)
+        optim = models_data[i]["description"]["optimiser"]
+
+        history=[]
+        for e in range(num_epochs):
+            #this function returns an object of type IncompatibleKeys, make sure to append the model not the output of this!
+            name, model = create_architecture(args.criteria, device)
+            model.load_state_dict(state_dicts[i][e])
+            history.append(model)
+        models[optim]=history
 
     ### COMPUTE MODEL EIGENSPECTRA ###
     hessians = produce_hessians(models=models,
                                 data_loader=train_loader,
                                 num_batches=args.hessian_batch_size,
-                                criterion=criterion,
-                                device=device)
+                                criterion=metric,
+                                device=device,
+                                history=True)
     
     ### COMPUTE FIGURES AND EIGENSPECTRUM DATA ###
-    figs, eigenspectrum_data = produce_hessian_eigenspectra(hessians, plot_type="log")
+
+    figs , eigenspectrum_data = produce_hessian_eigenspectra(hessians, plot_type="log",history=True)
+    #only take last epoch for each optim, otherwise too many. this will then be a list of last-epoch figs
+    figs=[inner_list[-1] for inner_list in figs]
+    # Modifying the title of each Plotly object
+    for fig in figs:
+         fig.layout.title.text = fig.layout.title.text + " - last epoch"
     
     ### CALCULATE ESTIMATE OF NUMBER OF LARGE EIGENVALUES (DIMENSIONS) IN SPECTRUM ###
-    hessian_dims, hessian_dims_norm = produce_hessian_dimensionality(eigenspectrum_data)
+    hessian_dims, hessian_dims_norm = produce_hessian_dimensionality(eigenspectrum_data,history=True)
     hessian_dims_fig = go.Figure()
-    hessian_dims_fig.add_trace(go.Bar(
-        x=args.criteria['optimiser'],
-        y=list(hessian_dims.values()),
-        name="Dims (Raw)",
-    ))
-    '''
-    #hessian_dims_norm are way too small to be useful
-    hessian_dims_fig.add_trace(go.Bar(
-        x=args.criteria['optimiser'],
-        y=list(hessian_dims_norm.values()),
-        name="Dims (Normalised)",
-    ))
-    '''
+
+    for optimiser, dimensions in hessian_dims.items():
+        hessian_dims_fig.add_trace(go.Scatter(
+            x=epochs,  # Assuming this aligns with 'dimensions' length
+            y=dimensions,
+            mode='lines+markers',
+            name=f"{optimiser}"
+        ))
+
     hessian_dims_fig.update_layout(
-        title="Hessian dimensionality over optimisers",
-        xaxis_title="Optimiser",
+        title="Hessian dimensionality overtime for different optimiser",
+        xaxis_title="Epoch",
         yaxis_title="Hessian dimensions",
     )
+
     figs.append(hessian_dims_fig)
 
-    ### VISUALISE TRAINING / TESTING/ GENERALIZATION LOSS OVER OPTIMISERS ###
-    colors=iter(px.colors.qualitative.Plotly)
-    loss_fig = go.Figure()
+    # ### VISUALISE TRAINING / TESTING/ GENERALIZATION LOSS OVER OPTIMISERS ###
+    # colors=iter(px.colors.qualitative.Plotly)
+    # loss_fig = go.Figure()
 
-    for model_data in models_data:
-        color=next(colors)
-        loss_fig.add_trace(go.Scatter(
-            x=epochs,
-            y=model_data["train_losses"],
-            name=model_data["description"]["optimiser"]+"-Training Loss",
-            line=dict(dash='dash',color=color)
-        ))
-        loss_fig.add_trace(go.Scatter(
-            x=epochs,
-            y=model_data["test_losses"],
-            name=model_data["description"]["optimiser"]+"-Testing Loss",
-            line=dict(dash='solid',color=color)
-        ))
+    # for model_data in models_data:
+    #     color=next(colors)
+    #     loss_fig.add_trace(go.Scatter(
+    #         x=epochs,
+    #         y=model_data["train_losses"],
+    #         name=model_data["description"]["optimiser"]+"-Training Loss",
+    #         line=dict(dash='dash',color=color)
+    #     ))
+    #     loss_fig.add_trace(go.Scatter(
+    #         x=epochs,
+    #         y=model_data["test_losses"],
+    #         name=model_data["description"]["optimiser"]+"-Testing Loss",
+    #         line=dict(dash='solid',color=color)
+    #     ))
         
-        # loss_fig.add_trace(go.Bar(
-        #     x=epochs,
-        #     y=[neg_log_likelyhoods[title] - rlct_estimates[title]/args.num_draws for title,model in models.items()],
-        #     name="Generalization Losses",
-        #     marker_color="mediumseagreen",
-        # ))
-    loss_fig.update_layout(
-        title="Evolution of loss over optimisers",
-        xaxis_title="Epochs",
-        yaxis_title="Loss",
-    )
-    figs.append(loss_fig)
+    #     # loss_fig.add_trace(go.Bar(
+    #     #     x=epochs,
+    #     #     y=[neg_log_likelyhoods[title] - rlct_estimates[title]/args.num_draws for title,model in models.items()],
+    #     #     name="Generalization Losses",
+    #     #     marker_color="mediumseagreen",
+    #     # ))
+    # loss_fig.update_layout(
+    #     title="Evolution of loss over optimisers",
+    #     xaxis_title="Epochs",
+    #     yaxis_title="Loss",
+    # )
+    # figs.append(loss_fig)
 
-    ### LLC ESTIMATIONS FOR EACH ARCHITECTURE AT CONVERGENCE ###
-    rlct_estimates, rlct_estimates_norm, neg_log_likelyhoods = produce_rlct(models, train_loader,criterion, device, args)
+    # ### LLC ESTIMATIONS FOR EACH ARCHITECTURE AT CONVERGENCE ###
+    # rlct_estimates, rlct_estimates_norm, neg_log_likelyhoods = produce_rlct(models, train_loader,metric, device, args)
 
-    rlct_fig = go.Figure()
-    rlct_fig.add_trace(go.Bar(
-        x=list(rlct_estimates.keys()),
-        y=list(rlct_estimates.values()),
-        name="RLCT (Raw)"
-    ))
-    #These are way too small to be generally useful
-    rlct_fig.add_trace(go.Bar(
-        x=list(rlct_estimates_norm.keys()),
-        y=list(rlct_estimates_norm.values()),
-        name="RLCT (Normalised)"
-    ))
+    # rlct_fig = go.Figure()
+    # rlct_fig.add_trace(go.Bar(
+    #     x=list(rlct_estimates.keys()),
+    #     y=list(rlct_estimates.values()),
+    #     name="RLCT (Raw)"
+    # ))
+    # #These are way too small to be generally useful
+    # rlct_fig.add_trace(go.Bar(
+    #     x=list(rlct_estimates_norm.keys()),
+    #     y=list(rlct_estimates_norm.values()),
+    #     name="RLCT (Normalised)"
+    # ))
 
-    rlct_fig.update_layout(
-        title=f"RLCT values for optimisers",
-        xaxis_title="Optimiser",
-        yaxis_title="RLCT",
-    )
-    figs.append(rlct_fig)
+    # rlct_fig.update_layout(
+    #     title=f"RLCT values for optimisers",
+    #     xaxis_title="Optimiser",
+    #     yaxis_title="RLCT",
+    # )
+    # figs.append(rlct_fig)
 
 
     ### PUSH FIGURES TO LOCAL HTML FILE ###
     curr_time = datetime.now().strftime("%Y-%m-%d-%H-%M")
-    write_figs_to_html(figs, f"./experiments/mnist/figs/mnist_optimisers_{filename}_{curr_time}.html", title="Investigating effect of optimiser on RLCT / Hessian eigenspectrum")
+    write_figs_to_html(figs, f"./experiments/mnist/figs/mnist_optimisers_{name}_{curr_time}.html", title="Investigating effect of optimiser on RLCT / Hessian eigenspectrum")
 
 
 if __name__ == "__main__":
