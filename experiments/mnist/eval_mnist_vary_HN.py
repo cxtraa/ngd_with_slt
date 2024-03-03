@@ -114,7 +114,11 @@ def main(args):
         models[title] = model
 
     ### LOAD MODELS FROM LOCAL FILES###
-    state_dicts, models_data = load_models("./weights", criteria=args.criteria)
+    #this loads in all model histories for one model
+    models_histories, models_data = load_models("./weights", criteria=args.criteria)
+    #select only the last model
+    state_dicts = [history[-1] for history in models_histories]
+    
     num_epochs = models_data[0]["description"]["num_epochs"]
     epochs = np.arange(1, num_epochs+1)
 
@@ -134,13 +138,14 @@ def main(args):
                                 data_loader=train_loader, 
                                 num_batches=args.hessian_batch_size,
                                 device=device,
-                                criterion=criterion)
+                                criterion=criterion,
+                                history=False)
 
     ### VISUALISE EIGENSPECTRUM PLOTS IN PLOTLY ###
-    figs, eigenspectrum_data = produce_hessian_eigenspectra(hessians, plot_type="log")
+    figs, eigenspectrum_data = produce_hessian_eigenspectra(hessians, plot_type="log",history=False)
 
     ### CALCULATE ESTIMATE OF NUMBER OF LARGE EIGENVALUES (DIMENSIONS) IN SPECTRUM ###
-    hessian_dims, hessian_dims_norm = find_hessian_dimensionality(eigenspectrum_data)
+    hessian_dims, hessian_dims_norm = produce_hessian_dimensionality(eigenspectrum_data,history=False)
     hessian_fig = go.Figure()
     hessian_fig.add_trace(go.Scatter(x=hidden_nodes, y=list(hessian_dims.values()), mode='markers'))
     hessian_fig.update_layout(
@@ -151,7 +156,7 @@ def main(args):
     figs.append(hessian_fig)
 
     ### ESTIMATE RLCT
-    rlct_estimates, rlct_estimates_norm, neg_log_likelyhoods = produce_rlct(models, train_loader,criterion, device, args)
+    rlct_estimates, rlct_estimates_norm, neg_log_likelyhoods = produce_rlct(models, train_loader,criterion, device, args,history=False)
 
     rlct_fig = go.Figure()
     Y = [rlct_estimates[f"{hn} HN {hidden_layers} HL"] for hn in hidden_nodes]
@@ -203,6 +208,7 @@ def main(args):
         barmode="group",
     )
     figs.append(loss_fig)
+
 
     ### PUSH FIGURES TO LOCAL HTML FILE ###
     curr_time = datetime.now().strftime("%Y-%m-%d-%H-%M")
