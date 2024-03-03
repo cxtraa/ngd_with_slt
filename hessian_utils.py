@@ -87,6 +87,8 @@ def produce_hessians(models, data_loader, num_batches, criterion, device, histor
             hessian_history=[]
             crit = criterion["kfac"] if key == "KFAC" else criterion["general"]
             for model in history:
+                #print(type(model))
+
                 hessian_history.append(hessian(model, crit, data=(images,labels), cuda=True if device=='cuda' else False))
             hessians[key] = hessian_history
     else:
@@ -158,6 +160,9 @@ def produce_hessian_dimensionality(eigenspectrum_data, history):
     if history is true, the values of eigespectrum_data dict are lists and hence return the dimensionality as a dict of lists
     """
     def get_hessian_dimensionality(eigenspectrum):
+        '''
+        get dimension for a single eigenspectrum data object
+        '''
         eigenvalues = np.array(eigenspectrum["x"])
         density = np.array(eigenspectrum["y"])
         num_params = eigenspectrum["num_params"]
@@ -167,23 +172,26 @@ def produce_hessian_dimensionality(eigenspectrum_data, history):
         density_small = density[eigenvalues < cut_off]     
         area_small = simps(density_small, eigenvalues_small)
         small_eigenvalues = round(area_small * num_params)
-        dimensions = num_params - small_eigenvalues
-        return dimensions, num_params
+        dimension = num_params - small_eigenvalues
+        return dimension
 
     hessian_dims, hessian_dims_norm = {}, {}
 
     if history:
         # Process each model's history of eigenspectra
         for key, eigenspectra in eigenspectrum_data.items():
-            dims, num_params = zip(*[get_hessian_dimensionality(es) for es in eigenspectra])
-            hessian_dims[key] = list(dims)
+            dims =[get_hessian_dimensionality(es) for es in eigenspectra]
+            #all the eigenspectra for each model epoch should have the same num_params
+            num_params=eigenspectra[0]["num_params"]
+            hessian_dims[key] = dims
             hessian_dims_norm[key] = [dim/num_params for dim in dims]
     else:
         # Process each model's single eigenspectrum
         for key, eigenspectrum in eigenspectrum_data.items():
-            dimensions, num_params = get_hessian_dimensionality(eigenspectrum)
-            hessian_dims[key] = dimensions
-            hessian_dims_norm[key] = dimensions / num_params
+            dimension = get_hessian_dimensionality(eigenspectrum)
+            num_params=eigenspectrum["num_params"]
+            hessian_dims[key] = dimension
+            hessian_dims_norm[key] = dimension / num_params
 
         # print(f"\n====== EIGENVALUES SUMMARY: {key} ======")
         # print(f"Mean: {mu} Standard deviation: {sigma}")

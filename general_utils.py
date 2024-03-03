@@ -36,6 +36,9 @@ from approxngd import KFAC
 from PyHessian.pyhessian import *
 from PyHessian.density_plot import *
 
+from architectures.Linear import LinearMNIST
+from architectures.CNN import CnnMNIST
+
 import plotly.express as px
 import plotly.graph_objects as go
 import matplotlib.pyplot as plt
@@ -274,7 +277,7 @@ def load_models(base_path, criteria):
     - criteria (dict): Dictionary of criteria for filtering models. Key is parameter name, value is desired value or a list of acceptable values.
 
     Returns:
-    - state_dicts: [ model_history_1, model_history_2] each model_history is a list of model weights
+    - state_dicts: [ model_history_1, model_history_2] each model_history is either a list of state_dicts, or single state_dict
     - models_data: [ {
                     "description_model1": training_argparse
                     "train_losses_model1": list of training loss for model
@@ -315,6 +318,23 @@ def load_models(base_path, criteria):
                 models_data.append(model_data)
 
     return model_histories, models_data
+
+def create_architecture(criteria, device):
+    '''
+    This is mainly for optimizers.py
+
+    Given the selection criteria as a dictionary, returns the relevant model architecture and name of architecture.
+    Note that this is independent of the optimiser specified
+    Can only return ONE type of model architecture
+    '''
+    if criteria['model'] == "LM":
+        name = f"LM_{criteria['LMHL']}-HL_{criteria['LMHN']}-HN"
+        return name, LinearMNIST(hidden_layers=criteria['LMHL'], hidden_nodes=criteria['LMHN']).to(device)
+    elif criteria['model'] == "CM":
+        name = f"CM_{criteria['CMKS']}-KS_{criteria['CMHL']}-HL"
+        return name, CnnMNIST(kernel_size=criteria['CMKS'], hidden_conv_layers=criteria['CMHL']).to(device)
+    else:
+        raise NotImplementedError("The requested model does not exist.")
     
 
         
