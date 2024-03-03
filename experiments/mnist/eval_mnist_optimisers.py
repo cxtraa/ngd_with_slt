@@ -139,7 +139,7 @@ def main(args):
     figs, eigenspectrum_data = produce_hessian_eigenspectra(hessians, plot_type="log")
     
     ### CALCULATE ESTIMATE OF NUMBER OF LARGE EIGENVALUES (DIMENSIONS) IN SPECTRUM ###
-    hessian_dims, hessian_dims_norm = find_hessian_dimensionality(eigenspectrum_data)
+    hessian_dims, hessian_dims_norm = produce_hessian_dimensionality(eigenspectrum_data)
     hessian_dims_fig = go.Figure()
     hessian_dims_fig.add_trace(go.Bar(
         x=args.criteria['optimiser'],

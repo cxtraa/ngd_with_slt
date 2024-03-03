@@ -56,16 +56,21 @@ def get_esd_plot_plotly(eigenvalues, weights, plot_type, title=None, fig=None, n
     
     return fig
 
-def produce_hessians(models, data_loader, num_batches, criterion, device):
+def produce_hessians(models, data_loader, num_batches, criterion, device, history):
     """
     Produces hessians from a dictionary of models
 
     Parameters:
-    models (dict): each key is the title of model, and values are the models themselves with weights loaded
+    models (dict): each key is the title of model, and values are either models or a list of models
+    history (Boolean): if true, models will be the model_histories and a list of values is returned instead of a single value
+                        if false, models will be the family of model weights and a single value is returned
 
     Returns:
-    a dictionary where each key represents a model, 
-    and each value is its corresponding Hessian object from the PyHessian library.
+    a dictionary where each key represents a model architecture, and each value is 
+    if history==True:
+        the corresponding list of Hessian object (over all epochs)
+    if history==False:
+        the Hessian object
     """
 
     images, labels = [], []
@@ -77,81 +82,108 @@ def produce_hessians(models, data_loader, num_batches, criterion, device):
     images = t.cat(images, dim=0)
     labels = t.cat(labels, dim=0)
     hessians = {}
-    for key, model in models.items():
-        crit = criterion["kfac"] if key == "KFAC" else criterion["general"]
-        hessians[key] = hessian(model, crit, data=(images,labels), cuda=True if device=='cuda' else False)
+    if history:
+        for key, history in models.items():
+            hessian_history=[]
+            crit = criterion["kfac"] if key == "KFAC" else criterion["general"]
+            for model in history:
+                hessian_history.append(hessian(model, crit, data=(images,labels), cuda=True if device=='cuda' else False))
+            hessians[key] = hessian_history
+    else:
+        for key, model in models.items():
+            crit = criterion["kfac"] if key == "KFAC" else criterion["general"]
+            hessians[key] = hessian(model, crit, data=(images,labels), cuda=True if device=='cuda' else False)
     
     return hessians
 
-def produce_hessian_eigenspectra(hessians, plot_type="linear"):
+def produce_hessian_eigenspectra(hessians, plot_type, history):
     """
-    Given a list of Hessian classes for different models, return a list
+    Given a Hessians for different models, return a list
     of figures containing their eigenspectra, as well as a dictionary
     containing all the trace data.
 
     Parameters:
-    hessians (dict): the dictionary containing keys as model titles, and the hessian for that model
+    hessians (dict): the dictionary containing keys as model titles, and the hessian for that model or the list of hessians
+    history (Boolean): whether hessians is a list of models, or a list of hessian_histories. decides what returns
 
     Returns:
-    list: return a list of figures containing their eigenspectra, as well as a dictionary
-    containing all the trace data.
+    if history:
+        figs(list): return a list of lists, each inner list containing eigenspectrum fig for that model and epoch
+        eigenspectrum_data(dict):each key is model architecture, each value is a list of eigenspectrum data across epochs
+    else:
+        figs(list) return a list of figures containing their eigenspectra
+        eigenspectrum_data(dict):each key is model architecture, each value is the eigenspectrum data
     """
 
-    overlaid_fig = go.Figure()
-    figs = []
-    eigenspectrum_data = {}
-    for key, hessian in hessians.items():
+    def get_hessian_eigenspectrum(hessian):
+        '''
+        for a single hessian object, return the eigenspectrum fig and trace data
+        '''
         density_eigen, density_weight = hessian.density()
         #temp_fig is eigenspectrum plot for one model
         temp_fig = get_esd_plot_plotly(density_eigen, density_weight, title=f"{key} Hessian eigenspectrum", plot_type=plot_type)
-        figs.append(temp_fig)
+        #model_figs.append(temp_fig)
         trace=temp_fig.data[0]
         trace.name=key
-        overlaid_fig.add_trace(trace)
-        #eigenspectrum_data contains eigenvalue as x, density of eigenvalues as y, and num_params of model
-        eigenspectrum_data[key] = {
-            "x" : list(trace.x),
-            "y" : list(trace.y),
-            "num_params": count_parameters(hessian.model)
-        }
-    #overlaid_fig overlays eigenspectrum for all models
-    overlaid_fig.update_layout(title="Hessian eigenspectrum of optimisers",
-                    xaxis_title="Eigenvalue",
-                    yaxis_title="Density",
-                    legend_title="Optimisers",
-                    yaxis=dict(type=plot_type),
-                    )
-    figs.append(overlaid_fig)
+        eigenspectrum=({
+        "x" : list(trace.x),
+        "y" : list(trace.y),
+        "num_params": count_parameters(hessian.model)
+        })
+        return temp_fig, eigenspectrum
+
+    figs = []
+    eigenspectrum_data = {}
+    if history:
+        # If history is True, models is a list of lists
+        for key, hessian_history in hessians.items():
+            #note that zip will unpack [(1,a),(2,b),(3,c)] into [(1,2,3),(a,b,c)]
+            model_figs, model_eigenspectrum = zip(*[get_hessian_eigenspectrum(hessian) for hessian in hessian_history])
+            figs.append(model_figs)
+            eigenspectrum_data[key] = list(model_eigenspectrum)
+
+    else:
+        for key, hessian in hessians.items():
+            fig, eigenspectrum = get_hessian_eigenspectrum(hessian)
+            figs.append(fig)
+            eigenspectrum_data[key]=eigenspectrum
+
     return figs, eigenspectrum_data
 
-def find_hessian_dimensionality(eigenspectrum_data):
+def produce_hessian_dimensionality(eigenspectrum_data, history):
     """
     Given a dictionary containing eigenspectrum trace data, return
     the predicted dimensionality (Hessian) for each model.
+
+    if history is true, the values of eigespectrum_data dict are lists and hence return the dimensionality as a dict of lists
     """
+    def get_hessian_dimensionality(eigenspectrum):
+        eigenvalues = np.array(eigenspectrum["x"])
+        density = np.array(eigenspectrum["y"])
+        num_params = eigenspectrum["num_params"]
 
-    hessian_dims = {}
-    hessian_dims_norm = {}
-    for key, value in eigenspectrum_data.items():
-
-        eigenvalues = np.array(value["x"])
-        density = np.array(value["y"])
-        num_params = value["num_params"]
-        cut_off = find_value(value, 100e-9)
-
-        mu = simps(eigenvalues*density, eigenvalues)
-
-        var = simps(eigenvalues**2 * density, eigenvalues) - mu**2
-        sigma = np.sqrt(var)
-
+        cut_off = find_value(eigenspectrum, 100e-9)
         eigenvalues_small = eigenvalues[eigenvalues < cut_off]
         density_small = density[eigenvalues < cut_off]     
-
         area_small = simps(density_small, eigenvalues_small)
         small_eigenvalues = round(area_small * num_params)
         dimensions = num_params - small_eigenvalues
-        hessian_dims[key] = dimensions
-        hessian_dims_norm[key] = dimensions / num_params
+        return dimensions, num_params
+
+    hessian_dims, hessian_dims_norm = {}, {}
+
+    if history:
+        # Process each model's history of eigenspectra
+        for key, eigenspectra in eigenspectrum_data.items():
+            dims, num_params = zip(*[get_hessian_dimensionality(es) for es in eigenspectra])
+            hessian_dims[key] = list(dims)
+            hessian_dims_norm[key] = [dim/num_params for dim in dims]
+    else:
+        # Process each model's single eigenspectrum
+        for key, eigenspectrum in eigenspectrum_data.items():
+            dimensions, num_params = get_hessian_dimensionality(eigenspectrum)
+            hessian_dims[key] = dimensions
+            hessian_dims_norm[key] = dimensions / num_params
 
         # print(f"\n====== EIGENVALUES SUMMARY: {key} ======")
         # print(f"Mean: {mu} Standard deviation: {sigma}")

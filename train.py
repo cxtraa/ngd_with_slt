@@ -113,6 +113,7 @@ def main(args):
     ### TRAINING LOOP ###
     train_losses = []
     test_losses = []
+    model_history=[]
     print(f"\n======================== Training with {args.optimiser} ==========================")
     pprint.pprint(vars(args))
     for epoch in range(args.num_epochs):
@@ -120,6 +121,7 @@ def main(args):
         test_loss = evaluate(model, test_loader, criterion, device)
         train_losses.append(train_loss)
         test_losses.append(test_loss)
+        model_history.append(model.state_dict())
         print(f"Epoch {epoch+1}/{args.num_epochs}: train_loss={train_loss:.4f}, test_loss={test_loss:.4f}")
 
     ### EXPORTING DATA ###
@@ -128,7 +130,8 @@ def main(args):
         "args" : vars(args),
         "train_losses" : train_losses,
         "test_losses" : test_losses,
-        "state_dict" : model.state_dict(),
+        #will save all the models over epochs
+        "model_history" : model_history,
         "total_parameters": count_parameters(model)
     }
     with open(f"weights/{filename}.pkl", 'wb') as file:

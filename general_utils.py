@@ -200,71 +200,68 @@ def write_figs_to_html(figs, dest, title):
     with open(dest, 'w', encoding='utf-8') as f:
         f.write(final_html)
 
-def run_callbacks(train_loader, model, criterion, callbacks, args, device):
-    """
-    Perform LLC (local learning coefficient) estimation on a model.
-    """
-    
-    optim_kwargs = {
-        "lr" : 1e-6,
-        "elasticity" : args.elasticity,
-        "temperature" : "adaptive",
-        "num_samples" : len(train_loader.dataset),
-        "save_noise" : True,
-    }
-
-    sample(
-        model=model,
-        loader=train_loader,
-        criterion=criterion,
-        optimizer_kwargs=optim_kwargs,
-        sampling_method=SGLD,
-        num_chains=args.num_chains,
-        num_draws=args.num_draws,
-        callbacks=callbacks,
-        device=device
-    )
-
-    results = {}
-
-    for callback in callbacks:
-        if hasattr(callback, "sample"):
-            results.update(callback.sample())
-    
-    return results
-
-def produce_rlct(models, dataloader,criterion, device, args):
+def produce_rlct(models, dataloader,criterion, device, args,history):
     '''
     Produce RLCT data for family of models
 
     Parameters:
     - models (dict): key as title, value as model
+    - history(Boolean): whether or not models is only the final weights or a history containing the epoch weights
 
     Returns:
-    - rlct_estimates (dict)
+    - rlct_estimates (dict): keys are model titles, values are either the RLCT or a list of RLCT if a model history is passed in
     - rlct_estimates_norm (dict)
     - nge_log_likelyhoods (dict)
     '''
+    def get_rlct(model,dataloader, criterion, callbacks, args, device):
+        """
+        Perform LLC (local learning coefficient) estimation on a model.
+        """
+        
+        optim_kwargs = {
+            "lr" : 1e-6,
+            "elasticity" : args.elasticity,
+            "temperature" : "adaptive",
+            "num_samples" : len(dataloader.dataset),
+            "save_noise" : True,
+        }
+
+        sample(
+            model=model,
+            loader=dataloader,
+            criterion=criterion,
+            optimizer_kwargs=optim_kwargs,
+            sampling_method=SGLD,
+            num_chains=args.num_chains,
+            num_draws=args.num_draws,
+            callbacks=callbacks,
+            device=device
+        )
+
+        results = {}
+        for callback in callbacks:
+            if hasattr(callback, "sample"):
+                results.update(callback.sample())
+
+        rlct=results["llc/means"][-1]
+        rlct_norm = rlct / count_parameters(model)
+        nll = results["loss/trace"][-1][-1]
+        return rlct, rlct_norm, nll
     
     ### LLC ESTIMATIONS FOR EACH ARCHITECTURE (Hidden nodes) AT CONVERGENCE ###
     llc_estimator = OnlineLLCEstimator(args.num_chains,                                       
                                        args.num_draws, 
                                        len(dataloader.dataset), 
                                        device=device)
-    rlct_estimates = {}
-    rlct_estimates_norm = {}
-    neg_log_likelyhoods = {}
-    for title, model in models.items():
-        results = run_callbacks(dataloader,
-                                model=model,
-                                args=args,
-                                callbacks=[llc_estimator],
-                                criterion=criterion["general"],
-                                device=device)
-        #rlct_estimates_norm.append(results["llc/means"][-1]/count_parameters(model))
-        rlct_estimates[title] = results["llc/means"][-1]
-        rlct_estimates_norm[title] = results["llc/means"][-1]/count_parameters(model)
-        neg_log_likelyhoods[title] = results["loss/trace"][-1][-1] # shape of results["loss/trace"] = (1,2000)
+    
+    rlct_estimates, rlct_estimates_norm, neg_log_likelyhoods = {}, {}, {}
+    for title, value in models.items():
+        if history:
+            rlct_data = [get_rlct(model,dataloader, criterion["general"], [llc_estimator], args, device) for model in value]
+            rlct_estimates[title], rlct_estimates_norm[title], neg_log_likelyhoods[title] = zip(*rlct_data)
+        else:
+            #value is the model here
+            rlct_estimates[title], rlct_estimates_norm[title], neg_log_likelyhoods[title] = get_rlct(value,dataloader, criterion["general"], [llc_estimator], args, device) 
 
     return rlct_estimates, rlct_estimates_norm, neg_log_likelyhoods
 
@@ -277,7 +274,7 @@ def load_models(base_path, criteria):
     - criteria (dict): Dictionary of criteria for filtering models. Key is parameter name, value is desired value or a list of acceptable values.
 
     Returns:
-    - state_dicts: [ state_dict_model1, state_dict_model2]
+    - state_dicts: [ model_history_1, model_history_2] each model_history is a list of model weights
     - models_data: [ {
                     "description_model1": training_argparse
                     "train_losses_model1": list of training loss for model
@@ -288,7 +285,7 @@ def load_models(base_path, criteria):
                 ]
     """
 
-    state_dicts = []
+    model_histories = []
     models_data = []
 
     # List all files in the models directory
@@ -310,14 +307,14 @@ def load_models(base_path, criteria):
 
                 #reconstruct state_dicts and models_data
                 model_data = {}
-                state_dicts.append(model["state_dict"])
+                model_histories.append(model["model_history"])
                 model_data["description"] = model["args"]
                 model_data["train_losses"] = model["train_losses"]
                 model_data["test_losses"] = model["test_losses"]
                 model_data["total_parameters"] = model["total_parameters"]
                 models_data.append(model_data)
 
-    return state_dicts, models_data
+    return model_histories, models_data
     
 
         
