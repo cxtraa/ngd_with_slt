@@ -163,8 +163,27 @@ def main(args):
         xaxis_title="Epoch",
         yaxis_title="Hessian dimensions",
     )
-
     figs.append(hessian_dims_fig)
+
+    ### LLC ESTIMATIONS FOR EACH ARCHITECTURE AT CONVERGENCE ###
+    rlct_estimates, rlct_estimates_norm, neg_log_likelyhoods = produce_rlct(models, train_loader,metric, device, args, history =True)
+
+    rlct_fig = go.Figure()
+    for key, rlct_history in rlct_estimates.items():
+        rlct_fig.add_trace(go.Scatter(
+            x=epochs,
+            y=rlct_history,
+            #mode='lines',
+            name=key  # Setting the name of the line as the key
+        ))
+
+    rlct_fig.update_layout(
+        title=f"RLCT values for optimisers",
+        xaxis_title="Epoch",
+        yaxis_title="RLCT",
+    )
+    figs.append(rlct_fig)
+
 
     # ### VISUALISE TRAINING / TESTING/ GENERALIZATION LOSS OVER OPTIMISERS ###
     # colors=iter(px.colors.qualitative.Plotly)
@@ -198,28 +217,6 @@ def main(args):
     # )
     # figs.append(loss_fig)
 
-    # ### LLC ESTIMATIONS FOR EACH ARCHITECTURE AT CONVERGENCE ###
-    # rlct_estimates, rlct_estimates_norm, neg_log_likelyhoods = produce_rlct(models, train_loader,metric, device, args)
-
-    # rlct_fig = go.Figure()
-    # rlct_fig.add_trace(go.Bar(
-    #     x=list(rlct_estimates.keys()),
-    #     y=list(rlct_estimates.values()),
-    #     name="RLCT (Raw)"
-    # ))
-    # #These are way too small to be generally useful
-    # rlct_fig.add_trace(go.Bar(
-    #     x=list(rlct_estimates_norm.keys()),
-    #     y=list(rlct_estimates_norm.values()),
-    #     name="RLCT (Normalised)"
-    # ))
-
-    # rlct_fig.update_layout(
-    #     title=f"RLCT values for optimisers",
-    #     xaxis_title="Optimiser",
-    #     yaxis_title="RLCT",
-    # )
-    # figs.append(rlct_fig)
 
 
     ### PUSH FIGURES TO LOCAL HTML FILE ###
