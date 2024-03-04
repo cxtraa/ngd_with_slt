@@ -32,6 +32,7 @@ from devinterp.slt import sample
 from devinterp.slt.llc import OnlineLLCEstimator
 from devinterp.slt.wbic import OnlineWBICEstimator
 
+from ngd import NGD
 from approxngd import KFAC
 from PyHessian.pyhessian import *
 from PyHessian.density_plot import *
@@ -63,7 +64,8 @@ def get_train_args_parser():
         'Training Hyperparameters': [
             {'name': '--lr', 'default': 1e-5, 'type': float},
             {'name': '--num_epochs', 'default': 20, 'type': int},
-            {'name': '--optimiser', 'default': 'adam', 'type': str}
+            {'name': '--optimiser', 'default': 'adam', 'type': str},
+            {'name': '--momentum', 'default': 0.8, 'type': float, 'help':'used for rmsprop and NGD'}
         ],
         'Data Loading Parameters': [
             {'name': '--batch_size', 'default': 128, 'type': int},
@@ -104,7 +106,10 @@ def main(args):
     sgd = t.optim.SGD(model.parameters(), lr=args.lr)
     adam = t.optim.Adam(model.parameters(), lr=args.lr)
     rmsprop = t.optim.RMSprop(model.parameters(), lr=args.lr, momentum=0.8)
-    ngd = KFAC(model, args.lr, damping=0.01, momentum_type='regular', momentum=0.8, adapt_damping=False, update_cov_manually=False)
+    #KFAC doesnt work with ReLU
+    #ngd = KFAC(model, args.lr, damping=0.01, momentum_type='regular', momentum=0.8, adapt_damping=False, update_cov_manually=True)
+    ngd = NGD(model.parameters(), lr=args.lr, momentum=0.8)
+
     optimisers = {
         'sgd' : sgd,
         'adam' : adam,

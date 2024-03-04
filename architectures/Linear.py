@@ -18,7 +18,7 @@ class LinearMNIST(nn.Module):
 
             #comment out this code for ReLU
             layers.append(nn.ReLU())
-            
+
         output_layer = nn.Linear(hidden_nodes, output_size)
         layers.append(output_layer)
 
