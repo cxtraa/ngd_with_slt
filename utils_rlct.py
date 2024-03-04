@@ -97,7 +97,10 @@ def produce_rlct(models, dataloader,criterion, device, args,history):
     rlct_estimates, rlct_estimates_norm, neg_log_likelyhoods = {}, {}, {}
     for title, value in models.items():
         if history:
-            rlct_data = [get_rlct(model,dataloader, criterion["general"], args, device) for model in value]
+            rlct_data=[]
+            for epoch in range(len(value)):
+                print(f"Calculating rlct for {title} in epoch {epoch}")
+                rlct_data.append(get_rlct(value[epoch],dataloader, criterion["general"], args, device))
             rlct_estimates[title], rlct_estimates_norm[title], neg_log_likelyhoods[title] = zip(*rlct_data)
         else:
             #value is the model here

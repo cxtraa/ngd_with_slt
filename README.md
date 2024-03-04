@@ -99,6 +99,7 @@ For now we have to manually make sure num_epochs is the same as that for the tra
 * setup hyperparam testing (mainly training lr, and RLCT lr, use MALA to do this)
 * fix the criterion issue, current criterion[general] is used for everything but we should implement custom for KFAC
 * should we even use KFAC? KFAC doesnt work with ReLU, but using NGD from yiwen is extremely slow on CUDA
+* check if current implementation of neg log likelihood is correct
 * run optimizer on CNN for long epochs and get good estimate of RLCT
 
 
