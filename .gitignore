@@ -12,7 +12,7 @@ wandb/
 
 #ignore models folder (sent to google cloud storage)
 #unable to get google cloud working yet
-#saved_models/
+#weights/
 
 #ignore google cloud sdk folder
 google-cloud-sdk/

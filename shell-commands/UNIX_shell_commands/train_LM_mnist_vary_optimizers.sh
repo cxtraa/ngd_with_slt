@@ -1,7 +1,14 @@
-
 optimizers=(sgd ngd)
 
 for optim in "${optimizers[@]}"
-    do 
-        python train.py --model LM --optimiser $optim  --num_workers 12 --batch_size 512 --num_epochs 5 --LMHN 8 --LMHL 2 --lr 1e-3
-    done
+do 
+    #specify different lr for sgd or ngd
+    if [ "$optim" = "sgd" ]; then
+        lr=1e-3
+    elif [ "$optim" = "ngd" ]; then
+        lr=2e-2
+    fi
+
+    python train.py --model LM --optimiser $optim --lr $lr --num_workers 12 --batch_size 512 --num_epochs 5 --LMHN 8 --LMHL 2
+done
+
