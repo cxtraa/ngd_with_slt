@@ -35,8 +35,8 @@ from devinterp.slt.wbic import OnlineWBICEstimator
 from approxngd import KFAC
 from PyHessian.pyhessian import *
 from PyHessian.density_plot import *
-from general_utils import *
-from hessian_utils import *
+from utils_general import *
+from utils_hessian import *
 from architectures.Linear import LinearMNIST
 from architectures.CNN import CnnMNIST
 from data.build_data import build_data
@@ -85,7 +85,8 @@ def main(args):
     ### SETUP AND DATA LOADING ###
     device = "cuda" if t.cuda.is_available() else "cpu"
     print(f"DEVICE: {device}")
-    filename = f"{args.model}-model_{args.optimiser}-optimiser_{args.lr}-LR_{args.num_epochs}-epochs_{args.batch_size}-batchsize"
+    #LR shouldnt be part of filename, a diff lr should override previous lr, lr should be independent (diff optimizers have diff lr)
+    filename = f"{args.model}-model_{args.optimiser}-optimiser_{args.num_epochs}-epochs_{args.batch_size}-batchsize"
     if args.model == "LM":
         filename += f"_{args.LMHL}-HL_{args.LMHN}-HN"
         model = LinearMNIST(hidden_layers=args.LMHL, hidden_nodes=args.LMHN).to(device)
@@ -99,6 +100,7 @@ def main(args):
 
     ### OPTIMISER AND LOSS FUNCTION ###
     metric = nn.CrossEntropyLoss(reduction='mean') if args.optimiser=="ngd" else nn.CrossEntropyLoss()
+    
     sgd = t.optim.SGD(model.parameters(), lr=args.lr)
     adam = t.optim.Adam(model.parameters(), lr=args.lr)
     rmsprop = t.optim.RMSprop(model.parameters(), lr=args.lr, momentum=0.8)

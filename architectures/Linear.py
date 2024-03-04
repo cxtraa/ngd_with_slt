@@ -15,7 +15,10 @@ class LinearMNIST(nn.Module):
         for i in range(hidden_layers):
             linear_layer = nn.Linear(input_size if i == 0 else hidden_nodes, hidden_nodes)
             layers.append(linear_layer)
-            # layers.append(nn.ReLU())
+
+            #comment out this code for ReLU
+            layers.append(nn.ReLU())
+            
         output_layer = nn.Linear(hidden_nodes, output_size)
         layers.append(output_layer)
 

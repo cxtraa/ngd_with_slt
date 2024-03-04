@@ -33,7 +33,7 @@ import torch.optim as optim
 from torchvision import datasets, transforms
 from torch.autograd import Variable
 
-from general_utils import *
+from utils import *
 from density_plot import get_esd_plot
 from models.resnet import resnet
 from pyhessian import hessian

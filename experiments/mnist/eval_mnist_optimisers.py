@@ -32,23 +32,17 @@ import json
 import wandb
 import copy
 
-from devinterp.slt import estimate_learning_coeff
-from devinterp.optim.sgld import SGLD
-from devinterp.slt import sample
-from devinterp.slt.llc import OnlineLLCEstimator
-from devinterp.slt.wbic import OnlineWBICEstimator
-
 from approxngd import KFAC
 from PyHessian.pyhessian import *
 from PyHessian.density_plot import *
-from general_utils import *
-from hessian_utils import *
+from utils_general import *
+from utils_hessian import *
+from utils_rlct import *
 from data.build_data import build_data
 
 import plotly as px
 from plotly.subplots import make_subplots
 import plotly.graph_objects as go
-import matplotlib
 import matplotlib.pyplot as plt
 from matplotlib.cm import get_cmap
 
@@ -60,8 +54,9 @@ def get_eval_mnist_optimisers_args_parser():
         'RLCT Hyperparameters': [
             {'name': '--num_draws', 'default': 1000, 'type': int},
             {'name': '--num_chains', 'default': 2, 'type': int},
-            {'name': '--noise_level', 'default': 1.0, 'type': float},
-            {'name': '--elasticity', 'default': 1000.0, 'type': float}
+            {'name': '--epsilon', 'default': 1e-5, 'type':float,'help':'This is the LLC step size'},
+            {'name': '--gamma', 'default': 1, 'type':float,'help':'This is localization factor'}
+
         ],
         'Hessian Parameters': [
             {'name': '--hessian_batch_size', 'default': 12, 'type': int},
@@ -74,7 +69,7 @@ def get_eval_mnist_optimisers_args_parser():
         'Selection Criteria':[
             #change your selection criteria here
             {'name': '--criteria', 
-             'default': {
+             'default':  json.dumps({
                  'model':'LM',
                  'optimiser':['sgd','ngd'],
                  #List of available hidden nodes
@@ -83,9 +78,9 @@ def get_eval_mnist_optimisers_args_parser():
                  'LMHL':2,
                  #another criteria, as different models have different batch sizes, otherwise return models with differing batch_sizes
                  'batch_size':512,
-                 'lr':1e-3
-             }, 
-             'type': dict},
+             }), 
+             'type': json.loads,
+             'help': 'Selection criteria for the model in JSON format'},
         ]
     }
 
@@ -185,39 +180,39 @@ def main(args):
     figs.append(rlct_fig)
 
 
-    # ### VISUALISE TRAINING / TESTING/ GENERALIZATION LOSS OVER OPTIMISERS ###
-    # colors=iter(px.colors.qualitative.Plotly)
-    # loss_fig = go.Figure()
+    ### VISUALISE TRAINING / TESTING/ GENERALIZATION LOSS OVER OPTIMISERS ###
+    colors=iter(px.colors.qualitative.Plotly)
+    loss_fig = go.Figure()
 
-    # for model_data in models_data:
-    #     color=next(colors)
-    #     loss_fig.add_trace(go.Scatter(
-    #         x=epochs,
-    #         y=model_data["train_losses"],
-    #         name=model_data["description"]["optimiser"]+"-Training Loss",
-    #         line=dict(dash='dash',color=color)
-    #     ))
-    #     loss_fig.add_trace(go.Scatter(
-    #         x=epochs,
-    #         y=model_data["test_losses"],
-    #         name=model_data["description"]["optimiser"]+"-Testing Loss",
-    #         line=dict(dash='solid',color=color)
-    #     ))
+    for model_data in models_data:
+        optim=model_data["description"]["optimiser"]
+        color=next(colors)
+
+        loss_fig.add_trace(go.Scatter(
+            x=epochs,
+            y=model_data["train_losses"],
+            name=optim+"-Training Loss",
+            line=dict(dash='dash',color=color)
+        ))
+        loss_fig.add_trace(go.Scatter(
+            x=epochs,
+            y=model_data["test_losses"],
+            name=optim+"-Testing Loss",
+            line=dict(dash='solid',color=color)
+        ))
         
-    #     # loss_fig.add_trace(go.Bar(
-    #     #     x=epochs,
-    #     #     y=[neg_log_likelyhoods[title] - rlct_estimates[title]/args.num_draws for title,model in models.items()],
-    #     #     name="Generalization Losses",
-    #     #     marker_color="mediumseagreen",
-    #     # ))
-    # loss_fig.update_layout(
-    #     title="Evolution of loss over optimisers",
-    #     xaxis_title="Epochs",
-    #     yaxis_title="Loss",
-    # )
-    # figs.append(loss_fig)
-
-
+        loss_fig.add_trace(go.Scatter(
+            x=epochs,
+            y=np.array(neg_log_likelyhoods[optim]) - np.array(rlct_estimates[optim])/args.num_draws,
+            name=optim+"-Generalization Losses",
+            line=dict(dash='dot',color=color)
+        ))
+    loss_fig.update_layout(
+        title="Evolution of loss over optimisers",
+        xaxis_title="Epochs",
+        yaxis_title="Loss",
+    )
+    figs.append(loss_fig)
 
     ### PUSH FIGURES TO LOCAL HTML FILE ###
     curr_time = datetime.now().strftime("%Y-%m-%d-%H-%M")

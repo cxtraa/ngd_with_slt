@@ -94,14 +94,12 @@ For now we have to manually make sure num_epochs is the same as that for the tra
 ## TODO
 
 * Make PyHessian work for multiple batches of data
-* Set up checkpointing, saving and loading models (to Weights and Biases)
-    * currently it is to save as pickle file, whereas wandb treats it as new run upon running eval.py
-    * need to use wandb run id to do this
-* wandb takes very long to upload data, not sure why. ** I ACTIVATED WANDB TO OFFLINE IN THESE CODE **
-* there are quite a few lines of repeated code in both train and eval (see the TODO lines), ideally should remove these
-    * these can cause problems if train and eval are run with different params
-* setup hyperparam testing
-* Note that I accidentally deleted the PyHessian module, - still running into issues after cloning repo and needing to run `git submodule init` and `git submodule update`. Also I moved `get_esd_plotly` to the engine folder, I couldnt push my changes to the submodule. Issues with `mpl.use('tkagg')` too.
+* Set up checkpointing of models
+    * currently it is to save as pickle file
+* setup hyperparam testing (mainly training lr, and RLCT lr, use MALA to do this)
+* fix the criterion issue, current criterion[general] is used for everything but we should implement custom for KFAC
+* should we even use KFAC?
+* run optimizer on CNN for long epochs and get good estimate of RLCT
 
 
 ## About

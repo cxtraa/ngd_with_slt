@@ -39,8 +39,9 @@ from devinterp.slt.wbic import OnlineWBICEstimator
 from approxngd import KFAC
 from PyHessian.pyhessian import *
 from PyHessian.density_plot import *
-from general_utils import *
-from hessian_utils import *
+from utils_general import *
+from utils_hessian import *
+from utils_rlct import *
 from architectures.Linear import *
 from data.build_data import build_data
 
@@ -59,8 +60,8 @@ def get_mnist_vary_HN_args_parser():
         'RLCT Hyperparameters': [
             {'name': '--num_draws', 'default': 1000, 'type': int},
             {'name': '--num_chains', 'default': 2, 'type': int},
-            {'name': '--noise_level', 'default': 1.0, 'type': float},
-            {'name': '--elasticity', 'default': 1000.0, 'type': float}
+            {'name': '--epsilon', 'default': 1e-5, 'type':float,'help':'This is the LLC step size'},
+            {'name': '--gamma', 'default': 1, 'type':float,'help':'This is localization factor'}
         ],
         'Hessian Parameters': [
             {'name': '--hessian_batch_size', 'default': 12, 'type': int},
@@ -163,7 +164,7 @@ def main(args):
     #rlct_fig.add_trace(go.Scatter(x=hidden_nodes, y=Y, mode='markers'))
     rlct_fig.add_trace(go.Scatter(x=hidden_nodes, y=Y))
     rlct_fig.update_layout(
-        title=f"Adam RLCT estimation, Elasticity : {args.elasticity}, Noise Level : {args.noise_level}",
+        title=f"Adam RLCT estimation, epsilon : {args.epsilon}, gamma : {args.gamma}",
         xaxis_title="Hidden neurons in each layer",
         yaxis_title="RLCT",
     )
@@ -173,7 +174,7 @@ def main(args):
     Y_norm = [rlct_estimates_norm[f"{hn} HN {hidden_layers} HL"] for hn in hidden_nodes]
     rlct_fig_norm.add_trace(go.Scatter(x=hidden_nodes, y=Y_norm))
     rlct_fig_norm.update_layout(
-        title=f"Adam RLCT_norm estimation, Elasticity : {args.elasticity}, Noise Level : {args.noise_level}",
+        title=f"Adam RLCT_norm estimation, epsilon : {args.epsilon}, gamma : {args.gamma}",
         xaxis_title="Hidden neurons in each layer",
         yaxis_title="RLCT_norm",
     )
