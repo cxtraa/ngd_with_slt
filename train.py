@@ -88,7 +88,7 @@ def main(args):
     device = "cuda" if t.cuda.is_available() else "cpu"
     print(f"DEVICE: {device}")
     #LR shouldnt be part of filename, a diff lr should override previous lr, lr should be independent (diff optimizers have diff lr)
-    filename = f"{args.model}-model_{args.optimiser}-optimiser_{args.num_epochs}-epochs_{args.batch_size}-batchsize"
+    filename = f"{args.model}-model_{args.optimiser}-optimiser_{args.num_epochs}-epochs"
     if args.model == "LM":
         filename += f"_{args.LMHL}-HL_{args.LMHN}-HN"
         model = LinearMNIST(hidden_layers=args.LMHL, hidden_nodes=args.LMHN).to(device)
