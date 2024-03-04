@@ -75,9 +75,8 @@ def get_eval_mnist_optimisers_args_parser():
                  #List of available hidden nodes
                  'LMHN':8,
                  #fixed number of hidden layers
-                 'LMHL':2,
-                 #another criteria, as different models have different batch sizes, otherwise return models with differing batch_sizes
-                 'batch_size':512,
+                 'LMHL':12,
+                 'num_epochs':20
              }), 
              'type': json.loads,
              'help': 'Selection criteria for the model in JSON format'},
@@ -120,6 +119,7 @@ def main(args):
         for e in range(num_epochs):
             #this function returns an object of type IncompatibleKeys, make sure to append the model not the output of this!
             name, model = create_architecture(args.criteria, device)
+            model.eval()
             model.load_state_dict(state_dicts[i][e])
             history.append(model)
         models[optim]=history
