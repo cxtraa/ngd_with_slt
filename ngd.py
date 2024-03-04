@@ -585,12 +585,16 @@ class NGD(Optimizer):
                         buf.mul_(momentum).add_(d_p)
                     else:
                         buf = param_state['momentum_buffer']
-                        buf.mul_(momentum).add_(1 - dampening, d_p)
+                        #buf.mul_(momentum).add_(1 - dampening, d_p)
+                        buf.mul_(momentum).add_(d_p, alpha=1 - dampening)
+
                     if nesterov:
                         d_p = d_p.add(momentum, buf)
                     else:
                         d_p = buf
                 #outdated code
-                p.data.add_(-lr, d_p)
+                #p.data.add_(-lr, d_p)
+                p.data.add_(d_p, alpha=-lr)
+
 
         return loss
