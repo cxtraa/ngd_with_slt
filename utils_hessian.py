@@ -86,10 +86,10 @@ def produce_hessians(models, data_loader, num_batches, criterion, device, histor
         for key, history in models.items():
             hessian_history=[]
             crit = criterion["kfac"] if key == "KFAC" else criterion["general"]
-            for model in history:
-                #print(type(model))
+            for e in range(len(history)):
 
-                hessian_history.append(hessian(model, crit, data=(images,labels), cuda=True if device=='cuda' else False))
+                hessian_history.append(hessian(history[e], crit, data=(images,labels), cuda=True if device=='cuda' else False))
+                print(f"computing hessian for{key} and epoch{e}")
             hessians[key] = hessian_history
     else:
         for key, model in models.items():
