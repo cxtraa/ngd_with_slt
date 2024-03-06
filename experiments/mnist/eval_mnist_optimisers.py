@@ -111,7 +111,8 @@ def main(args):
     for i in range(len(state_dicts)):
         #num_epochs may be different for each model class
         num_epochs = models_data[i]["description"]["num_epochs"]
-        epochs = np.arange(1, num_epochs+1)
+        #epochs will include 0, which is before model starts training
+        epochs = np.arange(0, num_epochs+1)
         optim = models_data[i]["description"]["optimiser"]
 
         history=[]
