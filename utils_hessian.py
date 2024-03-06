@@ -73,6 +73,10 @@ def produce_hessians(models, data_loader, num_batches, criterion, device, histor
         the Hessian object
     """
 
+    total_batches = len(data_loader)
+    if num_batches > total_batches:
+        raise ValueError(f"num_batches ({num_batches}) exceeds the total available batches ({total_batches}) in the DataLoader.")
+
     images, labels = [], []
     iterator = iter(data_loader)
     for _ in range(num_batches):

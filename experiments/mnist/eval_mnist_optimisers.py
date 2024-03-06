@@ -105,10 +105,8 @@ def main(args):
     train_loader, test_loader = build_data(args)
 
     ### LOAD MODELS FROM LOCAL FILES ###
-    try:
-        state_dicts, models_data = load_models("./weights", criteria=args.criteria)
-    except Exception as e:
-        print('check if the required models even exist, or if selection criteria is wrong')
+    state_dicts, models_data = load_models("./weights", criteria=args.criteria)
+    assert (len(state_dicts)!=0), "Check if your criteria is correct!"
 
     for i in range(len(state_dicts)):
         #num_epochs may be different for each model class
@@ -120,11 +118,14 @@ def main(args):
         for e in range(num_epochs):
             #this function returns an object of type IncompatibleKeys, make sure to append the model not the output of this!
             name, model = create_architecture(args.criteria, device)
-            model.eval()
             model.load_state_dict(state_dicts[i][e])
+            #change it to eval mode
+            model.eval()
             history.append(model)
         models[optim]=history
 
+    '''
+    #get_hessian currently WIP with the batch_size arg
     ### COMPUTE MODEL EIGENSPECTRA ###
     hessians = produce_hessians(models=models,
                                 data_loader=train_loader,
@@ -160,6 +161,7 @@ def main(args):
         yaxis_title="Hessian dimensions",
     )
     figs.append(hessian_dims_fig)
+    '''
 
     ### LLC ESTIMATIONS FOR EACH ARCHITECTURE AT CONVERGENCE ###
     rlct_estimates, rlct_estimates_norm, neg_log_likelyhoods = produce_rlct(models, train_loader,metric, device, args, history =True)
