@@ -38,6 +38,7 @@ from PyHessian.density_plot import *
 
 from architectures.Linear import LinearMNIST
 from architectures.CNN import CnnMNIST
+from architectures.resnet import ResNet
 
 import plotly.express as px
 import plotly.graph_objects as go
@@ -256,9 +257,8 @@ def load_models(base_path, criteria):
 
 def create_architecture(criteria, device):
     '''
-    This is mainly for optimizers.py
 
-    Given the selection criteria as a dictionary, returns the relevant model architecture and name of architecture.
+    Given the selection criteria as a DICTIONARY, returns the relevant name and model architecture
     Note that this is independent of the optimiser specified
     Can only return ONE type of model architecture
     '''

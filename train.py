@@ -87,16 +87,11 @@ def main(args):
     ### SETUP AND DATA LOADING ###
     device = "cuda" if t.cuda.is_available() else "cpu"
     print(f"DEVICE: {device}")
-    #LR shouldnt be part of filename, a diff lr should override previous lr, lr should be independent (diff optimizers have diff lr)
+
+    # #LR shouldnt be part of filename, a diff lr should override previous lr, lr should be independent (diff optimizers have diff lr)
     filename = f"{args.model}-model_{args.optimiser}-optimiser_{args.num_epochs}-epochs"
-    if args.model == "LM":
-        filename += f"_{args.LMHL}-HL_{args.LMHN}-HN"
-        model = LinearMNIST(hidden_layers=args.LMHL, hidden_nodes=args.LMHN).to(device)
-    elif args.model == "CM":
-        filename += f"_{args.CMKS}-KS_{args.CMHL}-HL"
-        model = CnnMNIST(kernel_size=args.CMKS, hidden_conv_layers=args.CMHL).to(device)
-    else:
-        raise NotImplementedError("The requested model does not exist.")
+    name, model = create_architecture(vars(args), device)
+    filename+=name
 
     train_loader, test_loader = build_data(args)
 
@@ -126,7 +121,14 @@ def main(args):
 
     print(f"\n======================== Training with {args.optimiser} ==========================")
     pprint.pprint(vars(args))
-    for epoch in range(args.num_epochs):
+
+    #add data for initial model
+    train_losses.append(evaluate(model, train_loader, metric, device))
+    test_losses.append(evaluate(model, test_loader, metric, device))
+    model_history.append(copy.deepcopy(model.state_dict()))
+
+    #add data once training starts
+    for epoch in range(1, args.num_epochs+1):
         train_loss = train_one_epoch(model, train_loader, optimiser, metric, device)
         test_loss = evaluate(model, test_loader, metric, device)
         train_losses.append(train_loss)
@@ -134,7 +136,7 @@ def main(args):
         #IMPORTANT: if you want to add an entire model/statedict during training,make sure to use copy.deepcopy, else itll reference the final weights
         model_history.append(copy.deepcopy(model.state_dict()))
 
-        print(f"Epoch {epoch+1}/{args.num_epochs}: train_loss={train_loss:.4f}, test_loss={test_loss:.4f}")
+        print(f"Epoch {epoch}/{args.num_epochs}: train_loss={train_loss:.4f}, test_loss={test_loss:.4f}")
 
     ### EXPORTING DATA ###
     data_to_save = {
