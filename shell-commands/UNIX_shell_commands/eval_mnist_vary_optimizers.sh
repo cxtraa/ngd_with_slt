@@ -1,8 +1,8 @@
 # Define new selection criteria
 model="LM"
 optimisers=("sgd" "ngd")  # Corrected variable name
-lmhn=8
-lmhl=12
+lmhn=32
+lmhl=64
 num_epochs=20
 
 # Convert Bash array to a JSON-like string for optimisers
@@ -15,7 +15,7 @@ num_chains=2
 epsilon=1e-5
 gamma=100
 #hessian_batch_size=24
-batch_size=8192
+batch_size=4096
 num_workers=32
 
 # Call the Python script with the new parameters
