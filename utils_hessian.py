@@ -73,9 +73,28 @@ def produce_hessians(models, data_loader, num_batches, criterion, device, histor
         the Hessian object
     """
 
+    '''
+    #code copied to properly load hessian_dataloader
+    assert (args.hessian_batch_size % args.mini_hessian_batch_size == 0)
+    assert (50000 % args.hessian_batch_size == 0)
+    batch_num = args.hessian_batch_size // args.mini_hessian_batch_size
+
+    if batch_num == 1:
+        for inputs, labels in train_loader:
+            hessian_dataloader = (inputs, labels)
+            break
+    else:
+        hessian_dataloader = []
+        for i, (inputs, labels) in enumerate(train_loader):
+            hessian_dataloader.append((inputs, labels))
+            if i == batch_num - 1:
+                break
+
+    #check batch size arg
     total_batches = len(data_loader)
     if num_batches > total_batches:
         raise ValueError(f"num_batches ({num_batches}) exceeds the total available batches ({total_batches}) in the DataLoader.")
+    '''
 
     images, labels = [], []
     iterator = iter(data_loader)

@@ -162,6 +162,8 @@ def main(args):
     )
     figs.append(hessian_dims_fig)
     '''
+    #reset figs here
+    figs=[]
 
     ### LLC ESTIMATIONS FOR EACH ARCHITECTURE AT CONVERGENCE ###
     rlct_estimates, rlct_estimates_norm, neg_log_likelyhoods = produce_rlct(models, train_loader,metric, device, args, history =True)
