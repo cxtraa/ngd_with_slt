@@ -9,11 +9,14 @@ num_epochs=20
 optimisers_str=$(printf '"%s",' "${optimisers[@]}")
 optimisers_str="[${optimisers_str%,}]"  # Remove trailing comma and wrap in brackets
 
-# Define RLCT hyperparameters
+# Define other hyperparameters
 num_draws=2000
 num_chains=2
 epsilon=1e-5
 gamma=100
+hessian_batch_size=4096
+batch_size=4096
+num_workers=32
 
 # Call the Python script with the new parameters
 python experiments/mnist/eval_mnist_optimisers.py \
@@ -21,6 +24,9 @@ python experiments/mnist/eval_mnist_optimisers.py \
     --num_draws $num_draws \
     --num_chains $num_chains \
     --epsilon $epsilon \
-    --gamma $gamma
+    --gamma $gamma \
+    --hessian_batch_size $hessian_batch_size \
+    --num_workers 
+
 
 
