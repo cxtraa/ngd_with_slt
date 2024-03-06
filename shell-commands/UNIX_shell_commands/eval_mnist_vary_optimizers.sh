@@ -14,9 +14,9 @@ num_draws=2000
 num_chains=2
 epsilon=1e-5
 gamma=100
-hessian_batch_size=24
-batch_size=4096
-num_workers=12
+#hessian_batch_size=24
+batch_size=8192
+num_workers=32
 
 # Call the Python script with the new parameters
 python experiments/mnist/eval_mnist_optimisers.py \
@@ -25,7 +25,7 @@ python experiments/mnist/eval_mnist_optimisers.py \
     --num_chains $num_chains \
     --epsilon $epsilon \
     --gamma $gamma \
-    --hessian_batch_size $hessian_batch_size \
+    #--hessian_batch_size $hessian_batch_size \
     --batch_size $batch_size \
     --num_workers $num_workers
 
