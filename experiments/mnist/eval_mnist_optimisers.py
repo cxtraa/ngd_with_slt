@@ -93,7 +93,9 @@ def get_eval_mnist_optimisers_args_parser():
 
 def main(args):
     ### CHECK DEVICE ###
-    device = "cuda" if t.cuda.is_available() else "cpu"
+
+    #device = "cuda" if t.cuda.is_available() else "cpu"
+    device = 'cpu'
     print(f"DEVICE : {device}")
     warnings.filterwarnings("ignore")
 
