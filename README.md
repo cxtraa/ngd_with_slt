@@ -93,7 +93,7 @@ For now we have to manually make sure num_epochs is the same as that for the tra
 
 ## TODO
 
-* Make PyHessian work for multiple batches of data
+* Make PyHessian work for multiple batches of data - currently a major problem, optimizers not computing Hessian!
 * Set up checkpointing of models
     * currently it is to save as pickle file
 * setup hyperparam testing (mainly training lr, and RLCT lr, use MALA to do this)

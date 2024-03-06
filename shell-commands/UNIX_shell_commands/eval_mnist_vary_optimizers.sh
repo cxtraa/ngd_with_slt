@@ -1,8 +1,8 @@
 # Define new selection criteria
 model="LM"
 optimisers=("sgd" "ngd")  # Corrected variable name
-lmhn=12
-lmhl=20
+lmhn=8
+lmhl=12
 num_epochs=20
 
 # Convert Bash array to a JSON-like string for optimisers
@@ -14,9 +14,9 @@ num_draws=2000
 num_chains=2
 epsilon=1e-5
 gamma=100
-hessian_batch_size=4096
+hessian_batch_size=24
 batch_size=4096
-num_workers=32
+num_workers=12
 
 # Call the Python script with the new parameters
 python experiments/mnist/eval_mnist_optimisers.py \
@@ -26,7 +26,8 @@ python experiments/mnist/eval_mnist_optimisers.py \
     --epsilon $epsilon \
     --gamma $gamma \
     --hessian_batch_size $hessian_batch_size \
-    --num_workers 
+    --batch_size $batch_size \
+    --num_workers $num_workers
 
 
 
