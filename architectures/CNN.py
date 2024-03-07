@@ -54,13 +54,27 @@ class CnnMNIST(nn.Module):
         ])
         self.conv_final = nn.Conv2d(32, 64, kernel_size, stride=1, padding=kernel_size//2)
         
-        # Placeholders for fully connected layers. We'll initialize them after computing the flattened size
-        #note that 64*7*7 is the wrong calculation, actual empirical input size is 5184
-        self.fc1 = nn.Linear(5184, 128)
+        #note that the linear_size, depending on num_hidden layers, this changes due to padding on every layer
+        linear_size=self.get_linear_size(kernel_size, hidden_conv_layers)
+        self.fc1 = nn.Linear(linear_size, 128)
         self.fc2 = nn.Linear(128, output_size)
 
         # Output size placeholder
         self.output_size = output_size
+
+    def get_linear_size(self, kernel_size=3, hidden_conv_layers=1):
+        '''
+        This method simulates the first part of the code to get the input size to the linear function
+        '''
+        x = F.relu(self.conv1(t.randn(1, 1, 28, 28)))
+        x = F.max_pool2d(x, 2)
+        for conv in self.conv_hidden:
+            x = F.relu(conv(x))
+        x = F.relu(self.conv_final(x))
+        x = F.max_pool2d(x, 2)
+        x = t.flatten(x, 1)
+        return x.shape[1]
+
 
     def forward(self, x):
         x = F.relu(self.conv1(x))

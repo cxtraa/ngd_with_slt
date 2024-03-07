@@ -76,8 +76,7 @@ def get_rlct(model,dataloader, criterion, args, device):
     #nll = result["loss/trace"][-1][-1] #this was previous implementation, which is the last loss in the chain of the last draw
     #note that loss is of shape (num_chains,num_draws)
     #new implementation: first average across chains (sum vertically), then take the last draw
-    print(type(result["loss/trace"]),'type')
-    print(result["loss/trace"].shape,'shape')
+
     #this is an np array
     nll = result["loss/trace"].mean(axis=0)[-1]
 
