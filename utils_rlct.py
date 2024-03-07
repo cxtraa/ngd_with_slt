@@ -98,6 +98,9 @@ def produce_rlct(models, dataloader,criterion, device, args,history):
     
     rlct_estimates, rlct_estimates_norm, neg_log_likelyhoods = {}, {}, {}
     for title, value in models.items():
+
+        print(len(value))
+
         if history:
             rlct_data=[]
             for epoch in range(0, len(value)+1):

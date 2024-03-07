@@ -1,8 +1,8 @@
 # Define new selection criteria
 model="CM"
 optimisers=("sgd" "ngd")  # Corrected variable name
-cmks=4
-cmhl=2
+cmks=2
+cmhl=4
 num_epochs=30
 freq=5
 
@@ -16,8 +16,8 @@ num_chains=1
 epsilon=1e-5
 gamma=100
 #hessian_batch_size=24 remember to add this below too
-batch_size=4096
-num_workers=96
+batch_size=128
+num_workers=12
 
 # Call the Python script with the new parameters
 python experiments/mnist/eval_mnist_optimisers.py \
