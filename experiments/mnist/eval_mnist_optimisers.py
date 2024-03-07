@@ -55,8 +55,8 @@ def get_eval_mnist_optimisers_args_parser():
             {'name': '--num_draws', 'default': 1000, 'type': int},
             {'name': '--num_chains', 'default': 2, 'type': int},
             {'name': '--epsilon', 'default': 1e-5, 'type':float,'help':'This is the LLC step size'},
-            {'name': '--gamma', 'default': 100, 'type':float,'help':'This is localization factor'}
-
+            {'name': '--gamma', 'default': 100, 'type':float,'help':'This is localization factor'},
+            {'name': '--freq', 'default': 5, 'type':int ,'help':'calculate rlct every x epochs'},
         ],
         'Hessian Parameters': [
             {'name': '--hessian_batch_size', 'default': 12, 'type': int},
@@ -113,7 +113,7 @@ def main(args):
         #num_epochs may be different for each model class
         num_epochs = models_data[i]["description"]["num_epochs"]
         #epochs will include 0, which is before model starts training
-        epochs = np.arange(0, num_epochs+1)
+        epochs = list(range(0, num_epochs + 1, args.freq))
         optim = models_data[i]["description"]["optimiser"]
 
         history=[]
