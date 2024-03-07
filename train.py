@@ -100,11 +100,11 @@ def main(args):
     
     sgd = t.optim.SGD(model.parameters(), lr=args.lr)
     adam = t.optim.Adam(model.parameters(), lr=args.lr)
-    rmsprop = t.optim.RMSprop(model.parameters(), lr=args.lr, momentum=0.8)
+    rmsprop = t.optim.RMSprop(model.parameters(), lr=args.lr)
     #KFAC doesnt work with ReLU
-    ngd = KFAC(model, args.lr, damping=0.01, momentum_type='regular', momentum=0.8, adapt_damping=False, update_cov_manually=False)
+    #ngd = KFAC(model, args.lr, damping=0.01, momentum_type='regular', momentum=0.8, adapt_damping=False, update_cov_manually=False)
     #NGD is extremely slow with CUDA
-    #ngd = NGD(model.parameters(), lr=args.lr, momentum=0.8)
+    ngd = NGD(model.parameters(), lr=args.lr)
 
     optimisers = {
         'sgd' : sgd,
