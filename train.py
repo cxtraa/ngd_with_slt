@@ -65,7 +65,7 @@ def get_train_args_parser():
             {'name': '--lr', 'default': 1e-5, 'type': float},
             {'name': '--num_epochs', 'default': 20, 'type': int},
             {'name': '--optimiser', 'default': 'adam', 'type': str},
-            {'name': '--momentum', 'default': 0.8, 'type': float, 'help':'used for rmsprop and NGD'}
+            {'name': '--momentum', 'default': 0.8, 'type': float, 'help':'used for rmsprop and NGD'},
         ],
         'Data Loading Parameters': [
             {'name': '--batch_size', 'default': 128, 'type': int},
@@ -92,6 +92,8 @@ def main(args):
     filename = f"{args.model}-model_{args.optimiser}-optimiser_{args.num_epochs}-epochs"
     name, model = create_architecture(vars(args), device)
     filename+=name
+    #set to training mode
+    model.train()
 
     train_loader, test_loader = build_data(args)
 

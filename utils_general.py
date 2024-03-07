@@ -63,7 +63,7 @@ def train_one_epoch(model, train_loader, optimizer, criterion, device):
     `device` : whether cuda gpu or cpu
     """
     
-    model.train()
+
     train_loss = 0
     for image, label in tqdm(train_loader):
         image, label = image.to(device), label.to(device)
