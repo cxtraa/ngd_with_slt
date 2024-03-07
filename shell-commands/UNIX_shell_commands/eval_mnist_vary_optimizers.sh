@@ -1,8 +1,8 @@
 # Define new selection criteria
 model="CM"
 optimisers=("sgd" "ngd")  # Corrected variable name
-cmks=2
-cmhl=4
+cmks=4
+cmhl=2
 num_epochs=30
 freq=5
 
@@ -21,13 +21,14 @@ num_workers=96
 
 # Call the Python script with the new parameters
 python experiments/mnist/eval_mnist_optimisers.py \
-    --criteria "{\"model\":\"$model\", \"optimiser\":$optimisers_str, \"CMKS\":$cmks, \"CMHL\":$cmhl, \"num_epochs\":$num_epochs},\"freq\":$freq} " \
+    --criteria "{\"model\":\"$model\", \"optimiser\":$optimisers_str, \"CMKS\":$cmks, \"CMHL\":$cmhl, \"num_epochs\":$num_epochs} " \
     --num_draws $num_draws \
     --num_chains $num_chains \
     --epsilon $epsilon \
     --gamma $gamma \
     --batch_size $batch_size \
-    --num_workers $num_workers
+    --num_workers $num_workers \
+    --freq $freq \
 
 
 
