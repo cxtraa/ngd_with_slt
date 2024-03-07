@@ -4,10 +4,11 @@ for optim in "${optimizers[@]}"
 do 
     #specify different lr for sgd or ngd
     if [ "$optim" = "sgd" ]; then
-        lr=1e-3
+        lr=5e-1
     elif [ "$optim" = "ngd" ]; then
-        lr=1e-2
+        lr=2
     fi
 
-    python train.py --model CM --optimiser $optim --lr $lr --num_workers 12 --batch_size 1024 --num_epochs 5 --CMKS 2 --CMHL 4
+    python train.py --model CM --optimiser $optim --lr $lr --num_workers 64 --batch_size 4096 --num_epochs 30 --CMKS 4 --CMHL 4
 done
+

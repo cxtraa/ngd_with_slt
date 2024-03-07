@@ -55,8 +55,9 @@ class CnnMNIST(nn.Module):
         self.conv_final = nn.Conv2d(32, 64, kernel_size, stride=1, padding=kernel_size//2)
         
         # Placeholders for fully connected layers. We'll initialize them after computing the flattened size
-        self.fc1 = None
-        self.fc2 = None
+        #note that 64*7*7 is the wrong calculation, actual empirical input size is 5184
+        self.fc1 = nn.Linear(5184, 128)
+        self.fc2 = nn.Linear(128, output_size)
 
         # Output size placeholder
         self.output_size = output_size
@@ -72,11 +73,6 @@ class CnnMNIST(nn.Module):
         x = F.max_pool2d(x, 2)
 
         x = t.flatten(x, 1)
-
-        # Initialize the linear layers if they haven't been initialized yet
-        if self.fc1 is None:
-            self.fc1 = nn.Linear(x.shape[1], 128).to(x.device)
-            self.fc2 = nn.Linear(128, self.output_size).to(x.device)
 
         x = F.relu(self.fc1(x))
         x = self.fc2(x)
