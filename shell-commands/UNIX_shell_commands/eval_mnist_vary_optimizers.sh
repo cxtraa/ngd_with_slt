@@ -1,22 +1,22 @@
 # Define new selection criteria
 model="CM"
 optimisers=("sgd" "ngd")  # Corrected variable name
-cmks=2
+cmks=4
 cmhl=4
-num_epochs=30
+num_epochs=80
 
 # Convert Bash array to a JSON-like string for optimisers
 optimisers_str=$(printf '"%s",' "${optimisers[@]}")
 optimisers_str="[${optimisers_str%,}]"  # Remove trailing comma and wrap in brackets
 
 # Define other hyperparameters
-num_draws=1000
-num_chains=2
+num_draws=200
+num_chains=1
 epsilon=1e-5
 gamma=100
 #hessian_batch_size=24 remember to add this below too
-batch_size=512
-num_workers=12
+batch_size=8192
+num_workers=128
 
 # Call the Python script with the new parameters
 python experiments/mnist/eval_mnist_optimisers.py \
