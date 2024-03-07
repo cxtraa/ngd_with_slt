@@ -1,9 +1,9 @@
 # Define new selection criteria
-model="LM"
+model="CM"
 optimisers=("sgd" "ngd")  # Corrected variable name
-lmhn=2
-lmhl=4
-num_epochs=2
+cmks=2
+cmhl=4
+num_epochs=30
 
 # Convert Bash array to a JSON-like string for optimisers
 optimisers_str=$(printf '"%s",' "${optimisers[@]}")
@@ -20,7 +20,7 @@ num_workers=12
 
 # Call the Python script with the new parameters
 python experiments/mnist/eval_mnist_optimisers.py \
-    --criteria "{\"model\":\"$model\", \"optimiser\":$optimisers_str, \"LMHN\":$lmhn, \"LMHL\":$lmhl, \"num_epochs\":$num_epochs}" \
+    --criteria "{\"model\":\"$model\", \"optimiser\":$optimisers_str, \"CMKS\":$cmks, \"CMHL\":$cmhl, \"num_epochs\":$num_epochs}" \
     --num_draws $num_draws \
     --num_chains $num_chains \
     --epsilon $epsilon \

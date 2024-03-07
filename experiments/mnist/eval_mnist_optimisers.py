@@ -55,28 +55,28 @@ def get_eval_mnist_optimisers_args_parser():
             {'name': '--num_draws', 'default': 1000, 'type': int},
             {'name': '--num_chains', 'default': 2, 'type': int},
             {'name': '--epsilon', 'default': 1e-5, 'type':float,'help':'This is the LLC step size'},
-            {'name': '--gamma', 'default': 1, 'type':float,'help':'This is localization factor'}
+            {'name': '--gamma', 'default': 100, 'type':float,'help':'This is localization factor'}
 
         ],
         'Hessian Parameters': [
             {'name': '--hessian_batch_size', 'default': 12, 'type': int},
         ],
         'Data Loading Parameters': [
-            {'name': '--batch_size', 'default': 128, 'type': int},
-            {'name': '--num_workers', 'default': 12, 'type': int},
+            {'name': '--batch_size', 'default': 1024, 'type': int},
+            {'name': '--num_workers', 'default': 32, 'type': int},
 
         ],
         'Selection Criteria':[
             #change your selection criteria here
             {'name': '--criteria', 
              'default':  json.dumps({
-                 'model':'LM',
+                 'model':'CM',
                  'optimiser':['sgd','ngd'],
                  #List of available hidden nodes
-                 'LMHN':8,
+                 'CMKS':2,
                  #fixed number of hidden layers
-                 'LMHL':12,
-                 'num_epochs':20
+                 'CMHL':4,
+                 'num_epochs':30
              }), 
              'type': json.loads,
              'help': 'Selection criteria for the model in JSON format'},
@@ -106,7 +106,8 @@ def main(args):
 
     ### LOAD MODELS FROM LOCAL FILES ###
     state_dicts, models_data = load_models("./weights", criteria=args.criteria)
-    assert (len(state_dicts)!=0), "Check if your criteria is correct!"
+    assert (len(state_dicts)>1), "Check if your criteria is correct!"
+
 
     for i in range(len(state_dicts)):
         #num_epochs may be different for each model class
