@@ -92,8 +92,6 @@ def main(args):
     filename = f"{args.model}-model_{args.optimiser}-optimiser_{args.num_epochs}-epochs"
     name, model = create_architecture(vars(args), device)
     filename+=name
-    #set to training mode
-    model.train()
 
     train_loader, test_loader = build_data(args)
 

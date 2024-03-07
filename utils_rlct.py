@@ -103,7 +103,8 @@ def produce_rlct(models, dataloader,criterion, device, args,history):
 
         if history:
             rlct_data=[]
-            for epoch in range(0, len(value)+1):
+            #if history contains num_epochs+1 length, then iterator goes from 0 to num_epochs, range(0,len(num_epochs+1))
+            for epoch in range(0, len(value)):
                 #only get rlct if fulfills frequency criteria
                 if epoch% args.freq ==0:
                     #note that position zero corresponds to epoch 0

@@ -1,8 +1,8 @@
 # Define new selection criteria
 model="CM"
 optimisers=("sgd" "ngd")  # Corrected variable name
-cmks=2
-cmhl=4
+cmks=4
+cmhl=2
 num_epochs=30
 freq=5
 
