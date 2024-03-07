@@ -100,12 +100,12 @@ def produce_rlct(models, dataloader,criterion, device, args,history):
     for title, value in models.items():
         if history:
             rlct_data=[]
-            for epoch in range(1, len(value)+1):
+            for epoch in range(0, len(value)+1):
                 #only get rlct if fulfills frequency criteria
                 if epoch% args.freq ==0:
-                    #note that position zero corresponds to epoch 1
+                    #note that position zero corresponds to epoch 0
                     print(f"Calculating rlct for {title} in epoch {epoch}")
-                    rlct_data.append(get_rlct(value[epoch-1],dataloader, criterion["general"], args, device))
+                    rlct_data.append(get_rlct(value[epoch],dataloader, criterion["general"], args, device))
             rlct_estimates[title], rlct_estimates_norm[title], neg_log_likelyhoods[title] = zip(*rlct_data)
         else:
             #value is the model here
