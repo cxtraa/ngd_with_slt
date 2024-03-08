@@ -4,9 +4,11 @@ class LinearMNIST(nn.Module):
     """
     Simple template NN architecture.
     Adjust architecture accordingly for experiment.
+
+    outputsize should be 10 for MNIST (num classes)
     """
     
-    def __init__(self, input_size=28*28, hidden_layers=1, hidden_nodes=16, output_size=10):
+    def __init__(self, relu=False, input_size=28*28, hidden_layers=1, hidden_nodes=16, output_size=10):
         super().__init__()
         self.hidden_layers = hidden_layers
         self.hidden_nodes = hidden_nodes
@@ -16,8 +18,8 @@ class LinearMNIST(nn.Module):
             linear_layer = nn.Linear(input_size if i == 0 else hidden_nodes, hidden_nodes)
             layers.append(linear_layer)
 
-            # #comment out this code for ReLU
-            # layers.append(nn.ReLU())
+            if relu:
+                layers.append(nn.ReLU())
 
         output_layer = nn.Linear(hidden_nodes, output_size)
         layers.append(output_layer)

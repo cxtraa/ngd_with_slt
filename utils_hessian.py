@@ -74,7 +74,7 @@ def produce_hessians(models, data_loader, num_batches, criterion, device, histor
     """
 
     '''
-    #code copied to properly load hessian_dataloader
+    #code copied to properly load hessian_dataloader, batch_num giving some errors
     assert (args.hessian_batch_size % args.mini_hessian_batch_size == 0)
     assert (50000 % args.hessian_batch_size == 0)
     batch_num = args.hessian_batch_size // args.mini_hessian_batch_size

@@ -65,6 +65,7 @@ class CnnMNIST(nn.Module):
     def get_linear_size(self, kernel_size=3, hidden_conv_layers=1):
         '''
         This method simulates the first part of the code to get the input size to the linear function
+        the problem is that depending on the number of hidden_conv_layers, the input size to Linear block is different
         '''
         x = F.relu(self.conv1(t.randn(1, 1, 28, 28)))
         x = F.max_pool2d(x, 2)

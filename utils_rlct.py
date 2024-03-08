@@ -46,15 +46,14 @@ import matplotlib.pyplot as plt
 from matplotlib.cm import get_cmap
 import io
 
-def get_rlct(model,dataloader, criterion, args, device):
+def get_rlct_data(model,dataloader, criterion, args, device):
     """
     Perform LLC (local learning coefficient) estimation on a model.
     """
     
     optim_kwargs = {
         "lr" : args.epsilon,
-        "localization":args.gamma,
-        #"save_noise" : True,
+        "localization":args.gamma
     }
 
     result = estimate_learning_coeff_with_summary(
@@ -73,14 +72,16 @@ def get_rlct(model,dataloader, criterion, args, device):
     #take the last chain
     rlct=result["llc/means"][-1]
     rlct_norm = rlct / count_parameters(model)
+    #this is shows all the rlct at each draw, averaged over chains
+    rlct_draw=result["llc/means"]
     #nll = result["loss/trace"][-1][-1] #this was previous implementation, which is the last loss in the chain of the last draw
     #note that loss is of shape (num_chains,num_draws)
     #new implementation: first average across chains (sum vertically), then take the last draw
-
     #this is an np array
     nll = result["loss/trace"].mean(axis=0)[-1]
 
-    return rlct, rlct_norm, nll
+
+    return rlct, rlct_norm, rlct_draw, nll
 
 def produce_rlct(models, dataloader,criterion, device, args,history):
     '''
@@ -93,10 +94,11 @@ def produce_rlct(models, dataloader,criterion, device, args,history):
     Returns:
     - rlct_estimates (dict): keys are model titles, values are either the RLCT or a list of RLCT if a model history is passed in
     - rlct_estimates_norm (dict)
-    - nge_log_likelyhoods (dict)
+    - neg_log_likelyhoods (dict)
+    - rlct_draws (dict): values are the list 
     '''
     
-    rlct_estimates, rlct_estimates_norm, neg_log_likelyhoods = {}, {}, {}
+    rlct_estimates, rlct_estimates_norm, rlct_draws, neg_log_likelyhoods= {}, {}, {}, {}
     for title, value in models.items():
 
         print(len(value))
@@ -109,13 +111,13 @@ def produce_rlct(models, dataloader,criterion, device, args,history):
                 if epoch% args.freq ==0:
                     #note that position zero corresponds to epoch 0
                     print(f"Calculating rlct for {title} in epoch {epoch}")
-                    rlct_data.append(get_rlct(value[epoch],dataloader, criterion["general"], args, device))
-            rlct_estimates[title], rlct_estimates_norm[title], neg_log_likelyhoods[title] = zip(*rlct_data)
+                    rlct_data.append(get_rlct_data(value[epoch],dataloader, criterion["general"], args, device))
+            rlct_estimates[title], rlct_estimates_norm[title], rlct_draws[title], neg_log_likelyhoods[title] = zip(*rlct_data)
         else:
             #value is the model here
-            rlct_estimates[title], rlct_estimates_norm[title], neg_log_likelyhoods[title] = get_rlct(value,dataloader, criterion["general"], args, device) 
+            rlct_estimates[title], rlct_estimates_norm[title], rlct_draws[title], neg_log_likelyhoods[title] = get_rlct_data(value,dataloader, criterion["general"], args, device) 
 
-    return rlct_estimates, rlct_estimates_norm, neg_log_likelyhoods
+    return rlct_estimates, rlct_estimates_norm, rlct_draws, neg_log_likelyhoods
 
 
 
