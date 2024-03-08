@@ -38,7 +38,7 @@ from PyHessian.density_plot import *
 
 from architectures.Linear import LinearMNIST
 from architectures.CNN import CnnMNIST
-from architectures.resnet import ResNet
+from architectures.LeNet import LeNet
 
 import plotly.express as px
 import plotly.graph_objects as go
@@ -261,13 +261,15 @@ def create_architecture(criteria, device):
     Given the selection criteria as a DICTIONARY, returns the relevant name and model architecture
     Note that this is independent of the optimiser specified
     Can only return ONE type of model architecture
+
+    This is the only function that details out the model architecture, even load models doesnt do this
     '''
     if criteria['model'] == "LM":
         name = f"LM_{criteria['LMHL']}-HL_{criteria['LMHN']}-HN"
         return name, LinearMNIST(hidden_layers=criteria['LMHL'], hidden_nodes=criteria['LMHN']).to(device)
     elif criteria['model'] == "CM":
-        name = f"CM_{criteria['CMKS']}-KS_{criteria['CMHL']}-HL"
-        return name, CnnMNIST(kernel_size=criteria['CMKS'], hidden_conv_layers=criteria['CMHL']).to(device)
+        name = f"CM_{criteria['CMHL']}-HL"
+        return name, LeNet(extra_layers=criteria['CMHL']).to(device)
     else:
         raise NotImplementedError("The requested model does not exist.")
     

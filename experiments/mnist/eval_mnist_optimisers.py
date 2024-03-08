@@ -108,7 +108,6 @@ def main(args):
     state_dicts, models_data = load_models("./weights", criteria=args.criteria)
     assert (len(state_dicts)>1), "Check if your criteria is correct!"
 
-
     for i in range(len(state_dicts)):
         #num_epochs may be different for each model class
         num_epochs = models_data[i]["description"]["num_epochs"]
@@ -198,26 +197,35 @@ def main(args):
         loss_fig.add_trace(go.Scatter(
             x=epochs,
             y=model_data["train_losses"],
-            name=optim+"-Training Loss",
+            name=optim+"- Training Loss",
             line=dict(dash='dash',color=color)
         ))
         loss_fig.add_trace(go.Scatter(
             x=epochs,
             y=model_data["test_losses"],
-            name=optim+"-Testing Loss",
+            name=optim+"- Testing Loss",
             line=dict(dash='solid',color=color)
+        ))
+
+        loss_fig.add_trace(go.Scatter(
+            x=epochs,
+            y=np.array(neg_log_likelyhoods[optim]),
+            name=optim+"- devinterp NLL",
+            line=dict(dash='dot',color=color)
         ))
         
         loss_fig.add_trace(go.Scatter(
             x=epochs,
             y=np.array(neg_log_likelyhoods[optim]) - np.array(rlct_estimates[optim])/args.num_draws,
-            name=optim+"-Generalization Losses",
+            name=optim+"- Generalization Losses",
             line=dict(dash='dot',color=color)
         ))
+
     loss_fig.update_layout(
         title="Evolution of loss over optimisers",
         xaxis_title="Epochs",
         yaxis_title="Loss",
+        autorange=True
     )
     figs.append(loss_fig)
 
