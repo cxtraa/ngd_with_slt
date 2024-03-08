@@ -116,7 +116,8 @@ def main(args):
         optim = models_data[i]["description"]["optimiser"]
 
         history=[]
-        for e in range(num_epochs):
+        #should include the initial epoch 0 too
+        for e in range(0, num_epochs+1):
             #this function returns an object of type IncompatibleKeys, make sure to append the model not the output of this!
             name, model = create_architecture(args.criteria, device)
             model.load_state_dict(state_dicts[i][e])
@@ -165,17 +166,19 @@ def main(args):
     '''
     #reset figs here
     figs=[]
+    colors=iter(px.colors.qualitative.Plotly)
 
     ### LLC ESTIMATIONS FOR EACH ARCHITECTURE AT CONVERGENCE ###
-    rlct_estimates, rlct_estimates_norm, neg_log_likelyhoods = produce_rlct(models, train_loader,metric, device, args, history =True)
+    rlct_estimates, rlct_estimates_norm, rlct_draws, neg_log_likelyhoods = produce_rlct(models, train_loader,metric, device, args, history =True)
+
 
     rlct_fig = go.Figure()
-    for key, rlct_history in rlct_estimates.items():
+    for optim, rlct_history in rlct_estimates.items():
         rlct_fig.add_trace(go.Scatter(
             x=epochs,
             y=rlct_history,
-            #mode='lines',
-            name=key  # Setting the name of the line as the key
+            mode='lines',
+            name=optim  # Setting the name of the line as the key
         ))
 
     rlct_fig.update_layout(
@@ -185,9 +188,27 @@ def main(args):
     )
     figs.append(rlct_fig)
 
+    ### VISUALIZE RLCT SAMPLING CALCULATION FOR LAST EPOCH
+    LLC_fig = go.Figure()
+    for model_data in models_data:
+        optim=model_data["description"]["optimiser"]
+        color=next(colors)
+        
+        LLC_fig.add_trace(go.Scatter(
+            x=np.arange(1, args.num_draws+1),
+            #get the rlct draw data for the last model in a list of models over all epochs
+            y=rlct_draws[optim][-1],
+            mode='lines',
+            name=optim,
+        ))
+    LLC_fig.update_layout(title="LLC estimation evolution for model in last epoch",
+                xaxis_title="Draws",
+                yaxis_title="LLC",
+                legend_title="Optimiser",
+                )
+    figs.append(LLC_fig)
 
     ### VISUALISE TRAINING / TESTING/ GENERALIZATION LOSS OVER OPTIMISERS ###
-    colors=iter(px.colors.qualitative.Plotly)
     loss_fig = go.Figure()
 
     for model_data in models_data:
@@ -197,21 +218,21 @@ def main(args):
         loss_fig.add_trace(go.Scatter(
             x=epochs,
             y=model_data["train_losses"],
-            name=optim+"- Training Loss",
+            name=optim+"- Train Loss",
             line=dict(dash='dash',color=color)
         ))
         loss_fig.add_trace(go.Scatter(
             x=epochs,
             y=model_data["test_losses"],
-            name=optim+"- Testing Loss",
+            name=optim+"- Test Loss",
             line=dict(dash='solid',color=color)
         ))
 
         loss_fig.add_trace(go.Scatter(
             x=epochs,
             y=np.array(neg_log_likelyhoods[optim]),
-            name=optim+"- devinterp NLL",
-            line=dict(dash='dot',color=color)
+            name=optim+"- DevInterp NLL",
+            line=dict(dash='dashdot',color=color)
         ))
         
         loss_fig.add_trace(go.Scatter(
@@ -221,11 +242,11 @@ def main(args):
             line=dict(dash='dot',color=color)
         ))
 
+
     loss_fig.update_layout(
         title="Evolution of loss over optimisers",
         xaxis_title="Epochs",
         yaxis_title="Loss",
-        autorange=True
     )
     figs.append(loss_fig)
 
