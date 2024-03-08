@@ -58,8 +58,7 @@ def get_train_args_parser():
             {'name' : '--model', 'default' : 'LM', 'type' : str},   # Linear MNIST
             {'name' : '--LMHN', 'default' : 16, 'type' : int},  # Linear MNIST Hidden Nodes
             {'name' : '--LMHL', 'default' : 2, 'type' : int},   # Linear MNIST Hidden Layers
-            {'name' : '--CMKS', 'default' : 5, 'type' : int}, # CNN MNIST kernel size
-            {'name' : '--CMHL', 'default' : 10, 'type' : int}, # CNN MNIST hidden conv layers
+            {'name' : '--CMHL', 'default' : 0, 'type' : int, 'help' : 'LeNet extra hidden layers after first conv layer'},
         ],
         'Training Hyperparameters': [
             {'name': '--lr', 'default': 1e-5, 'type': float},

@@ -2,7 +2,7 @@
 model="CM"
 optimisers=("sgd" "ngd")  # Corrected variable name
 cmks=4
-cmhl=2
+cmhl=8
 num_epochs=30
 freq=5
 

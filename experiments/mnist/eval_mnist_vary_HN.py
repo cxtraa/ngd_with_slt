@@ -119,6 +119,7 @@ def main(args):
     models_histories, models_data = load_models("./weights", criteria=args.criteria)
     #select only the last epoch for each model architecture
     state_dicts = [history[-1] for history in models_histories]
+    assert (len(state_dicts)>1), "Check if your criteria is correct!"
     
     num_epochs = models_data[0]["description"]["num_epochs"]
     epochs = np.arange(1, num_epochs+1)
