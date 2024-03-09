@@ -38,7 +38,7 @@ from PyHessian.pyhessian import *
 from PyHessian.density_plot import *
 from utils_general import *
 from utils_hessian import *
-from architectures.NN import LinearMNIST
+from architectures.NN import NeuralNet
 from architectures.CNN import CnnMNIST
 from data.build_data import build_data
 
@@ -56,8 +56,8 @@ def get_train_args_parser():
     arg_groups = {
         'Model Architecture': [
             {'name' : '--model', 'default' : 'LM', 'type' : str},   # Linear MNIST
-            {'name' : '--LMHN', 'default' : 16, 'type' : int},  # Linear MNIST Hidden Nodes
-            {'name' : '--LMHL', 'default' : 2, 'type' : int},   # Linear MNIST Hidden Layers
+            {'name' : '--HN', 'default' : 16, 'type' : int, 'help': 'NN Hidden Nodes, this argument valid for both FF and NN'},
+            {'name' : '--HL', 'default' : 2, 'type' : int, 'help': 'NN Hidden Layers, this argument valid for both FF and NN'},
             {'name' : '--CMHL', 'default' : 0, 'type' : int, 'help' : 'LeNet extra hidden layers after first conv layer'},
         ],
         'Training Hyperparameters': [

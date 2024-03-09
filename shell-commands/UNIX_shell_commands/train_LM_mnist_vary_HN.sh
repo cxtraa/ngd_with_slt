@@ -3,6 +3,6 @@ hidden_layers=2
 
 for HN in "${hidden_nodes[@]}"
     do 
-        python train.py --model LM --LMHN $HN --LMHL $hidden_layers --num_workers 12 --batch_size 128 --num_epochs 5
+        python train.py --model LM --HN $HN --HL $hidden_layers --num_workers 12 --batch_size 128 --num_epochs 5
         #echo $HL
     done

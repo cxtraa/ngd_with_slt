@@ -78,9 +78,9 @@ def get_mnist_vary_HN_args_parser():
                  'model':'LM',
                  'optimiser':'adam',
                  #List of available hidden nodes
-                 'LMHN':[2,4,8],
+                 'HN':[2,4,8],
                  #fixed number of hidden layers
-                 'LMHL':2
+                 'HL':2
              }, 
              'type': dict},
         ]
@@ -102,8 +102,8 @@ def main(args):
     warnings.filterwarnings("ignore")
 
     ### PRODUCE LIST OF NETWORKS WITH VARYING SIZES ###
-    hidden_nodes=args.criteria['LMHN']
-    hidden_layers=args.criteria['LMHL']
+    hidden_nodes=args.criteria['HN']
+    hidden_layers=args.criteria['HL']
 
     models = {}
     titles = []
@@ -126,7 +126,7 @@ def main(args):
 
 
     for i in range(len(state_dicts)):
-        HN, HL = models_data[i]["description"]["LMHN"], models_data[i]["description"]["LMHL"]
+        HN, HL = models_data[i]["description"]["HN"], models_data[i]["description"]["HL"]
         optim = models_data[i]["description"]["optimiser"]
         title = f"{HN} HN {HL} HL"
         models[title].load_state_dict(state_dicts[i])

@@ -265,10 +265,11 @@ def create_architecture(criteria, device):
     This is the only function that details out the model architecture, even load models doesnt do this
     '''
     if criteria['model'] == "LM":
-        name = f"LM_{criteria['LMHL']}-HL_{criteria['LMHN']}-HN"
-        return name, NeuralNet(relu=False, hidden_layers=criteria['LMHL'], hidden_nodes=criteria['LMHN']).to(device)
+        name = f"LM_{criteria['HL']}-HL_{criteria['HN']}-HN"
+        return name, NeuralNet(relu=False, hidden_layers=criteria['HL'], hidden_nodes=criteria['HN']).to(device)
     elif criteria['model']=="FF":
-        return name, NeuralNet(relu=True, hidden_layers=criteria['LMHL'], hidden_nodes=criteria['LMHN']).to(device)
+        name = f"FF_{criteria['HL']}-HL_{criteria['HN']}-HN"
+        return name, NeuralNet(relu=True, hidden_layers=criteria['HL'], hidden_nodes=criteria['HN']).to(device)
     elif criteria['model'] == "CM":
         name = f"CM_{criteria['CMHL']}-HL"
         return name, LeNet(extra_layers=criteria['CMHL']).to(device)

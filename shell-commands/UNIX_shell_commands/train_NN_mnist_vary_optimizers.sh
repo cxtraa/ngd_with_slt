@@ -9,6 +9,6 @@ do
         lr=1e-1
     fi
 
-    python train.py --model LM --optimiser $optim --lr $lr --num_workers 12 --batch_size 128 --num_epochs 30 --LMHN 10 --LMHL 4
+    python train.py --model FF --optimiser $optim --lr $lr --num_workers 12 --batch_size 128 --num_epochs 5 --HN 512 --HL 4
 done
 
