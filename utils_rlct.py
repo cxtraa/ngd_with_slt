@@ -36,7 +36,7 @@ from approxngd import KFAC
 from PyHessian.pyhessian import *
 from PyHessian.density_plot import *
 
-from architectures.Linear import LinearMNIST
+from architectures.NN import NeuralNet
 from architectures.CNN import CnnMNIST
 from utils_general import count_parameters
 
