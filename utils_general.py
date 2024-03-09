@@ -36,7 +36,7 @@ from approxngd import KFAC
 from PyHessian.pyhessian import *
 from PyHessian.density_plot import *
 
-from architectures.Linear import LinearMNIST
+from architectures.NN import NeuralNet
 from architectures.CNN import CnnMNIST
 from architectures.LeNet import LeNet
 
@@ -266,7 +266,9 @@ def create_architecture(criteria, device):
     '''
     if criteria['model'] == "LM":
         name = f"LM_{criteria['LMHL']}-HL_{criteria['LMHN']}-HN"
-        return name, LinearMNIST(relu=False, hidden_layers=criteria['LMHL'], hidden_nodes=criteria['LMHN']).to(device)
+        return name, NeuralNet(relu=False, hidden_layers=criteria['LMHL'], hidden_nodes=criteria['LMHN']).to(device)
+    elif criteria['model']=="FF":
+        return name, NeuralNet(relu=True, hidden_layers=criteria['LMHL'], hidden_nodes=criteria['LMHN']).to(device)
     elif criteria['model'] == "CM":
         name = f"CM_{criteria['CMHL']}-HL"
         return name, LeNet(extra_layers=criteria['CMHL']).to(device)
