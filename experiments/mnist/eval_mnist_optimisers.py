@@ -108,11 +108,15 @@ def main(args):
     state_dicts, models_data = load_models("./weights", criteria=args.criteria)
     assert (len(state_dicts)>1), "Check if your criteria is correct!"
 
+    #num_epochs should be the same for each optim
+    num_epochs = models_data[0]["description"]["num_epochs"]
+    #epochs will include 0, which is before model starts training
+    #dev_interp_epochs is the x values for rlct and gen_loss, since we only calculate them every so often
+    devinterp_epochs = list(range(0, num_epochs + 1, args.freq))
+    #since we have train/test data for every single epoch
+    train_test_epochs= list(range(0, num_epochs + 1, 1))
+
     for i in range(len(state_dicts)):
-        #num_epochs may be different for each model class
-        num_epochs = models_data[i]["description"]["num_epochs"]
-        #epochs will include 0, which is before model starts training
-        epochs = list(range(0, num_epochs + 1, args.freq))
         optim = models_data[i]["description"]["optimiser"]
 
         history=[]
@@ -166,7 +170,10 @@ def main(args):
     '''
     #reset figs here
     figs=[]
-    colors=iter(px.colors.qualitative.Plotly)
+    optimizer_colors = {
+    'sgd': 'blue',   # Example colors, change as needed
+    'ngd': 'red',
+    }
 
     ### LLC ESTIMATIONS FOR EACH ARCHITECTURE AT CONVERGENCE ###
     rlct_estimates, rlct_estimates_norm, rlct_draws, neg_log_likelyhoods = produce_rlct(models, train_loader,metric, device, args, history =True)
@@ -175,7 +182,7 @@ def main(args):
     rlct_fig = go.Figure()
     for optim, rlct_history in rlct_estimates.items():
         rlct_fig.add_trace(go.Scatter(
-            x=epochs,
+            x=devinterp_epochs,
             y=rlct_history,
             mode='lines',
             name=optim  # Setting the name of the line as the key
@@ -192,14 +199,13 @@ def main(args):
     LLC_fig = go.Figure()
     for model_data in models_data:
         optim=model_data["description"]["optimiser"]
-        color=next(colors)
         
         LLC_fig.add_trace(go.Scatter(
             x=np.arange(1, args.num_draws+1),
             #get the rlct draw data for the last model in a list of models over all epochs
             y=rlct_draws[optim][-1],
-            mode='lines',
             name=optim,
+            line=dict(dash='solid',color=optimizer_colors[optim])
         ))
     LLC_fig.update_layout(title="LLC estimation evolution for model in last epoch",
                 xaxis_title="Draws",
@@ -213,33 +219,32 @@ def main(args):
 
     for model_data in models_data:
         optim=model_data["description"]["optimiser"]
-        color=next(colors)
 
         loss_fig.add_trace(go.Scatter(
-            x=epochs,
+            x=train_test_epochs,
             y=model_data["train_losses"],
             name=optim+"- Train Loss",
-            line=dict(dash='dash',color=color)
+            line=dict(dash='dash',color=optimizer_colors[optim])
         ))
         loss_fig.add_trace(go.Scatter(
-            x=epochs,
+            x=train_test_epochs,
             y=model_data["test_losses"],
             name=optim+"- Test Loss",
-            line=dict(dash='solid',color=color)
+            line=dict(dash='solid',color=optimizer_colors[optim])
         ))
 
         loss_fig.add_trace(go.Scatter(
-            x=epochs,
+            x=devinterp_epochs,
             y=np.array(neg_log_likelyhoods[optim]),
             name=optim+"- DevInterp NLL",
-            line=dict(dash='dashdot',color=color)
+            line=dict(dash='dashdot',color=optimizer_colors[optim])
         ))
         
         loss_fig.add_trace(go.Scatter(
-            x=epochs,
+            x=devinterp_epochs,
             y=np.array(neg_log_likelyhoods[optim]) - np.array(rlct_estimates[optim])/args.num_draws,
             name=optim+"- Generalization Losses",
-            line=dict(dash='dot',color=color)
+            line=dict(dash='dot',color=optimizer_colors[optim])
         ))
 
 
