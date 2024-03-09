@@ -101,8 +101,6 @@ def produce_rlct(models, dataloader,criterion, device, args,history):
     rlct_estimates, rlct_estimates_norm, rlct_draws, neg_log_likelyhoods= {}, {}, {}, {}
     for title, value in models.items():
 
-        print(len(value))
-
         if history:
             rlct_data=[]
             #if history contains num_epochs+1 length, then iterator goes from 0 to num_epochs, range(0,len(num_epochs+1))

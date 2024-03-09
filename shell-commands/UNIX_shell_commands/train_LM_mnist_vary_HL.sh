@@ -3,6 +3,6 @@ hidden_layers=(1 2)
 
 for HL in "${hidden_layers[@]}"
     do 
-        python train.py --model LM --LMHN $hidden_nodes --LMHL $HL
+        python train.py --model LM --HN $hidden_nodes --HL $HL
         #echo $HL
     done
