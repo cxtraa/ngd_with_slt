@@ -42,7 +42,7 @@ from PyHessian.density_plot import *
 from utils_general import *
 from utils_hessian import *
 from utils_rlct import *
-from architectures.Linear import *
+from architectures.NN import *
 from data.build_data import build_data
 
 import plotly.express as px

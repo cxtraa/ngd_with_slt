@@ -38,7 +38,7 @@ from PyHessian.pyhessian import *
 from PyHessian.density_plot import *
 from utils_general import *
 from utils_hessian import *
-from architectures.Linear import LinearMNIST
+from architectures.NN import LinearMNIST
 from architectures.CNN import CnnMNIST
 from data.build_data import build_data
 
