@@ -88,7 +88,7 @@ def main(args):
     print(f"DEVICE: {device}")
 
     # #LR shouldnt be part of filename, a diff lr should override previous lr, lr should be independent (diff optimizers have diff lr)
-    filename = f"{args.model}-model_{args.optimiser}-optimiser_{args.num_epochs}-epochs"
+    filename = f"_{args.optimiser}-optimiser_{args.num_epochs}-epochs"
     name, model = create_architecture(vars(args), device)
     filename=name+filename
 
