@@ -10,14 +10,14 @@ optimisers_str=$(printf '"%s",' "${optimisers[@]}")
 optimisers_str="[${optimisers_str%,}]"  # Remove trailing comma and wrap in brackets
 
 # Define other hyperparameters
-num_draws=1200
+num_draws=10000
 num_chains=2
 epsilon=1e-5
 gamma=100
 
 #hessian_batch_size=24 remember to add this below too
 batch_size=4096
-num_workers=64
+num_workers=12
 
 # Call the Python script with the new parameters
 python experiments/mnist/eval_mnist_optimisers.py \
