@@ -6,7 +6,7 @@ do
     if [ "$optim" = "sgd" ]; then
         lr=8e-2
     elif [ "$optim" = "ngd" ]; then
-        lr=6e-2
+        lr=5e-2
     fi
 
     python train.py --model CM --optimiser $optim --lr $lr --num_workers 64 --batch_size 4096 --num_epochs 80 --CMHL 0

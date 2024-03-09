@@ -171,8 +171,8 @@ def main(args):
     #reset figs here
     figs=[]
     optimizer_colors = {
-    'sgd': 'blue',   # Example colors, change as needed
-    'ngd': 'red',
+    'sgd': 'royalblue',   # Example colors, change as needed
+    'ngd': 'tomato',
     }
 
     ### LLC ESTIMATIONS FOR EACH ARCHITECTURE AT CONVERGENCE ###
