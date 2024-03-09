@@ -271,7 +271,7 @@ def create_architecture(criteria, device):
         name = f"FF_{criteria['HL']}-HL_{criteria['HN']}-HN"
         return name, NeuralNet(relu=True, hidden_layers=criteria['HL'], hidden_nodes=criteria['HN']).to(device)
     elif criteria['model'] == "CM":
-        name = f"CM_{criteria['CMHL']}-HL"
+        name = f"CM_{criteria['CMHL']}-CMHL"
         return name, LeNet(extra_layers=criteria['CMHL']).to(device)
     else:
         raise NotImplementedError("The requested model does not exist.")
