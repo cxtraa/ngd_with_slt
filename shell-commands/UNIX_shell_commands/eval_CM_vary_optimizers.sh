@@ -2,15 +2,15 @@
 model="CM"
 optimisers=("sgd" "ngd")  # Corrected variable name
 cmhl=0
-num_epochs=10
-freq=5
+num_epochs=80
+freq=20
 
 # Convert Bash array to a JSON-like string for optimisers
 optimisers_str=$(printf '"%s",' "${optimisers[@]}")
 optimisers_str="[${optimisers_str%,}]"  # Remove trailing comma and wrap in brackets
 
 # Define other hyperparameters
-num_draws=10000
+num_draws=1500
 num_chains=2
 epsilon=1e-5
 gamma=100
