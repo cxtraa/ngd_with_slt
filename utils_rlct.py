@@ -79,9 +79,10 @@ def get_rlct_data(model,dataloader, criterion, args, device):
     #new implementation: first average across chains (sum vertically), then take the last draw
     #this is an np array
     nll = result["loss/trace"].mean(axis=0).mean()
+    rlct_mov_avg = result["lls/moving avg"].mean(axis=0)
 
 
-    return rlct, rlct_norm, rlct_draw, nll
+    return rlct, rlct_norm, rlct_draw, nll, rlct_mov_avg
 
 def produce_rlct(models, dataloader,criterion, device, args,history):
     '''
@@ -98,7 +99,7 @@ def produce_rlct(models, dataloader,criterion, device, args,history):
     - rlct_draws (dict): values are the list 
     '''
     
-    rlct_estimates, rlct_estimates_norm, rlct_draws, neg_log_likelyhoods= {}, {}, {}, {}
+    rlct_estimates, rlct_estimates_norm, rlct_draws, neg_log_likelyhoods, rlct_moving_avg= {}, {}, {}, {}, {}
     for title, value in models.items():
 
         if history:
@@ -113,9 +114,9 @@ def produce_rlct(models, dataloader,criterion, device, args,history):
             rlct_estimates[title], rlct_estimates_norm[title], rlct_draws[title], neg_log_likelyhoods[title] = zip(*rlct_data)
         else:
             #value is the model here
-            rlct_estimates[title], rlct_estimates_norm[title], rlct_draws[title], neg_log_likelyhoods[title] = get_rlct_data(value,dataloader, criterion["general"], args, device) 
+            rlct_estimates[title], rlct_estimates_norm[title], rlct_draws[title], neg_log_likelyhoods[title], rlct_moving_avg[title] = get_rlct_data(value,dataloader, criterion["general"], args, device) 
 
-    return rlct_estimates, rlct_estimates_norm, rlct_draws, neg_log_likelyhoods
+    return rlct_estimates, rlct_estimates_norm, rlct_draws, neg_log_likelyhoods, rlct_moving_avg
 
 
 
