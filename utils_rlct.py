@@ -79,7 +79,7 @@ def get_rlct_data(model,dataloader, criterion, args, device):
     #new implementation: first average across chains (sum vertically), then take the last draw
     #this is an np array
     nll = result["loss/trace"].mean(axis=0).mean()
-    rlct_mov_avg = result["llc/moving avg"].mean(axis=0)
+    rlct_mov_avg = result["llc/moving_avg"].mean(axis=0)
 
 
     return rlct, rlct_norm, rlct_draw, nll, rlct_mov_avg
