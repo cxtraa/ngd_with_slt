@@ -239,6 +239,7 @@ def main(args):
             name=optim+"- DevInterp NLL",
             line=dict(dash='dashdot',color=optimizer_colors[optim])
         ))
+
         
         loss_fig.add_trace(go.Scatter(
             x=devinterp_epochs,
