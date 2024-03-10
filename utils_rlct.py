@@ -78,7 +78,7 @@ def get_rlct_data(model,dataloader, criterion, args, device):
     #note that loss is of shape (num_chains,num_draws)
     #new implementation: first average across chains (sum vertically), then take the last draw
     #this is an np array
-    nll = result["loss/trace"].mean(axis=0)[-1]
+    nll = result["loss/trace"].mean(axis=0)[-10:-1].mean()
 
 
     return rlct, rlct_norm, rlct_draw, nll

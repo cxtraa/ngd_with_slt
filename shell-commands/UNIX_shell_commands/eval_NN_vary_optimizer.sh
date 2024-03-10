@@ -1,5 +1,5 @@
 # Define new selection criteria
-model="FF"
+model="LM"
 optimisers=("sgd" "ngd")  # Corrected variable name
 hl=4
 hn=512
@@ -11,8 +11,8 @@ optimisers_str=$(printf '"%s",' "${optimisers[@]}")
 optimisers_str="[${optimisers_str%,}]"  # Remove trailing comma and wrap in brackets
 
 # Define other hyperparameters
-num_draws=2000
-num_chains=1
+num_draws=500
+num_chains=2
 epsilon=1e-5
 gamma=100
 

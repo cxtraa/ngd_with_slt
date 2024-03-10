@@ -243,9 +243,24 @@ def main(args):
         loss_fig.add_trace(go.Scatter(
             x=devinterp_epochs,
             y=np.array(neg_log_likelyhoods[optim]) - np.array(rlct_estimates[optim])/args.num_draws,
-            name=optim+"- Generalization Losses",
+            name=optim+"- Generalization Losses - num_draws",
             line=dict(dash='dot',color=optimizer_colors[optim])
         ))
+
+        loss_fig.add_trace(go.Scatter(
+            x=devinterp_epochs,
+            y=np.array(neg_log_likelyhoods[optim]) - np.array(rlct_estimates[optim])/len(train_loader.dataset),
+            name=optim+"- Generalization Losses - dataset size",
+            line=dict(dash='dot',color=optimizer_colors[optim])
+        ))
+
+        loss_fig.add_trace(go.Scatter(
+            x=devinterp_epochs,
+            y=np.array(neg_log_likelyhoods[optim]) - np.array(rlct_estimates[optim])/args.batch_size,
+            name=optim+"- Generalization Losses - batch size",
+            line=dict(dash='dot',color=optimizer_colors[optim])
+        ))
+
 
 
     loss_fig.update_layout(
