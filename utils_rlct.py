@@ -111,7 +111,7 @@ def produce_rlct(models, dataloader,criterion, device, args,history):
                     #note that position zero corresponds to epoch 0
                     print(f"Calculating rlct for {title} in epoch {epoch}")
                     rlct_data.append(get_rlct_data(value[epoch],dataloader, criterion["general"], args, device))
-            rlct_estimates[title], rlct_estimates_norm[title], rlct_draws[title], neg_log_likelyhoods[title] = zip(*rlct_data)
+            rlct_estimates[title], rlct_estimates_norm[title], rlct_draws[title], neg_log_likelyhoods[title], rlct_moving_avg[title] = zip(*rlct_data)
         else:
             #value is the model here
             rlct_estimates[title], rlct_estimates_norm[title], rlct_draws[title], neg_log_likelyhoods[title], rlct_moving_avg[title] = get_rlct_data(value,dataloader, criterion["general"], args, device) 
