@@ -2,7 +2,7 @@
 model="CM"
 optimisers=("sgd" "ngd")  # Corrected variable name
 cmhl=0
-num_epochs=80
+num_epochs=10
 freq=5
 
 # Convert Bash array to a JSON-like string for optimisers
