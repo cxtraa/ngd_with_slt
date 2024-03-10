@@ -3,7 +3,7 @@ model="CM"
 optimisers=("sgd" "ngd")  # Corrected variable name
 cmhl=0
 num_epochs=40
-freq=10
+freq=20
 
 # Convert Bash array to a JSON-like string for optimisers
 optimisers_str=$(printf '"%s",' "${optimisers[@]}")
