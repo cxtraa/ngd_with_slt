@@ -1,0 +1,28 @@
+[
+    {
+        "model_type" : "dnn",
+        "hidden_nodes" : [128],
+        "hidden_layers" : [2],
+        "hidden_conv_layers" : [1, 2, 3],
+        "optimizer" : "both",
+        "hessian" : false,
+        "num_epochs" : 80,
+        "cut_off_epochs" : 20,
+        "sgd_lr" : 1e-02,
+        "ngd_lr" : 1e-02,
+        "momentum" : 0.9,
+        "nesterov" : true
+    },
+    {
+        "batch_size" : 128,
+        "num_workers" : 6,
+        "dataset" : "mnist"
+    },
+    {
+        "sampler" : "sgld",
+        "num_chains" : 1,
+        "num_draws" : 1000,
+        "localization" : 100.0,
+        "sampler_lr" : 1e-04
+    }
+]

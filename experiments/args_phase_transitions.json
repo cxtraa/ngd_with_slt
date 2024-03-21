@@ -1,0 +1,26 @@
+[
+    {
+        "model_type" : "cnn",
+        "optimiser" : "sgd",
+        "num_epochs" : 10,
+        "linear_hidden_layers" : 5,
+        "linear_hidden_nodes" : 512,
+        "cnn_hidden_layers" : 7,
+        "lr" : 9e-03,
+        "momentum" : 0.9,
+        "ngd_weight_decay" : 1e-04,
+        "nesterov" : true
+    },
+    {
+        "batch_size" : 128,
+        "num_workers" : 6,
+        "dataset" : "mnist"
+    },
+    {
+        "sampler" : "sgld",
+        "num_chains" : 1,
+        "num_draws" : 1000,
+        "localization" : 100.0,
+        "lr" : 1e-04
+    }
+]
