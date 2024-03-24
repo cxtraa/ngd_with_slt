@@ -5,18 +5,20 @@
         "hidden_layers" : [2],
         "hidden_conv_layers" : [1, 2, 3],
         "optimizer" : "both",
-        "hessian" : false,
-        "num_epochs" : 80,
-        "cut_off_epochs" : 20,
+        "hessian" : true,
+        "num_epochs" : 10,
+        "cut_off_epochs" : 10,
         "sgd_lr" : 1e-02,
         "ngd_lr" : 1e-02,
+        "alpha" : 0.1,
         "momentum" : 0.9,
         "nesterov" : true
     },
     {
         "batch_size" : 128,
         "num_workers" : 6,
-        "dataset" : "mnist"
+        "dataset" : "mnist",
+        "num_hessian_batches" : 1
     },
     {
         "sampler" : "sgld",

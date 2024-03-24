@@ -83,18 +83,29 @@ def train_one_epoch(model, train_loader, optimizer, criterion, device):
     `criterion` : loss function.
     `device` : whether cuda gpu or cpu
     """
-    
     model.train()
     train_loss = 0
+    total_update_norm = 0
+
     for image, label in tqdm(train_loader):
         image, label = image.to(device), label.to(device)
+        
+        before_update = [p.clone().detach() for p in model.parameters() if p.requires_grad]
+        
         optimizer.zero_grad()
         output = model(image)
         loss = criterion(output, label)
         train_loss += loss.item()
         loss.backward()
         optimizer.step()
-    return train_loss / len(train_loader)
+
+        update_norm = sum([(p - before).norm().item() for p, before in zip(model.parameters(), before_update) if p.requires_grad])
+        total_update_norm += update_norm / len(before_update) 
+
+    mean_train_loss = train_loss / len(train_loader)
+    mean_update_norm = total_update_norm / len(train_loader)
+
+    return mean_train_loss, mean_update_norm
 
 def evaluate(model, test_loader, criterion, device):
     """
