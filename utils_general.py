@@ -74,7 +74,7 @@ def build_data_loaders(args):
 
     return train_loader, test_loader
 
-def train_one_epoch(model, train_loader, optimizer, criterion, device):
+def train_one_epoch(model, train_loader, optimizer, criterion, device, freq=None):
     """"
     Train one epoch of a model.
     `model`: the nn.Module to be trained,
@@ -84,8 +84,8 @@ def train_one_epoch(model, train_loader, optimizer, criterion, device):
     `device` : whether cuda gpu or cpu
     """
     model.train()
-    train_loss = 0
-    total_update_norm = 0
+    train_losses = []
+    update_norms = []
 
     for image, label in tqdm(train_loader):
         image, label = image.to(device), label.to(device)
@@ -95,17 +95,18 @@ def train_one_epoch(model, train_loader, optimizer, criterion, device):
         optimizer.zero_grad()
         output = model(image)
         loss = criterion(output, label)
-        train_loss += loss.item()
+        train_loss = loss.item()
         loss.backward()
         optimizer.step()
 
         update_norm = sum([(p - before).norm().item() for p, before in zip(model.parameters(), before_update) if p.requires_grad])
-        total_update_norm += update_norm / len(before_update) 
+        update_norms.append(update_norm)
+        train_losses.append(train_loss)
 
-    mean_train_loss = train_loss / len(train_loader)
-    mean_update_norm = total_update_norm / len(train_loader)
+    mean_train_loss = np.mean(np.array(train_losses))
+    mean_update_norm = np.mean(np.array(update_norms))
 
-    return mean_train_loss, mean_update_norm
+    return mean_train_loss, mean_update_norm, train_losses, update_norms
 
 def evaluate(model, test_loader, criterion, device):
     """
@@ -203,6 +204,10 @@ def estimate_rlcts(models, data_loader, criterion, device, devinterp_args):
             "save_noise" : True,
         }
     for model in tqdm(models):
+        if model is None:
+            rlct_estimates.append(None)
+            history.append(None)
+            continue
         results = estimate_learning_coeff_with_summary(
             model,
             data_loader,

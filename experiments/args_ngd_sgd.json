@@ -1,18 +1,21 @@
 [
     {
         "model_type" : "dnn",
+        "experiment_type" : "swap",
         "hidden_nodes" : [128],
         "hidden_layers" : [2],
         "hidden_conv_layers" : [1, 2, 3],
         "optimizer" : "both",
         "hessian" : true,
-        "num_epochs" : 10,
+        "num_epochs" : 30,
         "cut_off_epochs" : 10,
         "sgd_lr" : 1e-02,
         "ngd_lr" : 1e-02,
-        "alpha" : 0.1,
+        "alpha" : 0,
+        "eta" : 0.9,
         "momentum" : 0.9,
-        "nesterov" : true
+        "nesterov" : true,
+        "seed" : 43
     },
     {
         "batch_size" : 128,

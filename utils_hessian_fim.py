@@ -73,6 +73,9 @@ def produce_hessians(models, data_loader, num_batches, criterion, device):
     labels = t.cat(labels, dim=0)
     hessians = []
     for model in models:
+        if model is None:
+            hessians.append(None)
+            continue
         model.eval()
         hessians.append(hessian(model, criterion, data=(images,labels), cuda=True if device=='cuda' else False))
     return hessians
@@ -105,6 +108,9 @@ def produce_eigenspectra(hessians, plot_type="linear"):
     figs = []
     overlaid_fig = go.Figure()
     for i, hessian in enumerate(hessians):
+        if hessian is None:
+            eigenspectrum_data.append(None)
+            continue
         density_eigen, density_weight = hessian.density()
         temp_fig = get_esd_plot_plotly(density_eigen, density_weight, title=f"{i} Hessian eigenspectrum", plot_type=plot_type)
         figs.append(temp_fig)
@@ -163,6 +169,9 @@ def find_hessian_dimensionality(eigenspectrum_data):
 
     hessian_dims = []
     for spectrum in eigenspectrum_data:
+        if spectrum is None:
+            hessian_dims.append(None)
+            continue
 
         eigenvalues = np.array(spectrum["x"])
         density = np.array(spectrum["y"])
