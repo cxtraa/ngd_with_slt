@@ -151,33 +151,40 @@ def write_figs_to_html(figs, dest, title, summary):
     figs : a List of figures to export.
     dest : path to destination.
     title : HTML file title.
+    summary : a dictionary containing the summary to be included in the HTML.
     """
 
-    div_figs = [fig.to_html(full_html=True) for fig in figs]
-    graphs_html = ''.join(f'<div>{div}</div>' for div in div_figs)
+    div_figs = [fig.to_html(full_html=False, include_plotlyjs='cdn') for fig in figs]
+    graphs_html = ''.join(f'<div style="margin-bottom: 20px;">{div}</div>' for div in div_figs)
 
-    html_template = """
+    summary_html = '<br>'.join([f'<b>{key}</b>: {value}' for key, value in summary.items()])
+
+    html_template = f"""
     <html>
     <head>
         <style>
             body {{
                 font-family: Arial, sans-serif;
+                margin: 20px;
+            }}
+            .plotly-graph-div {{
+                margin-bottom: 20px;
             }}
         </style>
-        <title>MARS experiment</title>
+        <title>{title}</title>
     </head>
     <body>
         <h1>{title}</h1>
-        <p>{summary}</p>
-        {graphs}
+        <p>{summary_html}</p>
+        {graphs_html}
     </body>
     </html>
     """
-    final_html = html_template.format(graphs=graphs_html, title=title, summary=summary)
 
     os.makedirs(os.path.dirname(dest), exist_ok=True)
+
     with open(dest, 'w', encoding='utf-8') as f:
-        f.write(final_html)
+        f.write(html_template)
 
 def estimate_rlcts(models, data_loader, criterion, device, devinterp_args):
     """
