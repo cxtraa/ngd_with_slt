@@ -19,7 +19,7 @@ class OnlineNaturalGradient:
 
     def __init__(self, params, axis, alpha=4.0,
                  rank=-1, update_period=4,
-                 eta=0.1):
+                 eta=0.1, epsilon=1e-10, delta=5e-04):
         r"""
       Constructor.
     Arguments:
@@ -73,8 +73,10 @@ class OnlineNaturalGradient:
         # epsilon and delta are two values involved in making sure the Fisher
         # matrix isn't singular and that we don't get NaN's appearing; we don't
         # make them configurable.
-        self.epsilon = 1e-21
-        self.delta = 5e-05
+        self.epsilon = epsilon
+        self.delta = delta
+        # self.epsilon = 1e-20
+        # self.delta = 1e-04
 
         # t is a counter that records how many times self.precondition_directions()
         # has been called.
@@ -505,7 +507,8 @@ class NGD(Optimizer):
 
     def __init__(self, params, lr=required, momentum=0, dampening=0,
                  weight_decay=0, nesterov=False,
-                 ngd=True, alpha=4, rank=-1, update_period=4, eta=0.1):
+                 ngd=True, alpha=4, rank=-1, update_period=4, eta=0.1,
+                 epsilon=1e-10, delta=5e-04):
         if lr is not required and lr < 0.0:
             raise ValueError("Invalid learning rate: {}".format(lr))
         if momentum < 0.0:
@@ -517,7 +520,8 @@ class NGD(Optimizer):
         defaults = dict(lr=lr, momentum=momentum, dampening=dampening,
                         weight_decay=weight_decay, nesterov=nesterov,
                         ngd=ngd, alpha=alpha, rank=rank,
-                        update_period=update_period, eta=eta)
+                        update_period=update_period, eta=eta,
+                        epsilon=epsilon, delta=delta)
 
         if nesterov and (momentum <= 0 or dampening != 0):
             raise ValueError(
@@ -553,6 +557,8 @@ class NGD(Optimizer):
             update_period = group['update_period']
             eta = group['eta']
             lr = group['lr']
+            epsilon = group['epsilon']
+            delta = group['delta']
 
             for p in group['params']:
                 if p.grad is None:
@@ -567,7 +573,7 @@ class NGD(Optimizer):
                         ngd_dict = param_state['ngd_dict'] = dict()
                         for axis in range(len(p.shape)):
                             ngd_dict[axis] = OnlineNaturalGradient(
-                                p, axis, alpha, rank, update_period, eta)
+                                p, axis, alpha, rank, update_period, eta, epsilon, delta)
 
                     ngd_dict = param_state['ngd_dict']
                     for axis in range(len(p.shape)):
