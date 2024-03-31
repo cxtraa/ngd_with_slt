@@ -76,7 +76,8 @@ def get_eval_mnist_optimisers_args_parser():
                  'CMKS':2,
                  #fixed number of hidden layers
                  'CMHL':4,
-                 'num_epochs':30
+                 'num_epochs':30,
+                 'dataset':'cifar10'
              }), 
              'type': json.loads,
              'help': 'Selection criteria for the model in JSON format'},

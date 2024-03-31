@@ -68,7 +68,8 @@ def get_train_args_parser():
         ],
         'Data Loading Parameters': [
             {'name': '--batch_size', 'default': 128, 'type': int},
-            {'name': '--num_workers', 'default': 12, 'type': int}
+            {'name': '--num_workers', 'default': 12, 'type': int},
+            {'name': '--dataset', 'default': 'cifar10', 'type': str},
         ],
     }
 
@@ -88,7 +89,7 @@ def main(args):
     print(f"DEVICE: {device}")
 
     # #LR shouldnt be part of filename, a diff lr should override previous lr, lr should be independent (diff optimizers have diff lr)
-    filename = f"_{args.optimiser}-optimiser_{args.num_epochs}-epochs"
+    filename = f"_{args.dataset}-dataset_{args.optimiser}-optimiser_{args.num_epochs}-epochs"
     name, model = create_architecture(vars(args), device)
     filename=name+filename
 
