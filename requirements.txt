@@ -16,3 +16,4 @@ einops
 scipy
 chardet
 numba
+nngeometry

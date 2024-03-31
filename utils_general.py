@@ -52,6 +52,45 @@ class CPU_Unpickler(pickle.Unpickler):
             return lambda b: t.load(io.BytesIO(b), map_location='cpu')
         else:
             return super().find_class(module, name)
+        
+def build_data_loaders(args):
+    """
+    Returns train_loader and test_loader for following datasets:
+    MNIST, CIFAR10.
+
+    note that args is not an argparse object, but rather a dictionary
+    args must specify:
+    "dataset" = "mnist", "cifar10"
+    "num_workers",
+    "batch_size",
+    """
+
+    if args["dataset"] == "mnist":
+        transform = transforms.Compose([
+            transforms.ToTensor(),
+            transforms.Normalize((0.1307,), (0.3081,))
+        ])
+        
+        train_set = datasets.MNIST(root='./data', train=True, download=True, transform=transform)
+        test_set = datasets.MNIST(root='./data', train=False, download=True, transform=transform)
+
+        train_loader = t.utils.data.DataLoader(train_set, batch_size=args["batch_size"], shuffle=True, num_workers=args["num_workers"], persistent_workers=True)
+        test_loader = t.utils.data.DataLoader(test_set, batch_size=args["batch_size"], shuffle=False, num_workers=args["num_workers"], persistent_workers=True)
+
+    elif args["dataset"] == "cifar10":
+        transform = transforms.Compose([
+            transforms.ToTensor(),
+            transforms.Normalize((0.4914, 0.4822, 0.4465), (0.247, 0.243, 0.261))
+        ])
+
+        train_set = datasets.CIFAR10(root='./data', train=True, download=True, transform=transform)
+        test_set = datasets.CIFAR10(root='./data', train=False, download=True, transform=transform)
+
+        train_loader = t.utils.data.DataLoader(train_set, batch_size=args["batch_size"], shuffle=True, num_workers=args["num_workers"], persistent_workers=True)
+        test_loader = t.utils.data.DataLoader(test_set, batch_size=args["batch_size"], shuffle=False, num_workers=args["num_workers"], persistent_workers=True)
+
+    return train_loader, test_loader
+
 
 def train_one_epoch(model, train_loader, optimizer, criterion, device):
     """"
@@ -61,33 +100,33 @@ def train_one_epoch(model, train_loader, optimizer, criterion, device):
     `optimizer` : the optimizer class used,
     `criterion` : loss function.
     `device` : whether cuda gpu or cpu
+
+    note that update_norms gives the update step of each batch
     """
-    
     model.train()
-    train_loss = 0
+    train_losses = []
+    update_norms = []
+
     for image, label in tqdm(train_loader):
         image, label = image.to(device), label.to(device)
+        
+        before_update = [p.clone().detach() for p in model.parameters() if p.requires_grad]
+        
+        optimizer.zero_grad()
+        output = model(image)
+        loss = criterion(output, label)
+        train_loss = loss.item()
+        loss.backward()
+        optimizer.step()
 
-        # TODO: checks if optimizer is of type KFAC
-        if isinstance(optimizer, KFAC):
-            model.zero_grad()
-            # Estimate with model distribution
-            with optimizer.track_forward():
-                output = model(image)
-                loss = criterion(output, label)
-            with optimizer.track_backward():
-                loss.backward()
-            optimizer.step(loss=loss)
-            train_loss += loss.item()            
-        else:
-            optimizer.zero_grad()
-            output = model(image)
-            loss = criterion(output, label)
-            train_loss += loss.item()
-            loss.backward()
-            optimizer.step()
-    
-    return train_loss / len(train_loader)
+        update_norm = sum([(p - before).norm().item() for p, before in zip(model.parameters(), before_update) if p.requires_grad])
+        update_norms.append(update_norm)
+        train_losses.append(train_loss)
+
+    mean_train_loss = np.mean(np.array(train_losses))
+    mean_update_norm = np.mean(np.array(update_norms))
+
+    return mean_train_loss, mean_update_norm, train_losses, update_norms
 
 def evaluate(model, test_loader, criterion, device):
     """
