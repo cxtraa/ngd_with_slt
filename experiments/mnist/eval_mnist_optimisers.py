@@ -177,7 +177,7 @@ def main(args):
     }
 
     ### LLC ESTIMATIONS FOR EACH ARCHITECTURE AT CONVERGENCE ###
-    rlct_estimates, rlct_estimates_norm, rlct_draws, neg_log_likelyhoods = produce_rlct(models, train_loader,metric, device, args, history =True)
+    rlct_estimates, rlct_estimates_norm, rlct_draws, neg_log_likelyhoods, rlct_moving_average = produce_rlct(models, train_loader,metric, device, args, history =True)
 
 
     rlct_fig = go.Figure()
@@ -215,6 +215,25 @@ def main(args):
                 )
     figs.append(LLC_fig)
 
+    ### VISUALIZE RLCT MOVING AVG CALCULATION FOR LAST EPOCH
+    LLC_fig = go.Figure()
+    for model_data in models_data:
+        optim=model_data["description"]["optimiser"]
+        
+        LLC_fig.add_trace(go.Scatter(
+            x=np.arange(1, args.num_draws+1),
+            #get the rlct draw data for the last model in a list of models over all epochs
+            y=rlct_moving_average[optim][-1],
+            name=optim,
+            line=dict(dash='solid',color=optimizer_colors[optim])
+        ))
+    LLC_fig.update_layout(title="LLC estimation evolution for model in last epoch",
+                xaxis_title="Draws",
+                yaxis_title="LLC_mov_avg",
+                legend_title="Optimiser",
+                )
+    figs.append(LLC_fig)
+
     ### VISUALISE TRAINING / TESTING/ GENERALIZATION LOSS OVER OPTIMISERS ###
     loss_fig = go.Figure()
 
@@ -240,13 +259,29 @@ def main(args):
             name=optim+"- DevInterp NLL",
             line=dict(dash='dashdot',color=optimizer_colors[optim])
         ))
-        
+
+        '''
         loss_fig.add_trace(go.Scatter(
             x=devinterp_epochs,
             y=np.array(neg_log_likelyhoods[optim]) - np.array(rlct_estimates[optim])/args.num_draws,
-            name=optim+"- Generalization Losses",
+            name=optim+"- Generalization Losses - num_draws",
             line=dict(dash='dot',color=optimizer_colors[optim])
         ))
+
+        loss_fig.add_trace(go.Scatter(
+            x=devinterp_epochs,
+            y=np.array(neg_log_likelyhoods[optim]) - np.array(rlct_estimates[optim])/len(train_loader.dataset),
+            name=optim+"- Generalization Losses - dataset size",
+            line=dict(dash='dot',color=optimizer_colors[optim])
+        ))
+        '''
+        loss_fig.add_trace(go.Scatter(
+            x=devinterp_epochs,
+            y=np.array(neg_log_likelyhoods[optim]) - np.array(rlct_estimates[optim])/args.batch_size,
+            name=optim+"- Generalization Losses - batch size",
+            line=dict(dash='dot',color=optimizer_colors[optim])
+        ))
+
 
 
     loss_fig.update_layout(
