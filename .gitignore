@@ -25,4 +25,7 @@ google-cloud-sdk/
 # *.pkl
 
 #data should be automatically downloaded and not uploaded to github
-experiments/data
+experiments/data/
+
+#virtual environment file
+env/
