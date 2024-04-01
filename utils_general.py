@@ -28,7 +28,6 @@ import wandb
 from devinterp.slt import estimate_learning_coeff_with_summary
 from devinterp.optim import SGLD, SGNHT
 
-from approxngd import KFAC
 from PyHessian.pyhessian import *
 from PyHessian.density_plot import *
 
