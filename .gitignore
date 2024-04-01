@@ -1,0 +1,28 @@
+__pycache__/*
+.DS_Store
+
+#ignore venv
+slt/
+
+#ignore config.json
+#config.json
+
+#ignore wandb folder
+wandb/
+
+#ignore models folder (sent to google cloud storage)
+#unable to get google cloud working yet
+#weights/
+
+#ignore google cloud sdk folder
+google-cloud-sdk/
+
+#ignore pycache
+*.pyc
+
+#ignore weight data, training should be done on gpu server
+# *.pth
+# *.pkl
+
+#data should be automatically downloaded and not uploaded to github
+experiments/data

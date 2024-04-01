@@ -1,17 +1,17 @@
 [
     {
-        "model_type" : "dnn",
-        "experiment_type" : "standard",
+        "model_type" : "ffnn",
+        "experiment_type" : "swap",
     
         "optimizer" : "both",
         "hessian" : true,
 
-        "hidden_nodes" : [64, 64, 128, 128, 256, 256],
-        "hidden_layers" : [1, 2, 1, 2, 1, 2],
-        "hidden_conv_layers" : [1, 2, 3],
+        "hidden_nodes" : [64, 64],
+        "hidden_layers" : [1, 2],
+        "hidden_conv_layers" : [0],
 
-        "cut_off_epochs" : 20,
-        "num_epochs" : 20,
+        "cut_off_epochs" : 3,
+        "num_epochs" : 5,
 
         "sgd_lr" : 1e-02,
         "ngd_lr" : 1e-02,
@@ -29,7 +29,7 @@
     {
         "batch_size" : 128,
         "num_workers" : 6,
-        "dataset" : "mnist",
+        "dataset" : "cifar10",
         "num_hessian_batches" : 1
     },
     {

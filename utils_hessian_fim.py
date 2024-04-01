@@ -32,7 +32,7 @@ from PyHessian.density_plot import *
 from nngeometry.metrics import FIM
 from nngeometry.object import PMatKFAC, PMatDiag, PVector
 from utils_general import *
-from networks import *
+from architectures import *
 
 import plotly.express as px
 import plotly.graph_objects as go
