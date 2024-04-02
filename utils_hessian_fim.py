@@ -39,24 +39,6 @@ import matplotlib
 import matplotlib.pyplot as plt
 from matplotlib.cm import get_cmap
 
-def get_esd_plot_plotly(eigenvalues, weights, plot_type, title=None, fig=None, name=None):
-    """
-    Produce eigenspectrum plot in Plotly, with support for overlaid plots.
-    """
-
-    density, grids = density_generate(eigenvalues, weights)
-
-    fig = go.Figure()
-    fig.add_trace(go.Scatter(x=grids, y=density + 1.0e-7, mode='lines'))
-    fig.update_layout(
-        title=title,
-        xaxis_title='Eigenvalue',
-        yaxis_title='Density (Log Scale)',
-        yaxis=dict(type=plot_type),
-    )
-    
-    return fig
-
 def produce_hessians(models, data_loader, num_batches, criterion, device):
     """
     Given a list of PyTorch models, return a list of Hessian objects for each model.
@@ -95,38 +77,6 @@ def produce_fims(models, data_loader, device):
                   device=device)
         fims.append(fim)
     return fims
-
-def produce_eigenspectra(hessians, plot_type="linear"):
-    """
-    Given a list of Hessian classes for different models, return a list
-    of figures containing their eigenspectra, as well as a dictionary
-    containing all the trace data.
-    """
-
-    eigenspectrum_data = []
-    figs = []
-    overlaid_fig = go.Figure()
-    for i, hessian in enumerate(hessians):
-        if hessian is None:
-            eigenspectrum_data.append(None)
-            continue
-        density_eigen, density_weight = hessian.density()
-        temp_fig = get_esd_plot_plotly(density_eigen, density_weight, title=f"{i} Hessian eigenspectrum", plot_type=plot_type)
-        figs.append(temp_fig)
-        trace=temp_fig.data[0]
-        eigenspectrum_data.append({
-            "x" : list(trace.x),
-            "y" : list(trace.y),
-        })
-        eigenspectrum_data[i]["num_params"] = count_parameters(hessian.model)
-        overlaid_fig.add_trace(trace)
-    overlaid_fig.update_layout(title="Combined eigenspectra",
-                    xaxis_title="Eigenvalue",
-                    yaxis_title="Density",
-                    yaxis=dict(type=plot_type),
-                    )
-    figs.append(overlaid_fig)
-    return figs, eigenspectrum_data
 
 def produce_fim_figs(fims, num_bins=1000):
     """
@@ -185,3 +135,51 @@ def find_hessian_dimensionality(eigenspectrum_data):
         hessian_dims.append(dimensions)
     
     return hessian_dims
+
+def produce_eigenspectra(hessians, plot_type="linear"):
+    """
+    Given a list of Hessian classes for different models, return a list
+    of figures containing their eigenspectra, as well as a dictionary
+    containing all the trace data.
+    """
+    eigenspectrum_data = []
+    traces = []
+
+    for i, hessian in enumerate(hessians):
+        if hessian is None:
+            eigenspectrum_data.append(None)
+            continue
+
+        print('calculating eigenspectrum for hessian in epoch',i)
+        density_eigen, density_weight = hessian.density()
+
+        density, grids = density_generate(density_eigen, density_weight)
+        trace = go.Scatter(x=grids, y=density + 1.0e-7, mode='lines', name=f"Model {i}")
+        traces.append(trace)
+
+        eigenspectrum_data.append({
+            "x": grids.tolist(),
+            "y": density.tolist(),
+            "num_params": count_parameters(hessian.model)
+        })
+
+    overlaid_fig = go.Figure(data=traces)
+    overlaid_fig.update_layout(
+        title="Combined eigenspectra",
+        xaxis_title="Eigenvalue",
+        yaxis_title="Density",
+        yaxis=dict(type=plot_type),
+        legend_title="Models"
+    )
+
+    figs = [go.Figure(data=[trace]) for trace in traces]
+    for i, fig in enumerate(figs):
+        fig.update_layout(
+            title=f"Model {i} Hessian eigenspectrum",
+            xaxis_title="Eigenvalue",
+            yaxis_title="Density (Log Scale)",
+            yaxis=dict(type=plot_type)
+        )
+
+    figs.append(overlaid_fig)
+    return figs, eigenspectrum_data

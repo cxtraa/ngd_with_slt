@@ -6,12 +6,12 @@
         "optimizer" : "both",
         "hessian" : true,
 
-        "hidden_nodes" : [64, 128, 256, 64, 128, 256],
-        "hidden_layers" : [1, 1, 1, 2, 2, 2],
+        "hidden_nodes" : [64],
+        "hidden_layers" : [1],
         "hidden_conv_layers" : [0],
 
-        "cut_off_epochs" : 25,
-        "num_epochs" : 25,
+        "cut_off_epochs" : 3,
+        "num_epochs" : 3,
 
         "sgd_lr" : 1e-02,
         "ngd_lr" : 5e-02,
@@ -34,7 +34,7 @@
     },
     {
         "sampler" : "sgld",
-        "num_chains" : 2,
+        "num_chains" : 1,
         "num_draws" : 1000,
         "localization" : 100.0,
         "sampler_lr" : 1e-04
