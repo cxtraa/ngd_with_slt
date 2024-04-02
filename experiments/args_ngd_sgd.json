@@ -6,17 +6,17 @@
         "optimizer" : "both",
         "hessian" : true,
 
-        "hidden_nodes" : [64],
-        "hidden_layers" : [1],
+        "hidden_nodes" : [256],
+        "hidden_layers" : [2],
         "hidden_conv_layers" : [0],
 
-        "cut_off_epochs" : 3,
-        "num_epochs" : 3,
+        "cut_off_epochs" : 25,
+        "num_epochs" : 25,
 
         "sgd_lr" : 1e-02,
         "ngd_lr" : 5e-02,
 
-        "alpha" : 0.01,
+        "alpha" : 0.001,
         "eta" : 0.9,
         "epsilon" : 1e-10,
         "delta" : 5e-04,
@@ -28,13 +28,13 @@
     },
     {
         "batch_size" : 4096,
-        "num_workers" : 16,
+        "num_workers" : 32,
         "dataset" : "mnist",
         "num_hessian_batches" : 1
     },
     {
         "sampler" : "sgld",
-        "num_chains" : 1,
+        "num_chains" : 2,
         "num_draws" : 1000,
         "localization" : 100.0,
         "sampler_lr" : 1e-04
