@@ -81,6 +81,10 @@ def train_one_epoch(model, train_loader, optimizer, criterion, device, freq=None
     `optimizer` : the optimizer class used,
     `criterion` : loss function.
     `device` : whether cuda gpu or cpu
+
+    note that mean_update_norm is the average step size in this epoch
+    update_norms is the list showing all step sizes in this epoch
+
     """
     model.train()
     train_losses = []
@@ -226,6 +230,7 @@ def estimate_rlcts(models, data_loader, criterion, device, devinterp_args):
             online=True,
         )
         chain_rlct_estimates = np.array([results["llc/moving_avg"][i][-1] for i in range(devinterp_args["num_chains"])])
+        #average over chains
         rlct_estimate = float(np.mean(chain_rlct_estimates))
         rlct_estimates.append(rlct_estimate)
         history.append(results)
