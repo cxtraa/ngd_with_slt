@@ -123,7 +123,7 @@ class OnlineNaturalGradient:
                 determining minimum eigenvalues of the Fisher-matrix approximation,
                 mostly to avoid situations where our update would be unstable or
                 generate NaN's.  These values aren't user configurable.  See
-                the paper.
+                the paper. Independant of alpha 
       self.debug  A python bool; if true, certain debugging code will be activated.
 
      The following variables change with time:
