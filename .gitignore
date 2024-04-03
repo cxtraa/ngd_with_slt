@@ -1,4 +1,4 @@
-__pycache__/*
+__pycache__/
 .DS_Store
 
 #ignore venv
@@ -24,8 +24,8 @@ google-cloud-sdk/
 # *.pth
 # *.pkl
 
-#data should be automatically downloaded and not uploaded to github
+#data should be automatically downloaded and not uploaded to github, is too big
 experiments/data/
 
-#virtual environment file
-env2/
+#virtual environment folder, should not be uploaded
+env/

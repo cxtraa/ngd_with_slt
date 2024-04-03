@@ -4,19 +4,19 @@
         "experiment_type" : "standard",
     
         "optimizer" : "both",
-        "hessian" : true,
+        "hessian" : false,
 
         "hidden_nodes" : [256],
         "hidden_layers" : [2],
         "hidden_conv_layers" : [0],
 
-        "cut_off_epochs" : 25,
-        "num_epochs" : 25,
+        "cut_off_epochs" : 30,
+        "num_epochs" : 30,
 
         "sgd_lr" : 1e-02,
-        "ngd_lr" : 5e-02,
+        "ngd_lr" : 1e-02,
 
-        "alpha" : 0.001,
+        "alpha" : 0.01,
         "eta" : 0.9,
         "epsilon" : 1e-10,
         "delta" : 5e-04,
@@ -27,7 +27,7 @@
         "seed" : 1
     },
     {
-        "batch_size" : 4096,
+        "batch_size" : 128,
         "num_workers" : 32,
         "dataset" : "mnist",
         "num_hessian_batches" : 1
