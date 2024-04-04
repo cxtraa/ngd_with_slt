@@ -18,7 +18,7 @@
 
         "alpha" : 0.01,
         "eta" : 0.9,
-        "epsilon" : 1e-10,
+        "epsilon" : 1e-20,
         "delta" : 5e-04,
 
         "momentum" : 0.9,
