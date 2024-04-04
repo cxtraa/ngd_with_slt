@@ -26,7 +26,6 @@ from devinterp.slt import sample
 from devinterp.slt.llc import OnlineLLCEstimator
 from devinterp.slt.wbic import OnlineWBICEstimator
 
-from approxngd import KFAC
 from PyHessian.pyhessian import *
 from PyHessian.density_plot import *
 from nngeometry.metrics import FIM
