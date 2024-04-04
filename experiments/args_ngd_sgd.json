@@ -4,12 +4,14 @@
         "experiment_type" : "standard",
     
         "optimizer" : "both",
-        "hessian" : true,
+        "hessian" : false,
 
         "hidden_nodes" : [256],
         "hidden_layers" : [2],
         "hidden_conv_layers" : [0],
 
+        "cut_off_epochs" : 30,
+        "num_epochs" : 30,
         "cut_off_epochs" : 30,
         "num_epochs" : 30,
 
