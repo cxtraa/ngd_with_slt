@@ -4,23 +4,21 @@
         "experiment_type" : "standard",
     
         "optimizer" : "both",
-        "hessian" : false,
+        "hessian" : true,
 
-        "hidden_nodes" : [256],
+        "hidden_nodes" : [128],
         "hidden_layers" : [2],
         "hidden_conv_layers" : [0],
 
-        "cut_off_epochs" : 30,
-        "num_epochs" : 30,
-        "cut_off_epochs" : 30,
-        "num_epochs" : 30,
+        "cut_off_epochs" : 10,
+        "num_epochs" : 10,
 
-        "sgd_lr" : 4e-02,
-        "ngd_lr" : 3e-02,
+        "sgd_lr" : 1e-02,
+        "ngd_lr" : 1e-02,
 
-        "alpha" : 0,
+        "alpha" : 0.1,
         "eta" : 0.9,
-        "epsilon" : 1e-20,
+        "epsilon" : 1e-10,
         "delta" : 5e-04,
 
         "momentum" : 0.9,
@@ -31,7 +29,7 @@
     {
         "batch_size" : 128,
         "num_workers" : 6,
-        "dataset" : "fashion-mnist",
+        "dataset" : "mnist",
         "num_hessian_batches" : 1
     },
     {

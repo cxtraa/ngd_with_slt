@@ -1,19 +1,20 @@
 [
     {
-        "d" : 100000,
-        "r_list" : [10, 100, 1000, 10000, 100000]
+        "d" : 1000,
+        "r_list" : [100, 200, 300, 400, 500, 600, 700, 800, 900]
     },
     {
-        "batch_size" : 128,
+        "batch_size" : 1000,
         "num_workers" : 6,
         "num_samples" : 1000,
-        "sigma" : 0.1
+        "sigma" : 0.5
     },
     {
         "sampler" : "sgld",
-        "num_chains" : 2,
-        "num_draws" : 400,
+        "num_chains" : 3,
+        "num_draws" : 5000,
         "sampler_lr" : 1e-04,
-        "localization" : 100.0
+        "localization" : 100.0,
+        "bounding_box_size" : 0.5
     }
 ]

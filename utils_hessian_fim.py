@@ -80,6 +80,19 @@ def produce_hessians(models, data_loader, num_batches, criterion, device):
         hessians.append(hessian(model, criterion, data=(images,labels), cuda=True if device=='cuda' else False))
     return hessians
 
+def produce_hessian_traces(hessians, tol, maxIters, N):
+    """
+    Given a list of Hessian classes, compute their traces and return this as a list.
+    """
+    trace_averages = []
+    for hessian in hessians:
+        traces = np.array([])
+        for i in range(N):
+            traces = np.concatenate((traces, hessian.trace(maxIter=maxIters, tol=tol)))
+        traces_mean = float(np.mean(traces))
+        trace_averages.append(traces_mean)
+    return trace_averages
+
 def produce_fims(models, data_loader, device):
     """
     Produces a dictionary of FIM instances given a dictionary of models.
