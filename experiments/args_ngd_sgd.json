@@ -16,9 +16,9 @@
         "sgd_lr" : 1e-02,
         "ngd_lr" : 1e-02,
 
-        "alpha" : 50,
+        "alpha" : 0,
         "eta" : 0.9,
-        "epsilon" : 1e-20,
+        "epsilon" : 1e-22,
         "delta" : 5e-04,
 
         "momentum" : 0.9,
