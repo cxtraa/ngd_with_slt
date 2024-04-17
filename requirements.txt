@@ -1,9 +1,8 @@
-wandb
+torch
+torchvision
 tqdm
 ipykernel
 devinterp
-torch
-torchvision
 tqdm
 plotly
 pandas
