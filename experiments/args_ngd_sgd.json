@@ -24,7 +24,7 @@
         "momentum" : 0.9,
         "nesterov" : true,
 
-        "seed" : 13
+        "seed" : 15
     },
     {
         "batch_size" : 128,
