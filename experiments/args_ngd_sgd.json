@@ -6,8 +6,8 @@
         "optimizer" : "both",
         "hessian" : false,
 
-        "hidden_nodes" : [64,128,256,64,128,256],
-        "hidden_layers" : [1,1,1,2,2,2],
+        "hidden_nodes" : [256],
+        "hidden_layers" : [2],
         "hidden_conv_layers" : [0],
 
         "cut_off_epochs" : 20,
@@ -16,15 +16,15 @@
         "sgd_lr" : 1e-02,
         "ngd_lr" : 1e-02,
 
-        "alpha" : 1e-2,
+        "alpha" : 0,
         "eta" : 0.9,
-        "epsilon" : 1e-10,
+        "epsilon" : 1e-6,
         "delta" : 5e-04,
 
         "momentum" : 0.9,
         "nesterov" : true,
 
-        "seed" : 15
+        "seed" : 3
     },
     {
         "batch_size" : 128,
