@@ -6,8 +6,8 @@
         "optimizer" : "both",
         "hessian" : false,
 
-        "hidden_nodes" : [256],
-        "hidden_layers" : [2],
+        "hidden_nodes" : [64, 128, 256, 64, 128, 256],
+        "hidden_layers" : [1, 1, 1, 2, 2, 2],
         "hidden_conv_layers" : [0],
 
         "cut_off_epochs" : 20,
@@ -24,7 +24,7 @@
         "momentum" : 0.9,
         "nesterov" : true,
 
-        "seed" : 3
+        "seed" : 16
     },
     {
         "batch_size" : 128,

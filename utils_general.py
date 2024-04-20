@@ -23,7 +23,6 @@ from torch.utils.data import DataLoader, Subset, random_split
 from tqdm import tqdm
 from datetime import datetime
 import json
-import wandb
 
 from devinterp.slt import estimate_learning_coeff_with_summary
 from devinterp.optim import SGLD, SGNHT
