@@ -16,15 +16,15 @@
         "sgd_lr" : 1e-02,
         "ngd_lr" : 1e-02,
 
-        "alpha" : 0,
+        "alpha" : 1e-2,
         "eta" : 0.9,
-        "epsilon" : 1e-6,
+        "epsilon" : 1e-10,
         "delta" : 5e-04,
 
         "momentum" : 0.9,
         "nesterov" : true,
 
-        "seed" : 16
+        "seed" : 30
     },
     {
         "batch_size" : 128,
