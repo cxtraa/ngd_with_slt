@@ -18,7 +18,6 @@ from torch.utils.data import DataLoader, Subset, random_split
 from tqdm import tqdm
 from datetime import datetime
 import json
-import wandb
 
 from devinterp.slt import estimate_learning_coeff
 from devinterp.optim.sgld import SGLD
@@ -26,7 +25,6 @@ from devinterp.slt import sample
 from devinterp.slt.llc import OnlineLLCEstimator
 from devinterp.slt.wbic import OnlineWBICEstimator
 
-from approxngd import KFAC
 from PyHessian.pyhessian import *
 from PyHessian.density_plot import *
 from nngeometry.metrics import FIM
@@ -38,7 +36,6 @@ import plotly.express as px
 import plotly.graph_objects as go
 import matplotlib
 import matplotlib.pyplot as plt
-from matplotlib.cm import get_cmap
 
 def get_esd_plot_plotly(eigenvalues, weights, plot_type, title=None, fig=None, name=None):
     """

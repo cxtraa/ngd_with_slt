@@ -23,7 +23,6 @@ from torch.utils.data import DataLoader, Subset, random_split
 from tqdm import tqdm
 from datetime import datetime
 import json
-import wandb
 
 from devinterp.slt import estimate_learning_coeff_with_summary, sample
 from devinterp.slt.llc import OnlineLLCEstimator
@@ -37,7 +36,6 @@ from PyHessian.density_plot import *
 import plotly.express as px
 import plotly.graph_objects as go
 import matplotlib.pyplot as plt
-from matplotlib.cm import get_cmap
 import io
 
 def build_data_loaders(args):
