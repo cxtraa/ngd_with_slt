@@ -33,7 +33,6 @@ from PyHessian.density_plot import *
 import plotly.express as px
 import plotly.graph_objects as go
 import matplotlib.pyplot as plt
-from matplotlib.cm import get_cmap
 import io
 
 def build_data_loaders(args):

@@ -36,7 +36,6 @@ import plotly.express as px
 import plotly.graph_objects as go
 import matplotlib
 import matplotlib.pyplot as plt
-from matplotlib.cm import get_cmap
 
 def get_esd_plot_plotly(eigenvalues, weights, plot_type, title=None, fig=None, name=None):
     """
