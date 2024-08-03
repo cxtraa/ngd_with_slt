@@ -10,8 +10,8 @@
         "hidden_layers" : [2],
         "hidden_conv_layers" : [0],
 
-        "cut_off_epochs" : 20,
-        "num_epochs" : 40,
+        "cut_off_epochs" : 2,
+        "num_epochs" : 4,
 
         "sgd_lr" : 1e-02,
         "ngd_lr" : 1e-02,
@@ -29,7 +29,7 @@
     {
         "batch_size" : 128,
         "num_workers" : 6,
-        "dataset" : "fashion-mnist",
+        "dataset" : "mnist",
         "num_hessian_batches" : 1
     },
     {

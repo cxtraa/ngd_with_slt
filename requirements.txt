@@ -12,7 +12,7 @@ pyhessian
 nbformat
 matplotlib
 einops
-scipy
+scipy==1.10.1
 chardet
 numba
 nngeometry

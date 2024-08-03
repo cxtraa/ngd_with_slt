@@ -268,42 +268,43 @@ def estimate_rlcts_online(models, data_loader, criterion, device, devinterp_args
             llc_estimates.append(None)
             wbic_histories.append(None)
             wbic_estimates.append(None)
-        callbacks = []
-        llc_estimator = OnlineLLCEstimator(
-            num_chains=devinterp_args["num_chains"],
-            num_draws=devinterp_args["num_draws"],
-            temperature=temperature,
-        )
-        callbacks.append(llc_estimator)
-        if wbic:
-            wbic_estimator = OnlineWBICEstimator(
+        else:
+            callbacks = []
+            llc_estimator = OnlineLLCEstimator(
                 num_chains=devinterp_args["num_chains"],
                 num_draws=devinterp_args["num_draws"],
-                n=len(data_loader.dataset),
+                temperature=temperature,
             )
-            callbacks.append(wbic_estimator)
-        sample(
-            model,
-            data_loader,
-            criterion=criterion,
-            optimizer_kwargs={
-                "lr" : devinterp_args["sampler_lr"],
-                "localization" : devinterp_args["localization"],
-                "temperature" : temperature,
-            },
-            sampling_method=SGLD,
-            num_chains=devinterp_args["num_chains"],
-            num_draws=devinterp_args["num_draws"],
-            device=device,
-            callbacks=callbacks,
-        )
-        llc_history = llc_estimator.sample()
-        llc_histories.append(llc_history)
-        llc_estimates.append(float(np.mean(llc_history["llc/moving_avg"], axis=0)[-1]))
-        if wbic:
-            wbic_history = wbic_estimator.sample()
-            wbic_histories.append(wbic_history)
-            wbic_estimates.append(wbic_history["wbic/means"][-1])
+            callbacks.append(llc_estimator)
+            if wbic:
+                wbic_estimator = OnlineWBICEstimator(
+                    num_chains=devinterp_args["num_chains"],
+                    num_draws=devinterp_args["num_draws"],
+                    n=len(data_loader.dataset),
+                )
+                callbacks.append(wbic_estimator)
+            sample(
+                model,
+                data_loader,
+                criterion=criterion,
+                optimizer_kwargs={
+                    "lr" : devinterp_args["sampler_lr"],
+                    "localization" : devinterp_args["localization"],
+                    "temperature" : temperature,
+                },
+                sampling_method=SGLD,
+                num_chains=devinterp_args["num_chains"],
+                num_draws=devinterp_args["num_draws"],
+                device=device,
+                callbacks=callbacks,
+            )
+            llc_history = llc_estimator.sample()
+            llc_histories.append(llc_history)
+            llc_estimates.append(float(np.mean(llc_history["llc/moving_avg"], axis=0)[-1]))
+            if wbic:
+                wbic_history = wbic_estimator.sample()
+                wbic_histories.append(wbic_history)
+                wbic_estimates.append(wbic_history["wbic/means"][-1])
     
     return llc_estimates, llc_histories, wbic_estimates, wbic_histories
     
