@@ -1,42 +1,33 @@
-# Testing SLT claims in the loss landscape
-This is a research project investigating the claims of *singular learning theory (SLT)* which proposes that optimisers such as SGD favour less complex models. The model complexity is supposedly measured by the *real log canonical threshold (RLCT)*, which is a measure of the model dimensionality, and is related to traditional measures of model complexity like the Hessian rank. We aim to investigate the following research problems:
+# NGD converges to less degenerate solutions than SGD
 
-1. Are models trained using NGD more complex than those trained with SGD? (i.e. is the RLCT at convergence higher for NGD-trained models?)
-2. Is it true that the RLCT is half of the Hessian rank for a minimally singular model?
-3. Can we observe "phase transitions" in the evolution of the spectrum of eigenvalues of the Hessian throughout training?
+This was a research project conducted by Moosa Saghir, Ragha Rao, and Zihe Liu, under the supervision of Evan Ryan Gunter. See the published paper [on arXiV](https://arxiv.org/abs/2409.04913).
 
-We utilise the following research / tools extensively:
-- the [devinterp](https://github.com/timaeus-research/devinterp/) library, used for RLCT computation
-- the [PyHessian](https://github.com/amirgholami/PyHessian) library, used for approximating the Hessian eigenvalue spectrum
-- the [NGD-SGD](https://github.com/YiwenShaoStephen/NGD-SGD) repository, from which `ngd.py` is obtained, for implementation of the NGD algorithm as an optimiser, as it is not supported natively in PyTorch
+### Abstract
 
-Our main references include:
-- ['Estimating the Local Learning Coefficient at Scale'](https://arxiv.org/abs/2402.03698) by Zach Furman, and Edmund Lau
-- ['PyHessian: Neural networks through the lens of the Hessian'](https://arxiv.org/abs/1912.07145) by Zhewei Yao et al.
-
-The main findings of our research, and our methodology so far are summarised in a presentation titled `'testing_slt_claims_research_summary.pdf'.` Please refer to this presentation for an assimilation of the all the most salient graphs for our research. 
-
-The paper for our work is still a work in progress, but expect it to be published in the next month or two.
+The number of free parameters, or \textit{dimension}, of a model is a straightforward way to measure its complexity: a model with more parameters can encode more information. However, this is not an accurate measure of complexity: models capable of memorizing their training data often generalize well despite their high dimension \cite{doubledescent}. \textit{Effective dimension} aims to more directly capture the complexity of a model by counting only the number of parameters required to represent the functionality of the model \citep{effective_dimension_evan}. Singular learning theory (SLT) proposes the learning coefficient \( \lambda \) as a more accurate measure of effective dimension \citep{Watanabe2009}.
+By describing the rate of increase of the volume of the region of parameter space around a local minimum with respect to loss, $\lambda$ incorporates information from higher-order terms. We compare \( \lambda \) of models trained using natural gradient descent (NGD) and stochastic gradient descent (SGD), and find that those trained with NGD consistently have a higher effective dimension for both of our methods: the Hessian trace \( \text{Tr}(\mathbf{H}) \), and the estimate of the local learning coefficient (LLC) $\hat{\lambda}(w^*)$.
 
 ## Code structure
 
 `./networks.py` - contains nn.Module classes for models we train on CIFAR10 / MNIST.
-- deep feedforward neural networks with ReLU activations
-- convolutional neural networks
-- minimally singular toy model
+- Deep feedforward neural networks with ReLU activations
+- Convolutional neural networks
+- Minimally singular toy model
 
 `./utils_general.py` - contains utility functions for data loading, training models, evaluating models, writing figures to HTML, calculating RLCT using `devinterp`.
 `./utils_hessian_fim.py` - utility functions for working with the Hessian and Fisher Information Matrix
 
 The following are our project notebooks, which are fully reproducible and contain commentary on the experiments ran:
-- `./experiments/eval_ngd_sgd.ipynb` - notebook for problem 1.
-- `./experiments/eval_min_singular_models.ipynb` - notebook for problem 2.
-- `./experiments/eval_mnist_phase_transitions.ipynb` - notebook for problem 3.
+- `./experiments/eval_ngd_sgd.ipynb` - the notebook used to create all the experiments in the paper.
+- `./experiments/eval_min_singular_models.ipynb` - some extra investigation we did on the LLC of minimally singular models, and testing whether the theory aligns with experiment.
+- `./experiments/eval_mnist_phase_transitions.ipynb` - analysing phase transitions in the Hessian eigenspectrum throughout training (not included in the paper).
 
 Results are stored in `./experiments/...` under the respective folder name. For example, results for problem 1 are stored as HTML files containing Plotly figures in `./experiments/ngd_sgd`.
 
 ## About
 
-This research program is being conducted as part of the MARS (Mentorship for Alignment Research Students) with the University of Cambridge. The project researchers are Moosa Saghir, Zihe Liu, and Ragha Rao, with supervision from SERI MATS scholar Evan Ryan Gunter who is based in Berkeley, California. We are affiliated with the DevInterp team and use the `devinterp` library extensively to perform MCMC searches to find empirical estimates of the local learning coefficient near singularities.
+This research program was conducted as part of the MARS (Mentorship for Alignment Research Students) with the University of Cambridge. We are affiliated with the growing field of developmental interpretability that aims to apply SLT to neural networks to understand how complexity in models arises through phase transitions.
 
-If you are interested in developmental interpretability, see the [DevInterp](https://devinterp.com/) website which has resources and project ideas for getting into research. If you are interested in singular learning theory in general, see Liam Carroll's [distilling singular learning theory (DSLT) series](https://www.lesswrong.com/s/czrXjvCLsqGepybHC) as a good starting point. If you would like to contribute to our research or you have a question, please [email me](emailto::ms3017@cam.ac.uk)!
+If you are interested in developmental interpretability, see the [DevInterp](https://devinterp.com/) website which has resources and project ideas for getting into research. If you are interested in singular learning theory in general, see Liam Carroll's [distilling singular learning theory (DSLT) series](https://www.lesswrong.com/s/czrXjvCLsqGepybHC) as a good starting point.
+
+If you have any questions about our research, please do not hesitate to contact me at [ms3017@cam.ac.uk](mailto:ms3017@cam.ac.uk).
