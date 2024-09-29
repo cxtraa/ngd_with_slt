@@ -10,8 +10,8 @@
         "hidden_layers" : [2],
         "hidden_conv_layers" : [2],
 
-        "cut_off_epochs" : 30,
-        "num_epochs" : 80,
+        "cut_off_epochs" : 10,
+        "num_epochs" : 20,
 
         "sgd_lr" : 1e-02,
         "ngd_lr" : 1e-02,
